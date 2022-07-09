@@ -1,31 +1,31 @@
 package com.vv.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
+import com.vv.game.screens.ScreenController;
 
-public class VidarVoyager extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+
+public class VidarVoyager extends Game {
+	public static final int APP_WIDTH = 1000;
+	public static final int APP_HEIGHT = 1000;
+	public static final float PPM = 100;
+	public static final int APP_FPS = 60;
+	public static final int VELOCITY_ITERATIONS = 7;
+	public static final int POSITION_ITERATIONS = 3;
+
+	ScreenController screenController;
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		screenController = new ScreenController(this);
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		screenController.dispose();
 	}
 }
