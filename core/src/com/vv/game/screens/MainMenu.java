@@ -36,12 +36,6 @@ public class MainMenu extends AbstractScreen {
     @Override
     public World getWorld() { return world; }
 
-    public boolean isPaused() { return true; }
-
-    public boolean isGameOver() { return over; }
-
-    public void setGameOver(boolean over){ this.over = over; }
-
     @Override
     public void render(float deltaTime) {
         super.render(deltaTime);

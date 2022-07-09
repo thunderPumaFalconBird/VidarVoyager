@@ -19,7 +19,6 @@ public class GameScreen extends AbstractScreen {
     private final World world;
     private final Box2DDebugRenderer b2dr;
     private final Texture background = new Texture("screens/temp.png");
-    public boolean paused = false;
     public boolean over = false;
 
     public GameScreen(final VidarVoyager game){
@@ -33,14 +32,9 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void update(float deltaTime) {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-            paused = !paused;
-        }
-        if(!paused) {
-            world.step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
-                    VidarVoyager.POSITION_ITERATIONS);
-            stage.act(deltaTime);
-        }
+        world.step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
+                VidarVoyager.POSITION_ITERATIONS);
+        stage.act(deltaTime);
     }
 
     @Override
@@ -72,8 +66,6 @@ public class GameScreen extends AbstractScreen {
     }
 
     public World getWorld(){ return this.world; }
-
-    public boolean isPaused(){ return paused; }
 
     public boolean isGameOver(){ return over;}
 

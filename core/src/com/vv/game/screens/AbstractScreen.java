@@ -40,12 +40,6 @@ public abstract class AbstractScreen implements Screen {
 
     public abstract World getWorld();
 
-    public abstract boolean isPaused();
-
-    public abstract boolean isGameOver();
-
-    public abstract void setGameOver(boolean over);
-
     @Override
     public void resize(int width, int height){ stage.getViewport().update(width, height, true); }
 
