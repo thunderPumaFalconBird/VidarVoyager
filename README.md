@@ -1,2 +1,2 @@
 # VidarVoyager
-This is a summer project I'm using to learn libgdx.
+This is a project I'm using to learn libgdx.
