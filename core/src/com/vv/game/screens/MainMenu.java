@@ -17,7 +17,7 @@ import com.vv.game.VidarVoyager;
 public class MainMenu extends AbstractScreen {
     private final World world;
     private final Box2DDebugRenderer b2dr;
-    private final Texture ship = new Texture("screens/ship.png");
+    private final Texture ship = new Texture("screens/shipRed.png");
     private final Texture window1 = new Texture("screens/background1.png");
     private final Texture window2 = new Texture("screens/background2.png");
     private final Texture window3 = new Texture("screens/background3.png");
