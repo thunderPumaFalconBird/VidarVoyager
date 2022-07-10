@@ -89,8 +89,6 @@ public class MainMenu extends AbstractScreen {
 
     @Override
     public void dispose() {
-        timer.clear();
-        timer.stop();
         super.dispose();
         world.dispose();
         b2dr.dispose();
