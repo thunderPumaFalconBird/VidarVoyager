@@ -27,8 +27,6 @@ public class MainMenu extends AbstractScreen {
     public static int window3x = 0;
     public static int window4x = 0;
 
-    private boolean over = false;
-
     public MainMenu(final VidarVoyager game){
         super(game);
 
