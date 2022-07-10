@@ -1,12 +1,10 @@
 package com.vv.game.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.VidarVoyager;
-import com.vv.game.utils.CollisionHandling;
+import com.vv.game.utils.CollisionHandler;
 
 /**
  * This is the Game Screen Class. The camera and stage are in the AbstractScreen class. The world and render are located
@@ -25,7 +23,7 @@ public class GameScreen extends AbstractScreen {
         super();
 
         world = new World(new Vector2(0, 0), true);
-        world.setContactListener(new CollisionHandling());
+        world.setContactListener(new CollisionHandler());
         b2dr = new Box2DDebugRenderer(); //comment this out when not debugging
     }
 

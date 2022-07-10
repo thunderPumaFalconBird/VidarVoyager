@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
  * @author thunderPumaFalconBird
  * @version 1.0
  */
-public class CollisionHandling implements ContactListener {
+public class CollisionHandler implements ContactListener {
     Object outOfBounds; // Object that should be deleted once fully off-screen
 
     /**
