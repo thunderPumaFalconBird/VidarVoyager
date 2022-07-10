@@ -32,24 +32,9 @@ public class MainMenu extends AbstractScreen {
 
         world = new World(new Vector2(0f, 0f), false);
         b2dr = new Box2DDebugRenderer();
-        timer.scheduleTask(new Timer.Task() {
-            @Override
-            public void run() {
-                MainMenu.window4x--;
-            }
-        },1f,1f);
-        timer.scheduleTask(new Timer.Task() {
-            @Override
-            public void run() {
-                MainMenu.window3x--;
-            }
-        },.1f,.1f);
-        timer.scheduleTask(new Timer.Task() {
-            @Override
-            public void run() {
-                MainMenu.window2x--;
-            }
-        },.06f,.06f);
+        timer.scheduleTask(new Timer.Task() { @Override public void run() {MainMenu.window4x--;}},1f,1f);
+        timer.scheduleTask(new Timer.Task() { @Override public void run() {MainMenu.window3x--;}},.1f,.1f);
+        timer.scheduleTask(new Timer.Task() {@Override public void run() {MainMenu.window2x--;}},.06f,.06f);
         timer.start();
     }
 
@@ -57,13 +42,13 @@ public class MainMenu extends AbstractScreen {
     public void update(float deltaTime) {
         world.step(1f/ VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS, VidarVoyager.POSITION_ITERATIONS);
         stage.act(deltaTime);
-        if(window4x < -1000){
+        if(window4x < -VidarVoyager.APP_WIDTH){
             window4x = 0;
         }
-        if(window3x < -1000){
+        if(window3x < -VidarVoyager.APP_WIDTH){
             window3x = 0;
         }
-        if(window2x < -1000){
+        if(window2x < -VidarVoyager.APP_WIDTH){
             window2x = 0;
         }
     }
