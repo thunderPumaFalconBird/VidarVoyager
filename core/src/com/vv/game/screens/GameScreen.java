@@ -21,13 +21,12 @@ public class GameScreen extends AbstractScreen {
     private final Texture background = new Texture("screens/temp.png");
     public boolean over = false;
 
-    public GameScreen(final VidarVoyager game){
-        super(game);
+    public GameScreen(){
+        super();
 
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(new CollisionHandling());
         b2dr = new Box2DDebugRenderer(); //comment this out when not debugging
-
     }
 
     @Override

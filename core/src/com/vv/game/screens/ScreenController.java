@@ -29,8 +29,8 @@ public class ScreenController {
 
     private void init(){
         this.screens = new EnumMap<>(SCREEN_STATE.class);
-        this.screens.put(SCREEN_STATE.GAME_SCREEN, new GameScreen(game));
-        this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu(game));
+        this.screens.put(SCREEN_STATE.GAME_SCREEN, new GameScreen());
+        this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu());
     }
 
     public void setScreen(SCREEN_STATE screen){

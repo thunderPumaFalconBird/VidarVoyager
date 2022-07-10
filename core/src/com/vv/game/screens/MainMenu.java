@@ -27,8 +27,8 @@ public class MainMenu extends AbstractScreen {
     public static int window3x = 0;
     public static int window4x = 0;
 
-    public MainMenu(final VidarVoyager game){
-        super(game);
+    public MainMenu(){
+        super();
 
         world = new World(new Vector2(0f, 0f), false);
         b2dr = new Box2DDebugRenderer();
@@ -51,7 +51,6 @@ public class MainMenu extends AbstractScreen {
             }
         },.06f,.06f);
         timer.start();
-
     }
 
     @Override

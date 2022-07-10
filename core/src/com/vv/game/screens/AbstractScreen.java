@@ -18,14 +18,12 @@ import com.vv.game.VidarVoyager;
  * @version 1.0
  */
 public abstract class AbstractScreen implements Screen {
-    protected final VidarVoyager game;
     protected Stage stage;
     protected OrthographicCamera cam;
     protected ShapeRenderer shapeRenderer;
     protected SpriteBatch batch;
 
-    public AbstractScreen(final VidarVoyager game) {
-        this.game = game;
+    public AbstractScreen() {
         this.shapeRenderer = new ShapeRenderer();
         this.batch = new SpriteBatch();
         this.cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
