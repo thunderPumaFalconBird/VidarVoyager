@@ -18,7 +18,6 @@ public class ScreenController {
     }
     public final VidarVoyager game;
     private SCREEN_STATE currentScreen;
-
     private EnumMap<SCREEN_STATE, AbstractScreen> screens;
 
     public ScreenController(final VidarVoyager game) {
@@ -46,10 +45,9 @@ public class ScreenController {
     }
 
     public World getWorld(SCREEN_STATE screen){
-        return screens.get(screen).getWorld();
+        return screens.get(screen).world;
     }
 
     public AbstractScreen getScreen() { return screens.get(currentScreen); }
-
 }
 

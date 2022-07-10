@@ -1,10 +1,13 @@
 package com.vv.game.screens;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 
 /**
@@ -15,8 +18,8 @@ import com.vv.game.VidarVoyager;
  * @version 1.0
  */
 public class MainMenu extends AbstractScreen {
-    private final World world;
-    private final Box2DDebugRenderer b2dr;
+    private final Stage stage;
+    private final OrthographicCamera cam;
     private final Texture ship = new Texture("screens/shipRed.png");
     private final Texture window1 = new Texture("screens/background1.png");
     private final Texture window2 = new Texture("screens/background2.png");
@@ -29,9 +32,13 @@ public class MainMenu extends AbstractScreen {
 
     public MainMenu(){
         super();
+        cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
+        stage = new Stage(new FitViewport(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT, this.cam));
+        cam.setToOrtho(false);
+        stage.getViewport().apply();
+        cam.position.set((float) VidarVoyager.APP_WIDTH/2, (float) VidarVoyager.APP_HEIGHT/2, 0);
+        cam.update();
 
-        world = new World(new Vector2(0f, 0f), false);
-        b2dr = new Box2DDebugRenderer();
         timer.scheduleTask(new Timer.Task() { @Override public void run() {MainMenu.window4x--;}},1f,1f);
         timer.scheduleTask(new Timer.Task() { @Override public void run() {MainMenu.window3x--;}},.1f,.1f);
         timer.scheduleTask(new Timer.Task() {@Override public void run() {MainMenu.window2x--;}},.06f,.06f);
@@ -54,7 +61,7 @@ public class MainMenu extends AbstractScreen {
     }
 
     @Override
-    public World getWorld() { return world; }
+    public Stage getStage() { return this.stage; }
 
     @Override
     public void render(float deltaTime) {

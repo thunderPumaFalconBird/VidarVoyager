@@ -1,8 +1,11 @@
 package com.vv.game.screens;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 import com.vv.game.utils.CollisionHandler;
 
@@ -14,17 +17,21 @@ import com.vv.game.utils.CollisionHandler;
  * @version 1.0
  */
 public class GameScreen extends AbstractScreen {
-    private final World world;
-    private final Box2DDebugRenderer b2dr;
+    private final Stage stage;
+    private final OrthographicCamera cam;
     private final Texture background = new Texture("screens/temp.png");
     public boolean over = false;
 
     public GameScreen(){
         super();
 
-        world = new World(new Vector2(0, 0), true);
+        cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
+        stage = new Stage(new FitViewport(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT, this.cam));
+        cam.setToOrtho(false);
+        stage.getViewport().apply();
+        cam.position.set((float) VidarVoyager.APP_WIDTH/2, (float) VidarVoyager.APP_HEIGHT/2, 0);
+        cam.update();
         world.setContactListener(new CollisionHandler());
-        b2dr = new Box2DDebugRenderer(); //comment this out when not debugging
     }
 
     @Override
@@ -62,7 +69,7 @@ public class GameScreen extends AbstractScreen {
         background.dispose();
     }
 
-    public World getWorld(){ return this.world; }
+    public Stage getStage(){ return this.stage; }
 
     public boolean isGameOver(){ return over;}
 
