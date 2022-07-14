@@ -2,16 +2,13 @@ package com.vv.game.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 import com.vv.game.utils.CollisionHandler;
 
 /**
- * This is the Game Screen Class. The camera and stage are in the AbstractScreen class. The world and render are located
- * in this screen class. The Game screen is used to display game play.
+ * This is the Game Screen Class.
  *
  * @author thunderPumaFalconBird
  * @version 1.0

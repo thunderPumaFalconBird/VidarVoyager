@@ -2,17 +2,13 @@ package com.vv.game.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 
 /**
- * This is the Main Menu Screen Class. The camera and stage are in the AbstractScreen class. The world and render are
- * located in this screen class. This screen is used to display game information.
+ * This is the Main Menu Screen Class. It uses an orthographic camera and a fitviewport.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
