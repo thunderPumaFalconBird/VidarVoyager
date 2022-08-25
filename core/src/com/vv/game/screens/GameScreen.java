@@ -16,7 +16,6 @@ import com.vv.game.utils.CollisionHandler;
 public class GameScreen extends AbstractScreen {
     private final Stage stage;
     private final OrthographicCamera cam;
-    private final Texture background = new Texture("screens/temp.png");
     public boolean over = false;
 
     public GameScreen(){
@@ -63,7 +62,6 @@ public class GameScreen extends AbstractScreen {
         super.dispose();
         world.dispose();
         b2dr.dispose();
-        background.dispose();
     }
 
     public Stage getStage(){ return this.stage; }
