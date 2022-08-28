@@ -38,7 +38,12 @@ public class Astronaut  extends Actor {
         }
         else {
             Integer temp = animationsIndexes.get(currentState);
-            batch.draw(animations.get(currentState).get(temp++), getX(), getY());
+            batch.draw(animations.get(currentState).get(temp), getX(), getY());
+
+            temp++;
+            if(temp == animations.get(currentState).size()) {
+                temp = 0;
+            }
             animationsIndexes.put(currentState, temp);
         }
     }
@@ -48,15 +53,11 @@ public class Astronaut  extends Actor {
     }
 
     public void setCurrentState(STATE currentState){
-        if(currentState == STATE.stalled) {
-            previousState = this.currentState;
-            this.currentState = currentState;
-        }
-        else{
-            previousState = this.currentState;
-            this.currentState = currentState;
+        if(previousState != STATE.stalled){
             animationsIndexes.put(currentState, 0);
         }
+        previousState = this.currentState;
+        this.currentState = currentState;
     }
 
     private void initAnimations(){
