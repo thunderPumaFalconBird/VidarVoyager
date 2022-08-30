@@ -15,9 +15,7 @@ public class VidarVoyager extends Game {
 	ScreenController screenController;
 	
 	@Override
-	public void create () {
-		screenController = new ScreenController(this);
-	}
+	public void create () { screenController = new ScreenController(this); }
 
 	@Override
 	public void render () {

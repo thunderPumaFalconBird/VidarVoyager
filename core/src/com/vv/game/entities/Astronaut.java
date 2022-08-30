@@ -1,15 +1,15 @@
 package com.vv.game.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.vv.game.VidarVoyager;
 
 import java.util.EnumMap;
-import java.util.Vector;
 
 public class Astronaut  extends Actor {
     public enum STATE {
@@ -31,12 +31,35 @@ public class Astronaut  extends Actor {
     private STATE currentState = STATE.idleFront;
     private STATE previousState = STATE.idleFront;
     private TextureRegion currentFrame;
-    //TODO add body and body methods. Add method for handling input.
+    private final World world;
+    private Body body;
 
-    public Astronaut(Stage stage){
+    public Astronaut(Stage stage, World world){
+        this.world = world;
         setStage(stage);
         initAnimations();
+        setBounds(currentFrame.getRegionX(), currentFrame.getRegionY(),
+                currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+        setX(100);
+        setY(100);
+        defineAstronautBody();
     }
+
+    public void defineAstronautBody() {
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(getX() / VidarVoyager.PPM, getY() / VidarVoyager.PPM);
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        body = world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(currentFrame.getRegionWidth(), currentFrame.getRegionWidth());
+        //TODO add maskBits for contactListener
+        fdef.shape = shape;
+        body.createFixture(fdef).setUserData(this);
+    }
+
+    public void destroyAstronautBody(){ world.destroyBody(body);}
 
     public void update(float deltaTime){
         if(currentState != STATE.stalled) {
@@ -65,6 +88,7 @@ public class Astronaut  extends Actor {
         Array<TextureRegion> temp = new Array<>();
 
         //TODO create and add textureRegions
+        //TODO set currentFrame to idleFront
 
     }
 }
