@@ -1,9 +1,13 @@
 package com.vv.game.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+
 import java.util.EnumMap;
 import java.util.Vector;
 
@@ -14,16 +18,19 @@ public class Astronaut  extends Actor {
         idleSide,
         walkingFront,
         walkingBack,
-        walkingSide,
+        walkingSideLeft,
+        walkingSideRight,
         runningFront,
         runningBack,
-        runningSide,
+        runningSideLeft,
+        RunningSideRight,
         stalled
     }
-    private EnumMap<STATE, Vector<TextureRegion>> animations;
-    private EnumMap<STATE, Integer> animationsIndexes;
+    private EnumMap<STATE, Animation<TextureRegion>> animations;
+    private float stateTime = 0f;
     private STATE currentState = STATE.idleFront;
     private STATE previousState = STATE.idleFront;
+    private TextureRegion currentFrame;
     //TODO add body and body methods. Add method for handling input.
 
     public Astronaut(Stage stage){
@@ -31,21 +38,16 @@ public class Astronaut  extends Actor {
         initAnimations();
     }
 
+    public void update(float deltaTime){
+        if(currentState != STATE.stalled) {
+            stateTime += deltaTime;
+            currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
+        }
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha){
-        if(currentState == STATE.stalled){
-            batch.draw(animations.get(previousState).get(animationsIndexes.get(previousState)), getX(), getY());
-        }
-        else {
-            Integer temp = animationsIndexes.get(currentState);
-            batch.draw(animations.get(currentState).get(temp), getX(), getY());
-
-            temp++;
-            if(temp == animations.get(currentState).size()) {
-                temp = 0;
-            }
-            animationsIndexes.put(currentState, temp);
-        }
+            batch.draw(currentFrame, getX(), getY());
     }
 
     public STATE getCurrentState() {
@@ -53,19 +55,16 @@ public class Astronaut  extends Actor {
     }
 
     public void setCurrentState(STATE currentState){
-        if(previousState != STATE.stalled){
-            animationsIndexes.put(currentState, 0);
-        }
         previousState = this.currentState;
         this.currentState = currentState;
     }
 
     private void initAnimations(){
-        animations = new EnumMap<STATE, Vector<TextureRegion>>(STATE.class);
-        animationsIndexes = new EnumMap<STATE, Integer>(STATE.class);
+        animations = new EnumMap<>(STATE.class);
 
-        Vector <TextureRegion> temp = new Vector<>();
+        Array<TextureRegion> temp = new Array<>();
+
         //TODO create and add textureRegions
-        animations.put(STATE.idleFront, temp);
+
     }
 }
