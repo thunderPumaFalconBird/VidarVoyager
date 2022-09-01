@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
-
 import java.util.EnumMap;
 
 public class Astronaut  extends Actor {
