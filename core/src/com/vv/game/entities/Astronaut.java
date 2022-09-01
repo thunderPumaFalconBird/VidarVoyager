@@ -86,7 +86,7 @@ public class Astronaut  extends Actor {
 
         Array<TextureRegion> temp = new Array<>();
 
-        //TODO create and add textureRegions
+        //TODO add textureRegions
         //TODO set currentFrame to idleFront
 
     }
