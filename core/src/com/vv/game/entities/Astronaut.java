@@ -62,9 +62,11 @@ public class Astronaut  extends Actor {
 
     public void destroyAstronautBody(){ world.destroyBody(body);}
 
-    public void update(float deltaTime){ //TODO fix the flip of left facing animations or make new spritesheet with left facing animation
+    public void update(float deltaTime){
         //reset velocity
         body.setLinearVelocity(0,0);
+
+        //reset to idle state
         switch (currentState){
             case walkingBack:
                 currentState = STATE.idleBack;
@@ -73,17 +75,17 @@ public class Astronaut  extends Actor {
                 currentState = STATE.idleFront;
                 break;
             case walkingLeft:
+                //reset frame
+                currentFrame.flip(true, false);
                 currentState = STATE.idleLeft;
                 break;
             case walkingRight:
                 currentState = STATE.idleRight;
-        }
-        if(currentState == STATE.idleLeft){
-            currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
-            currentFrame.flip(true, false);
-        }
-        else {
-            currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
+                break;
+            case idleLeft:
+                //reset frame
+                currentFrame.flip(true,false);
+                break;
         }
 
         stateTime += deltaTime;
@@ -94,21 +96,28 @@ public class Astronaut  extends Actor {
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
                 body.applyLinearImpulse(new Vector2(0, .5f), body.getWorldCenter(), true);
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
                 currentState = STATE.walkingFront;
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
                 body.applyLinearImpulse(new Vector2(0, -.5f), body.getWorldCenter(), true);
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 currentState = STATE.walkingLeft;
                 currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
                 currentFrame.flip(true,false);
                 body.applyLinearImpulse(new Vector2(-.5f, 0), body.getWorldCenter(), true);
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 currentState = STATE.walkingRight;
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
                 body.applyLinearImpulse(new Vector2(.5f, 0), body.getWorldCenter(), true);
+            }
+            else if(currentState == STATE.idleLeft){
+                currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
+                currentFrame.flip(true, false);
+            }
+            else { //this is for an idleRight state
+                currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
             }
         }
     }
@@ -158,6 +167,7 @@ public class Astronaut  extends Actor {
         // adding right facing Walking
         animationTemp.addAll(atlasTemp, 29, 12);
         animations.put(STATE.walkingRight, new Animation<>(.1f, animationTemp));
+        animationTemp.clear();
 
         // adding Back facing Walking
         animationTemp.addAll(atlasTemp, 41, 12);

@@ -2,9 +2,6 @@ package com.vv.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.sun.org.apache.bcel.internal.generic.ASTORE;
-import com.vv.game.entities.Astronaut;
 import com.vv.game.entities.LevelController;
 import com.vv.game.screens.ScreenController;
 

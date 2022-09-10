@@ -1,11 +1,6 @@
 package com.vv.game.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.HashMap;
 
 public class LevelController {
     private Array<Level> levels;

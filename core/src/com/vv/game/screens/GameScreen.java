@@ -1,16 +1,13 @@
 package com.vv.game.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.sun.org.apache.bcel.internal.generic.ASTORE;
 import com.vv.game.VidarVoyager;
 import com.vv.game.entities.Astronaut;
 import com.vv.game.entities.Level;
-import com.vv.game.entities.LevelController;
 import com.vv.game.utils.CollisionHandler;
 
 /**
@@ -34,12 +31,10 @@ public class GameScreen extends AbstractScreen {
         stage = new Stage(new FitViewport(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT, this.cam));
         cam.setToOrtho(false);
         stage.getViewport().apply();
-        cam.position.set((float) VidarVoyager.APP_WIDTH/2, (float) VidarVoyager.APP_HEIGHT/2, 0);
         cam.update();
 
         map = level.getMap();
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-        //cam.position.set(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2, 0);
 
         player = new Astronaut(stage, world);
         stage.addActor(player);
@@ -87,6 +82,8 @@ public class GameScreen extends AbstractScreen {
         super.dispose();
         world.dispose();
         b2dr.dispose();
+        mapRenderer.dispose();
+        map.dispose();
     }
 
     public Stage getStage(){ return this.stage; }
