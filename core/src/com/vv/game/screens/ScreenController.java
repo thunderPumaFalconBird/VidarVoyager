@@ -2,6 +2,10 @@ package com.vv.game.screens;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.vv.game.VidarVoyager;
+import com.vv.game.entities.Astronaut;
+import com.vv.game.entities.Level;
+import com.vv.game.entities.LevelController;
+
 import java.util.EnumMap;
 
 /**
@@ -20,15 +24,15 @@ public class ScreenController {
     private SCREEN_STATE currentScreen;
     private EnumMap<SCREEN_STATE, AbstractScreen> screens;
 
-    public ScreenController(final VidarVoyager game) {
+    public ScreenController(VidarVoyager game, Level level) {
         this.game = game;
-        init();
+        init(level);
         setScreen(SCREEN_STATE.MAIN_MENU);
     }
 
-    private void init(){
+    private void init(Level level){
         this.screens = new EnumMap<>(SCREEN_STATE.class);
-        this.screens.put(SCREEN_STATE.GAME_SCREEN, new GameScreen());
+        this.screens.put(SCREEN_STATE.GAME_SCREEN, new GameScreen(level));
         this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu());
     }
 

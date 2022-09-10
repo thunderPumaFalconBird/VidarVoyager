@@ -1,6 +1,11 @@
 package com.vv.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.sun.org.apache.bcel.internal.generic.ASTORE;
+import com.vv.game.entities.Astronaut;
+import com.vv.game.entities.LevelController;
 import com.vv.game.screens.ScreenController;
 
 
@@ -12,18 +17,26 @@ public class VidarVoyager extends Game {
 	public static final int VELOCITY_ITERATIONS = 7;
 	public static final int POSITION_ITERATIONS = 3;
 
-	ScreenController screenController;
-	
+	private ScreenController screenController;
+	private LevelController levelController;
+
 	@Override
-	public void create () { screenController = new ScreenController(this); }
+	public void create () {
+		levelController = new LevelController();
+		screenController = new ScreenController(this, levelController.getLevel());
+	}
 
 	@Override
 	public void render () {
 		super.render();
+		if(Gdx.input.isTouched()){
+			screenController.setScreen(ScreenController.SCREEN_STATE.GAME_SCREEN);
+		}
 	}
 	
 	@Override
 	public void dispose () {
 		screenController.dispose();
 	}
+
 }

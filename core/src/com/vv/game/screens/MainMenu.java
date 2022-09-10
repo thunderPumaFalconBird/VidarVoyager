@@ -99,7 +99,6 @@ public class MainMenu extends AbstractScreen {
     @Override
     public void show() {
         batch.setProjectionMatrix(cam.combined);
-        shapeRenderer.setProjectionMatrix(cam.combined);
     }
 
     @Override

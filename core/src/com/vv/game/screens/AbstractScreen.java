@@ -19,11 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public abstract class AbstractScreen implements Screen {
     protected World world;
     protected Box2DDebugRenderer b2dr;
-    protected ShapeRenderer shapeRenderer;
     protected SpriteBatch batch;
 
     public AbstractScreen() {
-        shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         world = new World(new Vector2(0f, 0f), false);
         b2dr = new Box2DDebugRenderer(); //comment this out when not debugging
@@ -38,7 +36,6 @@ public abstract class AbstractScreen implements Screen {
 
     @Override
     public void dispose(){
-        this.shapeRenderer.dispose();
         this.batch.dispose();
     }
 
