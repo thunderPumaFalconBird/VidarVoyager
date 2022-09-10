@@ -5,8 +5,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 public class Level {
     private int levelNumber;
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
+    private final TmxMapLoader mapLoader;
+    private final TiledMap map;
 
     public Level(int levelNumber){
         this.levelNumber = levelNumber;
@@ -17,7 +17,6 @@ public class Level {
             String layername = map.getLayers().get(i).getName();
             //TODO add objects
         }
-
     }
 
     public TiledMap getMap() { return map; }

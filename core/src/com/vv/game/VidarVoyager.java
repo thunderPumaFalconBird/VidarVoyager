@@ -2,7 +2,6 @@ package com.vv.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.vv.game.entities.LevelController;
 import com.vv.game.screens.ScreenController;
 
 
@@ -15,12 +14,10 @@ public class VidarVoyager extends Game {
 	public static final int POSITION_ITERATIONS = 3;
 
 	private ScreenController screenController;
-	private LevelController levelController;
 
 	@Override
 	public void create () {
-		levelController = new LevelController();
-		screenController = new ScreenController(this, levelController.getLevel());
+		screenController = new ScreenController(this);
 	}
 
 	@Override

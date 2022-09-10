@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 import com.vv.game.entities.Astronaut;
@@ -20,11 +21,13 @@ public class GameScreen extends AbstractScreen {
     private final Stage stage;
     private final OrthographicCamera cam;
     private final OrthogonalTiledMapRenderer mapRenderer;
+    private Array<Level> levels;
     private TiledMap map;
+    private int currentLevel;
     private final Astronaut player;
     public boolean over = false;
 
-    public GameScreen(Level level){
+    public GameScreen(){
         super();
 
         cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
@@ -33,7 +36,11 @@ public class GameScreen extends AbstractScreen {
         stage.getViewport().apply();
         cam.update();
 
-        map = level.getMap();
+        levels = new Array<>();
+        levels.add(new Level(1));
+        currentLevel = 0;
+
+        map = levels.get(currentLevel).getMap();
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
         player = new Astronaut(stage, world);
