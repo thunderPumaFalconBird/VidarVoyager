@@ -1,9 +1,7 @@
 package com.vv.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.vv.game.screens.ScreenController;
-
 
 public class VidarVoyager extends Game {
 	public static final int APP_WIDTH = 1000;
@@ -23,9 +21,6 @@ public class VidarVoyager extends Game {
 	@Override
 	public void render () {
 		super.render();
-		if(Gdx.input.isTouched()){
-			screenController.setScreen(ScreenController.SCREEN_STATE.GAME_SCREEN);
-		}
 	}
 	
 	@Override

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -36,7 +35,9 @@ public abstract class AbstractScreen implements Screen {
 
     @Override
     public void dispose(){
-        this.batch.dispose();
+        batch.dispose();
+        b2dr.dispose();
+        world.dispose();
     }
 
     @Override

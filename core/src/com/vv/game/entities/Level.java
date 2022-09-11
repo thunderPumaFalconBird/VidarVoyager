@@ -3,6 +3,14 @@ package com.vv.game.entities;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
+/**
+ * This is the Level Class. It contains the map and any objects that go along with the map. The map is loaded based
+ * on the level number. Maps will be named after the level they belong to.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
+
 public class Level {
     private int levelNumber;
     private final TmxMapLoader mapLoader;

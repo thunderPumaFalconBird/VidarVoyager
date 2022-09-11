@@ -25,7 +25,6 @@ public class GameScreen extends AbstractScreen {
     private TiledMap map;
     private int currentLevel;
     private final Astronaut player;
-    public boolean over = false;
 
     public GameScreen(){
         super();
@@ -87,19 +86,11 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void dispose(){
         super.dispose();
-        world.dispose();
-        b2dr.dispose();
         mapRenderer.dispose();
         map.dispose();
     }
 
     public Stage getStage(){ return this.stage; }
-
-    public void setMap(TiledMap map){ this.map = map; }
-
-    public boolean isGameOver(){ return over;}
-
-    public void setGameOver(boolean over){ this.over = over; }
 
     @Override
     public void pause() { }

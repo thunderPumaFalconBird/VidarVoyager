@@ -2,7 +2,6 @@ package com.vv.game.screens;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.vv.game.VidarVoyager;
-
 import java.util.EnumMap;
 
 /**

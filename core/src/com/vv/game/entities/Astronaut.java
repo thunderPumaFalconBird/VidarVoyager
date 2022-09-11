@@ -14,6 +14,17 @@ import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
 import java.util.EnumMap;
 
+/**
+ * This is the Astronaut Class. It extends the actor class so that it can be added to a stage. The stage will then
+ * call the astronauts draw method to draw its current animation based on it current state. The current state is
+ * set in the update method based on user input.
+ *
+ * Note: there is no walkingLeft animation. The walkingRight animation must be flipped.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
+
 public class Astronaut  extends Actor {
     public enum STATE {
         idleFront,
@@ -133,12 +144,6 @@ public class Astronaut  extends Actor {
     }
 
     public Body getBody(){ return body; }
-
-    public TextureRegion getCurrentFrame() { return currentFrame; }
-
-    public void setCurrentState(STATE currentState){
-        this.currentState = currentState;
-    }
 
     private void initAnimations(){
         animations = new EnumMap<>(STATE.class);
