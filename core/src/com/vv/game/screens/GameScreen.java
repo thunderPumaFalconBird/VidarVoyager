@@ -36,7 +36,7 @@ public class GameScreen extends AbstractScreen {
         cam.update();
 
         levels = new Array<>();
-        levels.add(new Level(1));
+        levels.add(new Level(1, world));
         currentLevel = 0;
 
         map = levels.get(currentLevel).getMap();

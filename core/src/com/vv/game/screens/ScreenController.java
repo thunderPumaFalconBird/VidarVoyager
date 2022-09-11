@@ -37,6 +37,8 @@ public class ScreenController {
         game.setScreen(screens.get(screen));
     }
 
+    public SCREEN_STATE getCurrentScreen(){ return currentScreen; }
+
     public void dispose(){
         for(AbstractScreen screen : screens.values()){
             if(screen != null)
