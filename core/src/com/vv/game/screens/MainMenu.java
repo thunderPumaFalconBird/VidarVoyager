@@ -76,8 +76,6 @@ public class MainMenu extends AbstractScreen {
     @Override
     public void dispose() {
         super.dispose();
-        world.dispose();
-        b2dr.dispose();
         ship.dispose();
         window1.dispose();
         window2.dispose();

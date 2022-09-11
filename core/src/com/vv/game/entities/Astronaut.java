@@ -105,23 +105,23 @@ public class Astronaut  extends Actor {
             if(Gdx.input.isKeyPressed(Input.Keys.UP)){
                 currentState = STATE.walkingBack;
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
-                body.applyLinearImpulse(new Vector2(0, .5f), body.getWorldCenter(), true);
+                body.applyLinearImpulse(new Vector2(0, 2f), body.getWorldCenter(), true);
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
                 currentState = STATE.walkingFront;
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
-                body.applyLinearImpulse(new Vector2(0, -.5f), body.getWorldCenter(), true);
+                body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 currentState = STATE.walkingLeft;
                 currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
                 currentFrame.flip(true,false);
-                body.applyLinearImpulse(new Vector2(-.5f, 0), body.getWorldCenter(), true);
+                body.applyLinearImpulse(new Vector2(-2f, 0), body.getWorldCenter(), true);
             }
             else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 currentState = STATE.walkingRight;
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
-                body.applyLinearImpulse(new Vector2(.5f, 0), body.getWorldCenter(), true);
+                body.applyLinearImpulse(new Vector2(2f, 0), body.getWorldCenter(), true);
             }
             else if(currentState == STATE.idleLeft){
                 currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
