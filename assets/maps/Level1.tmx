@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="100" tileheight="100" infinite="0" nextlayerid="10" nextobjectid="389">
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="100" tileheight="100" infinite="0" nextlayerid="10" nextobjectid="415">
  <tileset firstgid="1" source="VidarMapSet.tsx"/>
  <layer id="1" name="Background" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -7,18 +7,18 @@
   </data>
  </layer>
  <objectgroup id="8" name="OpenDoor">
-  <object id="356" x="900" y="200" width="200" height="70"/>
-  <object id="362" x="900" y="330" width="200" height="70"/>
+  <object id="356" x="920" y="200" width="160" height="70"/>
+  <object id="362" x="920" y="330" width="160" height="70"/>
   <object id="364" x="1700" y="800" width="200" height="70"/>
-  <object id="365" x="1700" y="930" width="200" height="70"/>
+  <object id="365" x="1720" y="930" width="160" height="70"/>
   <object id="366" x="2800" y="1500" width="200" height="70"/>
   <object id="367" x="2800" y="1630" width="200" height="70"/>
   <object id="368" x="4500" y="1300" width="200" height="70"/>
   <object id="369" x="4500" y="1430" width="200" height="70"/>
-  <object id="370" x="600" y="3300" width="200" height="70"/>
-  <object id="371" x="600" y="3430" width="200" height="70"/>
-  <object id="372" x="600" y="4800" width="200" height="70"/>
-  <object id="373" x="600" y="4930" width="200" height="70"/>
+  <object id="370" x="620" y="3300" width="160" height="70"/>
+  <object id="371" x="620" y="3430" width="160" height="70"/>
+  <object id="372" x="620" y="4800" width="160" height="70"/>
+  <object id="373" x="620" y="4930" width="160" height="90"/>
   <object id="374" x="4900" y="4600" width="200" height="70"/>
   <object id="375" x="4900" y="4730" width="200" height="70"/>
   <object id="379" x="2400" y="6300" width="200" height="70"/>
@@ -32,10 +32,10 @@
   <object id="387" x="5800" y="3700" width="200" height="70"/>
   <object id="388" x="5800" y="3830" width="200" height="70"/>
  </objectgroup>
- <objectgroup id="9" name="MineSweeper">
+ <objectgroup id="9" name="MineSweeper" visible="0">
   <object id="378" x="4800" y="4600" width="100" height="200"/>
  </objectgroup>
- <objectgroup id="3" name="Door">
+ <objectgroup id="3" name="Door" visible="0">
   <object id="328" x="950" y="200" width="100" height="200"/>
   <object id="329" x="1750" y="800" width="100" height="200"/>
   <object id="330" x="2850" y="1500" width="100" height="200"/>
@@ -49,7 +49,7 @@
   <object id="339" x="5850" y="3700" width="100" height="200"/>
   <object id="331" x="4550" y="1300" width="100" height="200"/>
  </objectgroup>
- <objectgroup id="4" name="Cannon">
+ <objectgroup id="4" name="Cannon" visible="0">
   <object id="278" x="9600" y="9500" width="100" height="100"/>
   <object id="279" x="8700" y="8600" width="100" height="100"/>
   <object id="281" x="6000" y="6300" width="100" height="100"/>
@@ -99,30 +99,28 @@
   <object id="325" x="5800" y="800" width="100" height="100"/>
   <object id="326" x="4800" y="8100" width="100" height="100"/>
  </objectgroup>
- <objectgroup id="5" name="OxygenStation">
+ <objectgroup id="5" name="OxygenStation" visible="0">
   <object id="340" x="4900" y="7700" width="100" height="100"/>
   <object id="341" x="400" y="9500" width="100" height="100"/>
   <object id="342" x="9700" y="3000" width="100" height="100"/>
   <object id="343" x="8200" y="400" width="100" height="100"/>
   <object id="344" x="1500" y="1300" width="100" height="100"/>
  </objectgroup>
- <objectgroup id="7" name="LifeSupport">
+ <objectgroup id="7" name="LifeSupport" visible="0">
   <object id="345" x="3200" y="7400" width="200" height="200"/>
  </objectgroup>
  <objectgroup id="2" name="Wall">
-  <object id="21" x="1000" y="400" width="100" height="200"/>
-  <object id="22" x="900" y="500" width="100" height="100"/>
-  <object id="23" x="100" y="600" width="900" height="100"/>
-  <object id="24" x="0" y="600" width="100" height="4400"/>
-  <object id="25" x="1000" y="0" width="100" height="200"/>
-  <object id="27" x="1100" y="0" width="2600" height="100"/>
-  <object id="28" x="3600" y="100" width="100" height="200"/>
-  <object id="29" x="3700" y="200" width="1800" height="100"/>
-  <object id="31" x="5400" y="300" width="100" height="200"/>
-  <object id="32" x="5500" y="400" width="500" height="100"/>
-  <object id="33" x="5900" y="300" width="200" height="100"/>
-  <object id="34" x="6000" y="100" width="100" height="200"/>
-  <object id="35" x="6100" y="100" width="1300" height="100"/>
+  <object id="23" x="80" y="600" width="900" height="60"/>
+  <object id="24" x="0" y="600" width="80" height="4430"/>
+  <object id="25" x="1000" y="0" width="80" height="200"/>
+  <object id="27" x="1080" y="0" width="2600" height="60"/>
+  <object id="28" x="3620" y="60" width="80" height="200"/>
+  <object id="29" x="3700" y="200" width="1800" height="60"/>
+  <object id="31" x="5400" y="260" width="100" height="200"/>
+  <object id="32" x="5500" y="400" width="480" height="60"/>
+  <object id="33" x="5980" y="300" width="100" height="60"/>
+  <object id="34" x="6000" y="100" width="80" height="200"/>
+  <object id="35" x="6080" y="100" width="1300" height="60"/>
   <object id="36" x="7300" y="200" width="100" height="200"/>
   <object id="37" x="7400" y="300" width="1000" height="100"/>
   <object id="38" x="8300" y="400" width="100" height="1000"/>
@@ -160,32 +158,32 @@
   <object id="72" x="700" y="9900" width="3900" height="100"/>
   <object id="73" x="600" y="9700" width="100" height="300"/>
   <object id="74" x="300" y="9700" width="300" height="100"/>
-  <object id="75" x="200" y="9600" width="200" height="100"/>
-  <object id="76" x="200" y="9400" width="100" height="200"/>
-  <object id="77" x="300" y="9400" width="300" height="100"/>
-  <object id="78" x="500" y="9500" width="200" height="100"/>
-  <object id="79" x="600" y="9100" width="100" height="400"/>
-  <object id="80" x="200" y="9100" width="400" height="100"/>
-  <object id="81" x="200" y="8800" width="100" height="300"/>
-  <object id="82" x="300" y="8800" width="400" height="100"/>
-  <object id="83" x="600" y="8000" width="100" height="800"/>
-  <object id="84" x="400" y="8000" width="200" height="100"/>
-  <object id="85" x="300" y="7900" width="200" height="100"/>
-  <object id="86" x="300" y="6300" width="100" height="1600"/>
-  <object id="87" x="200" y="5900" width="100" height="500"/>
-  <object id="88" x="0" y="5900" width="200" height="100"/>
-  <object id="89" x="0" y="5100" width="100" height="800"/>
-  <object id="95" x="600" y="1100" width="100" height="2200"/>
-  <object id="96" x="700" y="1100" width="1100" height="100"/>
-  <object id="97" x="1700" y="1000" width="200" height="100"/>
-  <object id="99" x="0" y="500" width="900" height="100"/>
-  <object id="100" x="0" y="0" width="100" height="500"/>
-  <object id="101" x="100" y="0" width="800" height="100"/>
-  <object id="102" x="800" y="100" width="200" height="100"/>
-  <object id="103" x="800" y="400" width="200" height="100"/>
+  <object id="75" x="200" y="9620" width="180" height="80"/>
+  <object id="76" x="200" y="9400" width="80" height="220"/>
+  <object id="77" x="280" y="9400" width="300" height="50"/>
+  <object id="78" x="520" y="9500" width="160" height="50"/>
+  <object id="79" x="600" y="9120" width="80" height="380"/>
+  <object id="80" x="200" y="9120" width="400" height="50"/>
+  <object id="81" x="200" y="8800" width="80" height="320"/>
+  <object id="82" x="280" y="8800" width="400" height="80"/>
+  <object id="83" x="600" y="8020" width="80" height="780"/>
+  <object id="84" x="400" y="8020" width="200" height="50"/>
+  <object id="85" x="300" y="7920" width="180" height="100"/>
+  <object id="86" x="300" y="6320" width="80" height="1600"/>
+  <object id="87" x="200" y="5920" width="80" height="420"/>
+  <object id="88" x="0" y="5920" width="200" height="50"/>
+  <object id="89" x="0" y="5120" width="80" height="800"/>
+  <object id="95" x="620" y="1120" width="80" height="2180"/>
+  <object id="96" x="700" y="1120" width="1100" height="80"/>
+  <object id="97" x="1720" y="1000" width="160" height="120"/>
+  <object id="99" x="0" y="520" width="850" height="50"/>
+  <object id="100" x="0" y="0" width="80" height="520"/>
+  <object id="101" x="80" y="0" width="800" height="60"/>
+  <object id="102" x="820" y="60" width="100" height="100"/>
+  <object id="103" x="820" y="420" width="100" height="100"/>
   <object id="110" x="2500" y="1300" width="500" height="100"/>
   <object id="111" x="2400" y="1200" width="200" height="100"/>
-  <object id="112" x="1800" y="1100" width="700" height="100"/>
+  <object id="112" x="1800" y="1120" width="700" height="80"/>
   <object id="114" x="2400" y="1400" width="600" height="100"/>
   <object id="115" x="2300" y="1300" width="200" height="100"/>
   <object id="116" x="1400" y="1200" width="1000" height="100"/>
@@ -199,10 +197,10 @@
   <object id="137" x="900" y="3100" width="100" height="200"/>
   <object id="138" x="700" y="3200" width="200" height="100"/>
   <object id="143" x="2800" y="1700" width="200" height="2000"/>
-  <object id="144" x="600" y="3500" width="200" height="1300"/>
-  <object id="145" x="800" y="3700" width="2100" height="200"/>
+  <object id="144" x="620" y="3500" width="160" height="1300"/>
+  <object id="145" x="780" y="3720" width="2100" height="140"/>
   <object id="147" x="900" y="3000" width="600" height="100"/>
-  <object id="148" x="100" y="5000" width="1700" height="200"/>
+  <object id="148" x="80" y="5020" width="1700" height="140"/>
   <object id="149" x="1700" y="400" width="200" height="400"/>
   <object id="150" x="1900" y="400" width="1300" height="200"/>
   <object id="151" x="3000" y="600" width="200" height="900"/>
@@ -223,57 +221,6 @@
   <object id="166" x="2200" y="5500" width="300" height="100"/>
   <object id="167" x="800" y="6000" width="300" height="100"/>
   <object id="168" x="800" y="5900" width="100" height="100"/>
-  <object id="169" x="1000" y="7300" width="100" height="200">
-   <polygon points="0,0 100,0 100,200 0,200"/>
-  </object>
-  <object id="170" x="1100" y="7400" width="100" height="200">
-   <polygon points="0,0 100,0 100,200 0,200"/>
-  </object>
-  <object id="171" x="1200" y="7500" width="100" height="200">
-   <polygon points="0,0 100,0 100,200 0,200"/>
-  </object>
-  <object id="172" x="1300" y="7600" width="300" height="100">
-   <polygon points="0,0 300,0 300,100 0,100"/>
-  </object>
-  <object id="173" x="1500" y="7700" width="100" height="200">
-   <polygon points="0,0 100,0 100,200 0,200"/>
-  </object>
-  <object id="174" x="1600" y="7800" width="100" height="300">
-   <polygon points="0,0 100,0 100,300 0,300"/>
-  </object>
-  <object id="175" x="1700" y="8000" width="100" height="300">
-   <polygon points="0,0 100,0 100,300 0,300"/>
-  </object>
-  <object id="176" x="1800" y="8200" width="100" height="200">
-   <polygon points="0,0 100,0 100,200 0,200"/>
-  </object>
-  <object id="177" x="1900" y="8300" width="100" height="200">
-   <polygon points="0,0 100,0 100,200 0,200"/>
-  </object>
-  <object id="178" x="2000" y="8400" width="200" height="100">
-   <polygon points="0,0 200,0 200,100 0,100"/>
-  </object>
-  <object id="179" x="2100" y="7700" width="100" height="700">
-   <polygon points="0,0 100,0 100,700 0,700"/>
-  </object>
-  <object id="180" x="1700" y="7700" width="400" height="100">
-   <polygon points="0,0 400,0 400,100 0,100"/>
-  </object>
-  <object id="181" x="1700" y="7400" width="100" height="300">
-   <polygon points="0,0 100,0 100,300 0,300"/>
-  </object>
-  <object id="182" x="1800" y="7200" width="100" height="300">
-   <polygon points="0,0 100,0 100,300 0,300"/>
-  </object>
-  <object id="183" x="1400" y="7200" width="400" height="100">
-   <polygon points="0,0 400,0 400,100 0,100"/>
-  </object>
-  <object id="184" x="1100" y="7300" width="400" height="100">
-   <polygon points="0,0 400,0 400,100 0,100"/>
-  </object>
-  <object id="185" x="1500" y="7100" width="200" height="100">
-   <polygon points="0,0 200,0 200,100 0,100"/>
-  </object>
   <object id="187" x="1400" y="9200" width="900" height="100"/>
   <object id="188" x="2200" y="9300" width="100" height="200"/>
   <object id="189" x="2100" y="9400" width="100" height="200"/>
@@ -359,8 +306,30 @@
   <object id="270" x="4600" y="1800" width="200" height="500"/>
   <object id="271" x="4700" y="1600" width="100" height="200"/>
   <object id="272" x="4500" y="1200" width="200" height="100"/>
+  <object id="389" x="1000" y="7300" width="500" height="100"/>
+  <object id="390" x="1000" y="7400" width="200" height="100"/>
+  <object id="391" x="1100" y="7500" width="200" height="100"/>
+  <object id="392" x="1200" y="7600" width="384" height="94"/>
+  <object id="393" x="1500" y="7700" width="100" height="200"/>
+  <object id="394" x="1600" y="7800" width="100" height="300"/>
+  <object id="395" x="1700" y="8000" width="100" height="300"/>
+  <object id="396" x="1800" y="8200" width="100" height="200"/>
+  <object id="397" x="1900" y="8300" width="100" height="200"/>
+  <object id="398" x="2000" y="8400" width="200" height="100"/>
+  <object id="399" x="2100" y="7700" width="100" height="700"/>
+  <object id="400" x="1700" y="7700" width="400" height="100"/>
+  <object id="401" x="1700" y="7400" width="100" height="300"/>
+  <object id="403" x="1400" y="7200" width="500" height="100"/>
+  <object id="404" x="1800" y="7300" width="100" height="200"/>
+  <object id="405" x="1500" y="7100" width="200" height="100"/>
+  <object id="407" x="520" y="9450" width="60" height="50"/>
+  <object id="408" x="280" y="6320" width="20" height="20"/>
+  <object id="409" x="920" y="400" width="160" height="160"/>
+  <object id="410" x="920" y="560" width="60" height="40"/>
+  <object id="412" x="920" y="160" width="20" height="40"/>
+  <object id="414" x="5940" y="300" width="40" height="100"/>
  </objectgroup>
- <objectgroup id="6" name="AmmoStation">
+ <objectgroup id="6" name="AmmoStation" visible="0">
   <object id="273" x="100" y="100" width="100" height="100"/>
   <object id="274" x="1500" y="2200" width="100" height="100"/>
   <object id="275" x="7700" y="3500" width="100" height="100"/>

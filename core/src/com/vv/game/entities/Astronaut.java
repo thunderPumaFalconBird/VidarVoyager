@@ -1,6 +1,5 @@
 package com.vv.game.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+
 import java.util.EnumMap;
+import java.util.Vector;
 
 /**
  * This is the Astronaut Class. It extends the actor class so that it can be added to a stage. The stage will then
@@ -42,22 +43,20 @@ public class Astronaut  extends Actor {
     private float stateTime = 0f;
     private STATE currentState = STATE.idleFront;
     private TextureRegion currentFrame;
-    private final World world;
     private Body body;
 
-    public Astronaut(Stage stage, World world){
+    public Astronaut(Stage stage, World world, Vector2 startPosition){
         currentFrame = new TextureRegion();
-        this.world = world;
         setStage(stage);
         initAnimations();
         setBounds(currentFrame.getRegionX(), currentFrame.getRegionY(),
                 currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
-        setX(1000/VidarVoyager.PPM);
-        setY(1000/VidarVoyager.PPM);
-        defineAstronautBody();
+        setX(startPosition.x/VidarVoyager.PPM);
+        setY(startPosition.y/VidarVoyager.PPM);
+        defineAstronautBody(world);
     }
 
-    public void defineAstronautBody() {
+    public void defineAstronautBody(World world) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -71,11 +70,17 @@ public class Astronaut  extends Actor {
         body.createFixture(fdef).setUserData(this);
     }
 
-    public void destroyAstronautBody(){ world.destroyBody(body);}
+    public void destroyAstronautBody(World world){ world.destroyBody(body);}
 
-    public void update(float deltaTime){
+    public void update(float deltaTime, Vector<Integer> keyInput){
+
         //reset velocity
         body.setLinearVelocity(0,0);
+
+        //reset frame if it's flipped
+        if(currentFrame.isFlipX()) {
+            currentFrame.flip(true, false);
+        }
 
         //reset to idle state
         switch (currentState){
@@ -86,48 +91,48 @@ public class Astronaut  extends Actor {
                 currentState = STATE.idleFront;
                 break;
             case walkingLeft:
-                //reset frame
-                currentFrame.flip(true, false);
                 currentState = STATE.idleLeft;
                 break;
             case walkingRight:
                 currentState = STATE.idleRight;
-                break;
-            case idleLeft:
-                //reset frame
-                currentFrame.flip(true,false);
                 break;
         }
 
         stateTime += deltaTime;
 
         if(currentState != STATE.dead){
-            if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-                currentState = STATE.walkingBack;
-                currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
-                body.applyLinearImpulse(new Vector2(0, 2f), body.getWorldCenter(), true);
+
+            for (Integer integer : keyInput) {
+                switch (integer) {
+                    case Input.Keys.UP:
+                        body.setLinearVelocity(0,0); //this will make sure player only moves in one direction
+                        currentState = STATE.walkingBack;
+                        body.applyLinearImpulse(new Vector2(0, 2f), body.getWorldCenter(), true);
+                        break;
+                    case Input.Keys.DOWN:
+                        body.setLinearVelocity(0,0);
+                        currentState = STATE.walkingFront;
+                        body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
+                        break;
+                    case Input.Keys.LEFT:
+                        body.setLinearVelocity(0,0);
+                        currentState = STATE.walkingLeft;
+                        currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
+                        currentFrame.flip(true, false);
+                        body.applyLinearImpulse(new Vector2(-2f, 0), body.getWorldCenter(), true);
+                        break;
+                    case Input.Keys.RIGHT:
+                        body.setLinearVelocity(0,0);
+                        currentState = STATE.walkingRight;
+                        body.applyLinearImpulse(new Vector2(2f, 0), body.getWorldCenter(), true);
+                        break;
+                }
             }
-            else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                currentState = STATE.walkingFront;
-                currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
-                body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                currentState = STATE.walkingLeft;
-                currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
-                currentFrame.flip(true,false);
-                body.applyLinearImpulse(new Vector2(-2f, 0), body.getWorldCenter(), true);
-            }
-            else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-                currentState = STATE.walkingRight;
-                currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
-                body.applyLinearImpulse(new Vector2(2f, 0), body.getWorldCenter(), true);
-            }
-            else if(currentState == STATE.idleLeft){
+            if(currentState == STATE.idleLeft){
                 currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
                 currentFrame.flip(true, false);
             }
-            else { //this is for an idleRight state
+            else if(currentState != STATE.walkingLeft){ //Walking left is handled in the above switch statement
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
             }
         }
@@ -135,8 +140,8 @@ public class Astronaut  extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha){
-            batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
-                    body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
+        batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
+                body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
     }
 
     public STATE getCurrentState() {

@@ -2,8 +2,12 @@ package com.vv.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.vv.game.screens.MainMenu;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.vv.game.entities.Astronaut;
+import com.vv.game.entities.Level;
 import com.vv.game.screens.ScreenController;
+import com.vv.game.utils.GameInput;
 
 public class VidarVoyager extends Game {
 	public static final int APP_WIDTH = 1000;
@@ -12,25 +16,53 @@ public class VidarVoyager extends Game {
 	public static final int APP_FPS = 60;
 	public static final int VELOCITY_ITERATIONS = 7;
 	public static final int POSITION_ITERATIONS = 3;
-
 	private ScreenController screenController;
+	private GameInput gameInput;
+	private Astronaut player;
+	private Array<Level> levels;
+	private int currentLevel = 0;
 
 	@Override
 	public void create () {
+		levels = new Array<>();
+		levels.add(new Level(1));
 		screenController = new ScreenController(this);
+		player = new Astronaut(screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN),
+				levels.get(currentLevel).getWorld(),
+				new Vector2(levels.get(currentLevel).getPlayerStartPosition().x,
+						levels.get(currentLevel).getPlayerStartPosition().y));
+		screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN).addActor(player);
+		gameInput = GameInput.getInstance();
+		Gdx.input.setInputProcessor(gameInput);
 	}
 
 	@Override
 	public void render () {
+		//RENDER
 		super.render();
-		if(screenController.getCurrentScreen() == ScreenController.SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
+
+		//HANDLE  UI INPUT
+		//TODO create separate ui input for menu options, esc, pause, etc.
+		if(screenController.getCurrentScreenState() == ScreenController.SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
 			screenController.setScreen(ScreenController.SCREEN_STATE.GAME_SCREEN);
 		}
+
+		//UPDATE AND HANDLE  GAME INPUT
+		player.update(Gdx.graphics.getDeltaTime(), gameInput.getKeyInputs());
+		levels.get(currentLevel).getWorld().step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
+				VidarVoyager.POSITION_ITERATIONS);
+		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
 	}
 	
 	@Override
 	public void dispose () {
 		screenController.dispose();
+		for(int i = 0; i < levels.size; i++){
+			levels.get(i).dispose();
+		}
 	}
 
+	public Level getCurrentLevel() {
+		return levels.get(currentLevel);
+	}
 }

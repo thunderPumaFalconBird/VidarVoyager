@@ -5,9 +5,11 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.utils.CollisionHandler;
 
 /**
  * This is the Level Class. It contains the map and any objects that go along with the map. The map is loaded based
@@ -19,9 +21,9 @@ import com.vv.game.VidarVoyager;
 
 public class Level {
     private final int levelNumber;
-    private final TmxMapLoader mapLoader;
     private final TiledMap map;
     private final World world;
+    private Vector2 playerStartPosition;
     private Array<MapObject> ammoStations;
     private Array<MapObject> lifeSupports;
     private Array<MapObject> oxygenStations;
@@ -30,11 +32,12 @@ public class Level {
     private Array<MapObject> openDoors;
     private MapObject mineSweeper;
 
-    public Level(int levelNumber, World world){
-        this.world = world;
+    public Level(int levelNumber){
+        world = new World(new Vector2(0f, 0f), false);
         this.levelNumber = levelNumber;
-        mapLoader = new TmxMapLoader();
+        TmxMapLoader mapLoader = new TmxMapLoader();
         map = mapLoader.load(("maps/Level" + levelNumber + ".tmx"));
+        playerStartPosition = new Vector2(1000, 1000);
 
         for (int i = 0; i < map.getLayers().size(); i++) {
 
@@ -67,10 +70,15 @@ public class Level {
                     break;
             }
         }
+        world.setContactListener(new CollisionHandler());
     }
 
 
     public TiledMap getMap() { return map; }
+
+    public World getWorld() { return world; }
+
+    public Vector2 getPlayerStartPosition() { return playerStartPosition; }
 
     public void initAmmoStations(int index){
         ammoStations = new Array<>();
@@ -139,5 +147,10 @@ public class Level {
         for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
             openDoors.add(object);
         }
+    }
+
+    public void dispose(){
+        world.dispose();
+        map.dispose();
     }
 }

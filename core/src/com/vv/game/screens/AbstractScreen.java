@@ -22,11 +22,12 @@ public abstract class AbstractScreen implements Screen {
 
     public AbstractScreen() {
         batch = new SpriteBatch();
-        world = new World(new Vector2(0f, 0f), false);
         b2dr = new Box2DDebugRenderer(); //comment this out when not debugging
     }
 
     public abstract void update(float deltaTime);
+
+    public abstract void updateCam(float x, float y);
 
     public abstract Stage getStage();
 
@@ -37,7 +38,6 @@ public abstract class AbstractScreen implements Screen {
     public void dispose(){
         batch.dispose();
         b2dr.dispose();
-        world.dispose();
     }
 
     @Override
