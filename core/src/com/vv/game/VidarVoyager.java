@@ -3,6 +3,7 @@ package com.vv.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.entities.Astronaut;
 import com.vv.game.entities.Level;
@@ -10,6 +11,7 @@ import com.vv.game.screens.ScreenController;
 import com.vv.game.utils.GameInput;
 
 public class VidarVoyager extends Game {
+	public static final boolean debugging = false; // set to false when not debugging. This will control the debug renderer
 	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 1000;
 	public static final float PPM = 100;

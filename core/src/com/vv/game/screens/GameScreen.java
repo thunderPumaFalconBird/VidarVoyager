@@ -55,7 +55,9 @@ public class GameScreen extends AbstractScreen {
 
         mapRenderer.render();
         stage.draw();
-        b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
+        if(VidarVoyager.debugging){
+            b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
+        }
 
         batch.end();
     }

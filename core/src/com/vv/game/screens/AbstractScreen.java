@@ -22,7 +22,7 @@ public abstract class AbstractScreen implements Screen {
 
     public AbstractScreen() {
         batch = new SpriteBatch();
-        b2dr = new Box2DDebugRenderer(); //comment this out when not debugging
+        b2dr = new Box2DDebugRenderer();
     }
 
     public abstract void update(float deltaTime);
