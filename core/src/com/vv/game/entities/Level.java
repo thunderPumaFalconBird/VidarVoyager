@@ -87,7 +87,7 @@ public class Level {
         }
     }
 
-    private void initWalls(int index) { //TODO adjust wall objects. When the player walks near walls they get blocked on invisible walls.
+    private void initWalls(int index) {
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
