@@ -107,24 +107,24 @@ public class Astronaut  extends Actor {
                     case Input.Keys.UP:
                         body.setLinearVelocity(0,0); //this will make sure player only moves in one direction
                         currentState = STATE.walkingBack;
-                        body.applyLinearImpulse(new Vector2(0, 2f), body.getWorldCenter(), true);
+                        body.applyLinearImpulse(new Vector2(0, 1.5f), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.DOWN:
                         body.setLinearVelocity(0,0);
                         currentState = STATE.walkingFront;
-                        body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
+                        body.applyLinearImpulse(new Vector2(0, -1.5f), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.LEFT:
                         body.setLinearVelocity(0,0);
                         currentState = STATE.walkingLeft;
                         currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
                         currentFrame.flip(true, false);
-                        body.applyLinearImpulse(new Vector2(-2f, 0), body.getWorldCenter(), true);
+                        body.applyLinearImpulse(new Vector2(-1.5f, 0), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.RIGHT:
                         body.setLinearVelocity(0,0);
                         currentState = STATE.walkingRight;
-                        body.applyLinearImpulse(new Vector2(2f, 0), body.getWorldCenter(), true);
+                        body.applyLinearImpulse(new Vector2(1.5f, 0), body.getWorldCenter(), true);
                         break;
                 }
             }
@@ -176,17 +176,17 @@ public class Astronaut  extends Actor {
 
         // adding right facing Walking
         animationTemp.addAll(atlasTemp, 29, 12);
-        animations.put(STATE.walkingRight, new Animation<>(.1f, animationTemp));
+        animations.put(STATE.walkingRight, new Animation<>(.08f, animationTemp));
         animationTemp.clear();
 
         // adding Back facing Walking
         animationTemp.addAll(atlasTemp, 41, 12);
-        animations.put(STATE.walkingBack, new Animation<>(.1f, animationTemp));
+        animations.put(STATE.walkingBack, new Animation<>(.08f, animationTemp));
         animationTemp.clear();
 
         // adding Front facing Walking
         animationTemp.addAll(atlasTemp, 53, 12);
-        animations.put(STATE.walkingFront, new Animation<>(.1f, animationTemp));
+        animations.put(STATE.walkingFront, new Animation<>(.08f, animationTemp));
         animationTemp.clear();
 
         //SET CURRENT FRAME TO CURRENT STATE
