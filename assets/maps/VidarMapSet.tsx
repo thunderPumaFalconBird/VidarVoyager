@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.9" tiledversion="1.9.1" name="VidarMapSet" tilewidth="200" tileheight="200" tilecount="58" columns="0">
+<tileset version="1.9" tiledversion="1.9.1" name="VidarMapSet" tilewidth="200" tileheight="200" tilecount="62" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="100" height="100" source="MapIndividuals/1.png"/>
@@ -174,5 +174,17 @@
  </tile>
  <tile id="57">
   <image width="200" height="200" source="MapIndividuals/doorClosed.png"/>
+ </tile>
+ <tile id="62">
+  <image width="100" height="100" source="MapIndividuals/LifeSupportBL.png"/>
+ </tile>
+ <tile id="63">
+  <image width="100" height="100" source="MapIndividuals/LifeSupportBR.png"/>
+ </tile>
+ <tile id="64">
+  <image width="100" height="100" source="MapIndividuals/LifeSupportTL.png"/>
+ </tile>
+ <tile id="65">
+  <image width="100" height="100" source="MapIndividuals/LifeSupportTR.png"/>
  </tile>
 </tileset>
