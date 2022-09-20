@@ -6,8 +6,8 @@ import com.badlogic.gdx.InputProcessor;
 import java.util.Vector;
 
 /**
- * This is the GameInput Class. It follows the singleton pattern. It is only responsible for inputs that can effect
- * the player in the game. All other inputs will be handled by the UI input processor.
+ * This is the GameInput Class. It is only responsible for inputs that can effect the player in the game. All other
+ * inputs will be handled by the UI input processor.
  *
  * @author thunderPumaFalconBird
  * @version 1.0

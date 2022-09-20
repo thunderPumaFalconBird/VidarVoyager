@@ -12,8 +12,8 @@ import com.vv.game.VidarVoyager;
 import com.vv.game.utils.CollisionHandler;
 
 /**
- * This is the Level Class. It contains the map and any objects that go along with the map. The map is loaded based
- * on the level number. Maps will be named after the level they belong to.
+ * This is the Level Class. It contains the map and any objects that are in the map. The map is loaded based
+ * on the level number. Maps will be named after the level they belong to. Each level may have different objects.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
@@ -37,6 +37,8 @@ public class Level {
         this.levelNumber = levelNumber;
         TmxMapLoader mapLoader = new TmxMapLoader();
         map = mapLoader.load(("maps/Level" + levelNumber + ".tmx"));
+        //TODO This will have to change based on the different maps.
+        // Possibly create object in map to grab the x and y from.
         playerStartPosition = new Vector2(1000, 1000);
 
         for (int i = 0; i < map.getLayers().size(); i++) {
@@ -63,9 +65,6 @@ public class Level {
                 case "MineSweeper" :
                     initMineSweeper(i);
                     break;
-                case "OpenDoor" :
-                    initOpenDoors(i);
-                    break;
                 default:
                     break;
             }
@@ -80,13 +79,7 @@ public class Level {
 
     public Vector2 getPlayerStartPosition() { return playerStartPosition; }
 
-    public void initAmmoStations(int index){
-        ammoStations = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            ammoStations.add(object);
-        }
-    }
-
+    //walls will not change and will not have any functionality. create bodies in the world and forget about them.
     private void initWalls(int index) {
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -105,6 +98,14 @@ public class Level {
                     rectangle.getHeight() / 2 / VidarVoyager.PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
+        }
+    }
+
+    //TODO create classes for each map object rather than using MapObject class
+    public void initAmmoStations(int index){
+        ammoStations = new Array<>();
+        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            ammoStations.add(object);
         }
     }
 
@@ -139,13 +140,6 @@ public class Level {
     private void initMineSweeper(int index) {
         if(map.getLayers().get(index).getObjects().get(0) != null) {
             mineSweeper = map.getLayers().get(index).getObjects().get(0);
-        }
-    }
-
-    private void initOpenDoors(int index){
-        openDoors = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            openDoors.add(object);
         }
     }
 

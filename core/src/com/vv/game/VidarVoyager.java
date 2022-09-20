@@ -3,7 +3,6 @@ package com.vv.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.entities.Astronaut;
 import com.vv.game.entities.Level;
@@ -22,7 +21,7 @@ public class VidarVoyager extends Game {
 	private GameInput gameInput;
 	private Astronaut player;
 	private Array<Level> levels;
-	private int currentLevel = 0;
+	private int currentLevelIndex = 0;
 
 	@Override
 	public void create () {
@@ -30,9 +29,9 @@ public class VidarVoyager extends Game {
 		levels.add(new Level(1));
 		screenController = new ScreenController(this);
 		player = new Astronaut(screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN),
-				levels.get(currentLevel).getWorld(),
-				new Vector2(levels.get(currentLevel).getPlayerStartPosition().x,
-						levels.get(currentLevel).getPlayerStartPosition().y));
+				levels.get(currentLevelIndex).getWorld(),
+				new Vector2(levels.get(currentLevelIndex).getPlayerStartPosition().x,
+						levels.get(currentLevelIndex).getPlayerStartPosition().y));
 		screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN).addActor(player);
 		gameInput = GameInput.getInstance();
 		Gdx.input.setInputProcessor(gameInput);
@@ -51,7 +50,7 @@ public class VidarVoyager extends Game {
 
 		//UPDATE AND HANDLE  GAME INPUT
 		player.update(Gdx.graphics.getDeltaTime(), gameInput.getKeyInputs());
-		levels.get(currentLevel).getWorld().step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
+		levels.get(currentLevelIndex).getWorld().step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
 				VidarVoyager.POSITION_ITERATIONS);
 		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
 	}
@@ -65,6 +64,6 @@ public class VidarVoyager extends Game {
 	}
 
 	public Level getCurrentLevel() {
-		return levels.get(currentLevel);
+		return levels.get(currentLevelIndex);
 	}
 }

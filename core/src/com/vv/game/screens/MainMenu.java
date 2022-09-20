@@ -1,6 +1,5 @@
 package com.vv.game.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
@@ -10,7 +9,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 
 /**
- * This is the Main Menu Screen Class. It uses an orthographic camera and a fitviewport.
+ * This is the Main Menu Screen Class. It uses an orthographic camera and a fitViewport. There will be a simple puzzle
+ * to solve to get the game screen.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
