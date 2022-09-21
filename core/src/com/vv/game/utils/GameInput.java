@@ -2,6 +2,7 @@ package com.vv.game.utils;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.Vector;
 
@@ -13,13 +14,13 @@ import java.util.Vector;
  * @version 1.0
  */
 public class GameInput implements InputProcessor {
-    private Vector<Integer> keyInputs = new Vector<>();
+    private Array<Integer> keyInputs = new Array<>();
     private static GameInput instance = new GameInput();
 
     private GameInput(){}
 
     public static GameInput getInstance(){ return instance;}
-    public Vector<Integer> getKeyInputs() { return keyInputs; }
+    public Array<Integer> getKeyInputs() { return keyInputs; }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -37,7 +38,7 @@ public class GameInput implements InputProcessor {
         boolean returnValue = false;
         if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN
                 || keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT){
-            keyInputs.remove((Integer) keycode);
+            keyInputs.removeValue(keycode, true);
             returnValue = true;
         }
         return returnValue;

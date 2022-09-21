@@ -78,7 +78,7 @@ public class Astronaut  extends Actor {
 
     public void destroyAstronautBody(World world){ world.destroyBody(body);}
 
-    public void update(float deltaTime, Vector<Integer> keyInput){
+    public void update(float deltaTime, Array<Integer> keyInput){
 
         //reset velocity
         body.setLinearVelocity(0,0);
