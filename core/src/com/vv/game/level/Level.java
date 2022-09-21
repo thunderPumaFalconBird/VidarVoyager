@@ -1,6 +1,5 @@
-package com.vv.game.entities;
+package com.vv.game.level;
 
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -9,7 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.puzzles.MineSweeper;
 import com.vv.game.utils.CollisionHandler;
+
+import java.io.File;
+import java.util.HashMap;
 
 /**
  * This is the Level Class. It contains the map and any objects that are in the map. The map is loaded based
@@ -24,26 +27,25 @@ public class Level {
     private final TiledMap map;
     private final World world;
     private Vector2 playerStartPosition;
-    private Array<MapObject> ammoStations;
-    private Array<MapObject> lifeSupports;
-    private Array<MapObject> oxygenStations;
-    private Array<MapObject> cannons;
-    private Array<MapObject> doors;
-    private Array<MapObject> openDoors;
-    private MapObject mineSweeper;
+    private Array <AmmoStation> ammoStations;
+    private Array<LifeSupport> lifeSupports;
+    private Array<OxygenStation> oxygenStations;
+    private HashMap<Vector2, Cannon> cannons;
+    private Array<Door> doors;
+    private MineSweeper mineSweeper;
 
     public Level(int levelNumber){
         world = new World(new Vector2(0f, 0f), false);
         this.levelNumber = levelNumber;
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load(("maps/Level" + levelNumber + ".tmx"));
-        //TODO This will have to change based on the different maps.
-        // Possibly create object in map to grab the x and y from.
-        playerStartPosition = new Vector2(1000, 1000);
+        map = mapLoader.load(("maps" + File.separator + "Level" + levelNumber + ".tmx"));
 
         for (int i = 0; i < map.getLayers().size(); i++) {
 
             switch (map.getLayers().get(i).getName()){
+                case "StartPosition" :
+                    setPlayerStartPosition(i);
+                    break;
                 case "AmmoStation" :
                     initAmmoStations(i);
                     break;
@@ -79,6 +81,15 @@ public class Level {
 
     public Vector2 getPlayerStartPosition() { return playerStartPosition; }
 
+    public void setPlayerStartPosition(int index) {
+        if(map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0) != null) {
+            RectangleMapObject object = map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0);
+            Rectangle rectangle = object.getRectangle();
+            playerStartPosition = new Vector2(rectangle.getX(),
+                    rectangle.getY());
+        }
+    }
+
     //walls will not change and will not have any functionality. create bodies in the world and forget about them.
     private void initWalls(int index) {
         BodyDef bdef = new BodyDef();
@@ -101,45 +112,65 @@ public class Level {
         }
     }
 
-    //TODO create classes for each map object rather than using MapObject class
     public void initAmmoStations(int index){
         ammoStations = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            ammoStations.add(object);
+        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            ammoStations.add(new AmmoStation(world, object));
+        }
+    }
+
+    private void initCannons(int index) {
+        cannons = new HashMap<>();
+        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            Cannon temp = new Cannon(world, object);
+            cannons.put(new Vector2(temp.getX(), temp.getY()), temp);
+        }
+        for(RectangleMapObject object : map.getLayers().get("CannonRange").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = object.getRectangle();
+            float x = (rectangle.getX() + rectangle.getWidth()/2) / VidarVoyager.PPM;
+            float y = (rectangle.getY() + rectangle.getHeight()/2) / VidarVoyager.PPM;
+            float rangeOffset = 2;
+
+            if(cannons.containsKey(new Vector2(x,y - rangeOffset))){
+                cannons.get(new Vector2(x, y - rangeOffset)).setRangeBody(object);
+            }
+            else if(cannons.containsKey(new Vector2(x,y + rangeOffset))){
+                cannons.get(new Vector2(x, y + rangeOffset)).setRangeBody(object);
+            }
+            else if(cannons.containsKey(new Vector2(x + rangeOffset,y))){
+                cannons.get(new Vector2(x + rangeOffset, y)).setRangeBody(object);
+            }
+            else if(cannons.containsKey(new Vector2(x - rangeOffset,y))){
+                cannons.get(new Vector2(x - rangeOffset, y)).setRangeBody(object);
+            }
         }
     }
 
     private void initLifeSupports(int index) {
         lifeSupports = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            lifeSupports.add(object);
+        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            lifeSupports.add(new LifeSupport(world, object));
         }
     }
 
     private void initOxygenStations(int index) {
         oxygenStations = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            oxygenStations.add(object);
-        }
-    }
-
-    private void initCannons(int index) {
-        cannons = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            cannons.add(object);
+        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            oxygenStations.add(new OxygenStation(world, object));
         }
     }
 
     private void initDoors(int index) {
         doors = new Array<>();
-        for(MapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            doors.add(object);
+        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            doors.add(new Door(world, object));
         }
     }
 
     private void initMineSweeper(int index) {
-        if(map.getLayers().get(index).getObjects().get(0) != null) {
-            mineSweeper = map.getLayers().get(index).getObjects().get(0);
+        if(map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0) != null) {
+            RectangleMapObject object = map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0);
+            mineSweeper = new MineSweeper(world, object);
         }
     }
 

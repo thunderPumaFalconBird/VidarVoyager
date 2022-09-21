@@ -14,6 +14,7 @@ import com.vv.game.VidarVoyager;
 
 import java.util.EnumMap;
 import java.util.Vector;
+import java.io.File;
 
 /**
  * This is the Astronaut Class. It extends the actor class so that it can be added to a stage. The stage will then
@@ -70,7 +71,9 @@ public class Astronaut  extends Actor {
         shape.setAsBox((getWidth()/2)/VidarVoyager.PPM, (getHeight()/2)/VidarVoyager.PPM);
         //TODO add maskBits for contactListener
         fdef.shape = shape;
-        body.createFixture(fdef).setUserData(this);
+        body.createFixture(fdef);
+        body.setUserData(this);
+        shape.dispose();
     }
 
     public void destroyAstronautBody(World world){ world.destroyBody(body);}
@@ -155,7 +158,7 @@ public class Astronaut  extends Actor {
 
     private void initAnimations(){
         animations = new EnumMap<>(STATE.class);
-        TextureAtlas textureAtlas = new TextureAtlas("astronaut/Astronaut.txt");
+        TextureAtlas textureAtlas = new TextureAtlas("astronaut" + File.separator + "Astronaut.txt");
 
         Array<TextureRegion> atlasTemp = new Array<TextureRegion>(textureAtlas.getRegions());
         Array<TextureRegion> animationTemp = new Array<>();

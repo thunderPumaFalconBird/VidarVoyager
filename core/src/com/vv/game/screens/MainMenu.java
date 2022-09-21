@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 
+import java.io.File;
+
 /**
  * This is the Main Menu Screen Class. It uses an orthographic camera and a fitViewport. There will be a simple puzzle
  * to solve to get the game screen.
@@ -18,11 +20,11 @@ import com.vv.game.VidarVoyager;
 public class MainMenu extends AbstractScreen {
     private final Stage stage;
     private final OrthographicCamera cam;
-    private final Texture ship = new Texture("screens/shipRed.png");
-    private final Texture window1 = new Texture("screens/background1.png");
-    private final Texture window2 = new Texture("screens/background2.png");
-    private final Texture window3 = new Texture("screens/background3.png");
-    private final Texture window4 = new Texture("screens/background4.png");
+    private final Texture ship = new Texture("screens" + File.separator + "shipRed.png");
+    private final Texture window1 = new Texture("screens" + File.separator + "background1.png");
+    private final Texture window2 = new Texture("screens" + File.separator + "background2.png");
+    private final Texture window3 = new Texture("screens" + File.separator + "background3.png");
+    private final Texture window4 = new Texture("screens" + File.separator + "background4.png");
     private final Timer timer = new Timer();
     public static int window2x = 0;
     public static int window3x = 0;

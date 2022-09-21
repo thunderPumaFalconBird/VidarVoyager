@@ -1,6 +1,8 @@
 package com.vv.game.utils;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.vv.game.entities.Astronaut;
+import com.vv.game.level.Cannon;
 
 /**
  * This is the collision handler class.
@@ -17,7 +19,14 @@ public class CollisionHandler implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-
+        if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() == Cannon.Type.RANGE){
+            Cannon cannon = (Cannon) fixB.getUserData();
+            cannon.fireCannon();
+        }
+        if(fixA.getBody().getUserData() == Cannon.Type.RANGE && fixB.getBody().getUserData() instanceof Astronaut ){
+            Cannon cannon = (Cannon) fixA.getUserData();
+            cannon.fireCannon();
+        }
     }
 
     private void borderContact(Object border, Object obj) {
