@@ -3,8 +3,8 @@ Vidar Voyager is a top-down 2d puzzle game that I am currently developing. I am 
 
 # How to Build
 Please follow the libgdx setup guide to import and edit the Desktop Launcher build and run configuration 
-https://libgdx.com/wiki/start/import-and-running
-![Alt text](https://github.com/thunderPumaFalconBird/VidarVoyager/BuildConfig.png?raw=true)
+![alt text] (https://libgdx.com/wiki/start/import-and-running)
+![alt text](https://github.com/thunderPumaFalconBird/VidarVoyager/BuildConfig.png?raw=true)
 
 
 # How to Play
