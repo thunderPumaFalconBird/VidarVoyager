@@ -1,5 +1,6 @@
 package com.vv.game.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.utils.GameInput;
 
 import java.util.EnumMap;
 import java.util.Vector;
@@ -43,6 +45,7 @@ public class Astronaut  extends Actor {
     private final float PLAYER_VELOCITY = 1.5f;
     private final float IDLE_FRAME_RATE = 0.1f;
     private final float WALKING_FRAME_RATE = 0.08f;
+    private final GameInput gameInput = GameInput.getInstance();
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
     private STATE currentState = STATE.idleFront;
@@ -69,7 +72,6 @@ public class Astronaut  extends Actor {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox((getWidth()/2)/VidarVoyager.PPM, (getHeight()/2)/VidarVoyager.PPM);
-        //TODO add maskBits for contactListener
         fdef.shape = shape;
         body.createFixture(fdef);
         body.setUserData(this);
@@ -78,7 +80,7 @@ public class Astronaut  extends Actor {
 
     public void destroyAstronautBody(World world){ world.destroyBody(body);}
 
-    public void update(float deltaTime, Array<Integer> keyInput){
+    public void update(){
 
         //reset velocity
         body.setLinearVelocity(0,0);
@@ -104,11 +106,11 @@ public class Astronaut  extends Actor {
                 break;
         }
 
-        stateTime += deltaTime;
+        stateTime += Gdx.graphics.getDeltaTime();
 
         if(currentState != STATE.dead){
 
-            for (Integer integer : keyInput) {
+            for (Integer integer : gameInput.getKeyInputs()) {
                 switch (integer) {
                     case Input.Keys.UP:
                         body.setLinearVelocity(0,0); //this will make sure player only moves in one direction

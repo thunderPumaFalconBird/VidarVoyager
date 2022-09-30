@@ -2,6 +2,7 @@ package com.vv.game.utils;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Vector;
@@ -15,12 +16,14 @@ import java.util.Vector;
  */
 public class GameInput implements InputProcessor {
     private Array<Integer> keyInputs = new Array<>();
-    private static GameInput instance = new GameInput();
+    private Array<Vector3> mouseInputs = new Array<>();
+    private static final GameInput instance = new GameInput();
 
     private GameInput(){}
 
     public static GameInput getInstance(){ return instance;}
     public Array<Integer> getKeyInputs() { return keyInputs; }
+    public Array<Vector3> getMouseInputs() { return mouseInputs; }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -51,12 +54,14 @@ public class GameInput implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        mouseInputs.add(new Vector3(screenX, screenY, button));
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        mouseInputs.clear();
+        return true;
     }
 
     @Override

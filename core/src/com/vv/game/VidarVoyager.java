@@ -3,6 +3,7 @@ package com.vv.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.entities.Astronaut;
 import com.vv.game.level.Level;
@@ -10,7 +11,7 @@ import com.vv.game.screens.ScreenController;
 import com.vv.game.utils.GameInput;
 
 public class VidarVoyager extends Game {
-	public static final boolean debugging = true; // set to false when not debugging. This will control the debug renderer
+	public static final boolean debugging = false; // set to false when not debugging. This will control the debug renderer
 	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 1000;
 	public static final float PPM = 100;
@@ -32,7 +33,11 @@ public class VidarVoyager extends Game {
 				levels.get(currentLevelIndex).getWorld(),
 				new Vector2(levels.get(currentLevelIndex).getPlayerStartPosition().x,
 						levels.get(currentLevelIndex).getPlayerStartPosition().y));
-		screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN).addActor(player);
+		//Add actors to stage.
+		Stage stage = screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN);
+		levels.get(currentLevelIndex).addActors(stage);
+		stage.addActor(player);//add player last. Actors will be drawn in the order they are added.
+
 		gameInput = GameInput.getInstance();
 		Gdx.input.setInputProcessor(gameInput);
 	}
@@ -49,9 +54,8 @@ public class VidarVoyager extends Game {
 		}
 
 		//UPDATE AND HANDLE  GAME INPUT
-		player.update(Gdx.graphics.getDeltaTime(), gameInput.getKeyInputs());
-		levels.get(currentLevelIndex).getWorld().step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
-				VidarVoyager.POSITION_ITERATIONS);
+		player.update();
+		levels.get(currentLevelIndex).update();
 		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
 	}
 	

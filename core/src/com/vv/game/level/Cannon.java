@@ -1,19 +1,19 @@
 package com.vv.game.level;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.entities.Lasers;
 
 public class Cannon extends Actor {
-    //this enum will be used in collisionHandler to identify a rangeBody by its user data.
-    public static enum Type{
-        RANGE
-    }
     private final World world;
     private Body body;
     private Body rangeBody;
+    private Array<Lasers> lasers;
 
     public Cannon(World world, RectangleMapObject object){
         this.world = world;
@@ -22,6 +22,7 @@ public class Cannon extends Actor {
         setY((rectangle.getY() + rectangle.getHeight()/2) / VidarVoyager.PPM);
 
         createBody(rectangle);
+        lasers = new Array<>();
     }
 
     public void fireCannon(){
@@ -47,7 +48,7 @@ public class Cannon extends Actor {
         fdef.shape = shape;
         fdef.isSensor = true; //This allows the player to pass through the object.
         rangeBody.createFixture(fdef);
-        rangeBody.setUserData(Type.RANGE);
+        rangeBody.setUserData(this);
     }
 
     public void destroyRangeBody(){ world.destroyBody(rangeBody);}

@@ -6,9 +6,10 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
-import com.vv.game.puzzles.MineSweeper;
+import com.vv.game.puzzles.minesweeper.MineSweeper;
 import com.vv.game.utils.CollisionHandler;
 
 import java.io.File;
@@ -80,6 +81,21 @@ public class Level {
     public World getWorld() { return world; }
 
     public Vector2 getPlayerStartPosition() { return playerStartPosition; }
+
+    public void addActors(Stage stage){
+        for(int i = 0; i < doors.size; i++){
+            stage.addActor(doors.get(i));
+        }
+        mineSweeper.addStage(stage);
+    }
+
+    public void update(){
+        world.step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
+                VidarVoyager.POSITION_ITERATIONS);
+        if(mineSweeper != null && mineSweeper.isActive()){
+            mineSweeper.update();
+        }
+    }
 
     public void setPlayerStartPosition(int index) {
         if(map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0) != null) {

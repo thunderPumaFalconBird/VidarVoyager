@@ -3,6 +3,7 @@ package com.vv.game.utils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.entities.Astronaut;
 import com.vv.game.level.Cannon;
+import com.vv.game.level.Door;
 
 /**
  * This is the collision handler class.
@@ -19,13 +20,21 @@ public class CollisionHandler implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-        if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() == Cannon.Type.RANGE){
-            Cannon cannon = (Cannon) fixB.getUserData();
+        if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Cannon){
+            Cannon cannon = (Cannon) fixB.getBody().getUserData();
             cannon.fireCannon();
         }
-        if(fixA.getBody().getUserData() == Cannon.Type.RANGE && fixB.getBody().getUserData() instanceof Astronaut ){
-            Cannon cannon = (Cannon) fixA.getUserData();
+        if(fixA.getBody().getUserData() instanceof Cannon && fixB.getBody().getUserData() instanceof Astronaut ){
+            Cannon cannon = (Cannon) fixA.getBody().getUserData();
             cannon.fireCannon();
+        }
+        if(fixA.getBody().getUserData() instanceof Door && fixB.getBody().getUserData() instanceof Astronaut ) {
+            Door door = (Door) fixA.getBody().getUserData();
+            door.setActive(true);
+        }
+        if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Door){
+            Door door = (Door) fixA.getBody().getUserData();
+            door.setActive(true);
         }
     }
 
