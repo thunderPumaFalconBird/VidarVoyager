@@ -16,14 +16,14 @@ import java.util.Vector;
  */
 public class GameInput implements InputProcessor {
     private Array<Integer> keyInputs = new Array<>();
-    private Array<Vector3> mouseInputs = new Array<>();
+    private Vector3 mouseInputs = new Vector3();
     private static final GameInput instance = new GameInput();
 
     private GameInput(){}
 
     public static GameInput getInstance(){ return instance;}
     public Array<Integer> getKeyInputs() { return keyInputs; }
-    public Array<Vector3> getMouseInputs() { return mouseInputs; }
+    public Vector3 getMouseInputs() { return mouseInputs; }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -54,13 +54,13 @@ public class GameInput implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        mouseInputs.add(new Vector3(screenX, screenY, button));
+        mouseInputs.set(screenX,screenY,button);
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        mouseInputs.clear();
+        mouseInputs.setZero();
         return true;
     }
 

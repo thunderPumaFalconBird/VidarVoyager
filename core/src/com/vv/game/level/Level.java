@@ -193,5 +193,8 @@ public class Level {
     public void dispose(){
         world.dispose();
         map.dispose();
+        for(int i = 0; i < doors.size; i++){
+            doors.get(i).dispose();
+        }
     }
 }

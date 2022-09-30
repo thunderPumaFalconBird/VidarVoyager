@@ -68,4 +68,6 @@ public class Door extends Actor {
             }
         }
     }
+
+    public void dispose(){ doorTexture.dispose(); }
 }

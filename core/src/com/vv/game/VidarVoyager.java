@@ -53,7 +53,7 @@ public class VidarVoyager extends Game {
 			screenController.setScreen(ScreenController.SCREEN_STATE.GAME_SCREEN);
 		}
 
-		//UPDATE AND HANDLE  GAME INPUT
+		//UPDATE
 		player.update();
 		levels.get(currentLevelIndex).update();
 		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
