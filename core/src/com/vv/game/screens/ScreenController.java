@@ -1,5 +1,6 @@
 package com.vv.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.vv.game.VidarVoyager;
@@ -18,7 +19,7 @@ public class ScreenController {
         GAME_SCREEN
     }
     public final VidarVoyager game;
-    private SCREEN_STATE currentScreen;
+    private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
     private EnumMap<SCREEN_STATE, AbstractScreen> screens;
 
     public ScreenController(VidarVoyager game) {
@@ -35,8 +36,11 @@ public class ScreenController {
     }
 
     public void setScreen(SCREEN_STATE screen){
+        screens.get(currentScreen).hide();
         currentScreen = screen;
-        game.setScreen(screens.get(screen));
+
+        screens.get(screen).show();
+        screens.get(screen).resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public Screen getScreen(SCREEN_STATE screen){ return screens.get(screen); }

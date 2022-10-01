@@ -1,6 +1,6 @@
 package com.vv.game;
 
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,7 +10,7 @@ import com.vv.game.level.Level;
 import com.vv.game.screens.ScreenController;
 import com.vv.game.utils.GameInput;
 
-public class VidarVoyager extends Game {
+public class VidarVoyager implements ApplicationListener {
 	public static final boolean debugging = false; // set to false when not debugging. This will control the debug renderer
 	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 1000;
@@ -42,10 +42,14 @@ public class VidarVoyager extends Game {
 		Gdx.input.setInputProcessor(gameInput);
 	}
 
+	public Level getCurrentLevel() {
+		return levels.get(currentLevelIndex);
+	}
+
 	@Override
 	public void render () {
 		//RENDER
-		super.render();
+		screenController.getCurrentScreen().render(Gdx.graphics.getDeltaTime());
 
 		//HANDLE  UI INPUT
 		//TODO create separate ui input for menu options, esc, pause, etc.
@@ -58,16 +62,21 @@ public class VidarVoyager extends Game {
 		levels.get(currentLevelIndex).update();
 		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
 	}
-	
+
+	@Override
+	public void resize(int width, int height) { screenController.getCurrentScreen().resize(width, height); }
+
+	@Override
+	public void pause() { screenController.getCurrentScreen().pause(); }
+
+	@Override
+	public void resume() { screenController.getCurrentScreen().resume(); }
+
 	@Override
 	public void dispose () {
 		screenController.dispose();
 		for(int i = 0; i < levels.size; i++){
 			levels.get(i).dispose();
 		}
-	}
-
-	public Level getCurrentLevel() {
-		return levels.get(currentLevelIndex);
 	}
 }
