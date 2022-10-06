@@ -22,11 +22,6 @@ android {
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
-
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file("local.properties").newDataInputStream())
-
-        resValue "string", "default_account_iccid", properties.getProperty("default.account.iccid", "")
     }
     buildTypes {
         release {
