@@ -20,11 +20,13 @@ buildscript {
 
 allprojects {
     apply plugin: "eclipse"
+    apply plugin: "idea"
 
     version = '1.0'
     ext {
         appName = "VidarVoyager"
         gdxVersion = '1.11.0'
+        minSdkVersion = '16'
         roboVMVersion = '2.3.16'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.4'
