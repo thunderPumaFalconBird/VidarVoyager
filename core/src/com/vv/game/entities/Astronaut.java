@@ -42,9 +42,9 @@ public class Astronaut  extends Actor {
         stalled,
         dead
     }
-    private final float PLAYER_VELOCITY = 1.5f; //TODO these need to change
+    private final float PLAYER_VELOCITY = .9f; //TODO these need to change
     private final float IDLE_FRAME_RATE = 0.1f;
-    private final float WALKING_FRAME_RATE = 0.08f;
+    private final float WALKING_FRAME_RATE = 0.06f;
     private final GameInput gameInput = GameInput.getInstance();
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
