@@ -24,9 +24,12 @@ public class VidarVoyager implements ApplicationListener {
 	public static final int APP_FPS = 60;
 	public static final int VELOCITY_ITERATIONS = 7;
 	public static final int POSITION_ITERATIONS = 3;
+	private final GameInput gameInput = GameInput.getInstance();
 	private ScreenController screenController;
 	private GameController gameController;
-	private GameInput gameInput;
+
+	public VidarVoyager() {
+	}
 
 	@Override
 	public void create () {
@@ -46,7 +49,6 @@ public class VidarVoyager implements ApplicationListener {
 				screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN)
 				);
 
-		gameInput = GameInput.getInstance();
 		Gdx.input.setInputProcessor(gameInput);
 	}
 

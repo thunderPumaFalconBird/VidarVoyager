@@ -39,7 +39,7 @@ public class Level {
         world = new World(new Vector2(0f, 0f), false);
         this.levelNumber = levelNumber;
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load(("maps" + File.separator + "Level" + levelNumber + ".tmx"));
+        map = mapLoader.load(("maps" + File.separator + "Level" + this.levelNumber + ".tmx"));
 
         for (int i = 0; i < map.getLayers().size(); i++) {
 

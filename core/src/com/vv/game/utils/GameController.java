@@ -16,7 +16,7 @@ import com.vv.game.screens.ScreenController.SCREEN_STATE;
  * @version 1.0
  */
 public class GameController {
-    private RescueMission rescueMission;
+    private final RescueMission rescueMission;
     private MadPlanets madPlanets;
     private SCREEN_STATE currentScreen = SCREEN_STATE.RESCUE_MISSION_SCREEN;
 
@@ -30,6 +30,8 @@ public class GameController {
         TiledMap tempMap = rescueMission.getMap();;
         switch (screen_state){
             case RESCUE_MISSION_SCREEN: tempMap = rescueMission.getMap();
+                break;
+            case MAD_PLANETS_SCREEN: //TODO  finish this once madPlanets is done
                 break;
         }
         return tempMap;
@@ -63,6 +65,7 @@ public class GameController {
         }
         else if(currentScreen == SCREEN_STATE.MAD_PLANETS_SCREEN){
             //TODO finish this once madPlanets is done
+            int done = 0;
         }
     }
 
@@ -74,6 +77,7 @@ public class GameController {
         }
         else if(currentScreen == SCREEN_STATE.MAD_PLANETS_SCREEN){
             //TODO finish this once madPlanets is done
+            int done = 0;
         }
         return tempVec;
     }

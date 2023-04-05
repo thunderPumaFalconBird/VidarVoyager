@@ -15,8 +15,8 @@ import java.util.Vector;
  * @version 1.0
  */
 public class GameInput implements InputProcessor {
-    private Array<Integer> keyInputs = new Array<>();
-    private Vector3 mouseInputs = new Vector3();
+    private final Array<Integer> keyInputs = new Array<>();
+    private final Vector3 mouseInputs = new Vector3();
     private static final GameInput instance = new GameInput();
 
     private GameInput(){}
