@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.entities.collectable.*;
 import com.vv.game.entities.immovable.*;
 import com.vv.game.utils.CollisionHandler;
 
@@ -31,6 +32,7 @@ public class Level {
     private Array <AmmoStation> ammoStations;
     private Array<LifeSupport> lifeSupports;
     private Array<OxygenStation> oxygenStations;
+    private Array<Collectable> collectables;
     private HashMap<Vector2, Cannon> cannons;
     private Array<Door> doors;
 
@@ -64,6 +66,9 @@ public class Level {
                 case "Door" :
                     initDoors(i);
                     break;
+                case "Collectables" :
+                    initCollectables(i);
+                    break;
                 default:
                     break;
             }
@@ -81,6 +86,9 @@ public class Level {
     public void addActors(Stage stage){
         for(int i = 0; i < doors.size; i++){
             stage.addActor(doors.get(i));
+        }
+        for(int i = 0; i < collectables.size; i++){
+            stage.addActor(collectables.get(i));
         }
     }
 
@@ -171,6 +179,36 @@ public class Level {
         doors = new Array<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
             doors.add(new Door(world, object));
+        }
+    }
+
+    private void initCollectables(int index) {
+        collectables = new Array<>();
+        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
+            switch (object.getName()){
+                case "Banana": collectables.add(new Banana(world, object));
+                    break;
+                case "Battery": collectables.add(new Battery(world, object));
+                    break;
+                case "C4": collectables.add(new C4(world, object));
+                    break;
+                case "SodaCan": collectables.add(new SodaCan(world, object));
+                    break;
+                case "ToDoList": collectables.add(new ToDoList(world, object));
+                    break;
+                case "Tube": collectables.add(new Tube(world, object));
+                    break;
+                case "BLUE_TEDDY": collectables.add(new TeddyBear(world, object, "BLUE_TEDDY"));
+                    break;
+                case "GREEN_TEDDY": collectables.add(new TeddyBear(world, object, "GREEN_TEDDY"));
+                    break;
+                case "ORANGE_TEDDY": collectables.add(new TeddyBear(world, object, "ORANGE_TEDDY"));
+                    break;
+                case "PINK_TEDDY": collectables.add(new TeddyBear(world, object, "PINK_TEDDY"));
+                    break;
+                case "RED_TEDDY": collectables.add(new TeddyBear(world, object, "RED_TEDDY"));
+                    break;
+            }
         }
     }
 
