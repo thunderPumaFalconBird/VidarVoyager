@@ -5,8 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.vv.game.entities.Astronaut;
-import com.vv.game.level.Level;
+import com.vv.game.entities.movable.Astronaut;
+import com.vv.game.entities.Level;
 import com.vv.game.screens.ScreenController;
 import com.vv.game.utils.GameInput;
 
@@ -60,6 +60,7 @@ public class VidarVoyager implements ApplicationListener {
 		//UPDATE
 		player.update();
 		levels.get(currentLevelIndex).update();
+		//TODO possibly add check for app width and height
 		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
 	}
 

@@ -1,9 +1,9 @@
 package com.vv.game.utils;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.vv.game.entities.Astronaut;
-import com.vv.game.level.Cannon;
-import com.vv.game.level.Door;
+import com.vv.game.entities.movable.Astronaut;
+import com.vv.game.entities.immovable.Cannon;
+import com.vv.game.entities.immovable.Door;
 
 /**
  * This is the collision handler class.
@@ -36,10 +36,6 @@ public class CollisionHandler implements ContactListener {
             Door door = (Door) fixA.getBody().getUserData();
             door.setActive(true);
         }
-    }
-
-    private void borderContact(Object border, Object obj) {
-
     }
 
     @Override
