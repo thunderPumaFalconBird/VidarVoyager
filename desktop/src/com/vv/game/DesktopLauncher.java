@@ -8,7 +8,8 @@ import com.vv.game.VidarVoyager;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(60);
+		config.setForegroundFPS(VidarVoyager.APP_FPS);
+		config.setWindowedMode(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
 		config.setTitle("VidarVoyager");
 		new Lwjgl3Application(new VidarVoyager(), config);
 	}

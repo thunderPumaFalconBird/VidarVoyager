@@ -58,10 +58,12 @@ public class VidarVoyager implements ApplicationListener {
 		}
 
 		//UPDATE
-		player.update();
-		levels.get(currentLevelIndex).update();
-		//TODO possibly add check for app width and height
-		screenController.updateCam(player.getBody().getPosition().x*PPM, player.getBody().getPosition().y*PPM);
+		if(screenController.getCurrentScreenState() == ScreenController.SCREEN_STATE.GAME_SCREEN) {
+			player.update();
+			levels.get(currentLevelIndex).update();
+			//TODO possibly add check for app width and height
+			screenController.updateCam(player.getBody().getPosition().x * PPM, player.getBody().getPosition().y * PPM);
+		}
 	}
 
 	@Override
