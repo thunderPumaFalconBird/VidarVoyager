@@ -2,8 +2,11 @@ package com.vv.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.vv.game.VidarVoyager;
+
 import java.util.EnumMap;
 
 /**
@@ -16,23 +19,21 @@ import java.util.EnumMap;
 public class ScreenController {
     public enum SCREEN_STATE {
         MAIN_MENU,
-        GAME_SCREEN
+        RESCUE_MISSION_SCREEN,
+        MAD_PLANETS_SCREEN
     }
-    public final VidarVoyager game;
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
     private EnumMap<SCREEN_STATE, AbstractScreen> screens;
 
-    public ScreenController(VidarVoyager game) {
-        this.game = game;
-        init();
-        setScreen(SCREEN_STATE.MAIN_MENU);
+    public ScreenController() {
+        this.screens = new EnumMap<>(SCREEN_STATE.class);
     }
 
-    private void init(){
-        this.screens = new EnumMap<>(SCREEN_STATE.class);
-        this.screens.put(SCREEN_STATE.GAME_SCREEN, new GameScreen(game.getCurrentLevel().getMap(),
-                game.getCurrentLevel().getWorld()));
-        this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu(game.getCurrentLevel().getWorld()));
+    public void initRescueMissionScreen(World world, TiledMap map){
+        this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen(map, world));
+    }
+    public void initMainMenu(World world){
+        this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu(world));
     }
 
     public void setScreen(SCREEN_STATE screen){
@@ -48,8 +49,8 @@ public class ScreenController {
     public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
     public Stage getScreenStage(SCREEN_STATE screen){ return screens.get(screen).getStage(); }
 
-    public void updateCam(float x, float y){
-        getCurrentScreen().updateCam(x,y);
+    public void updateCam(Vector2 vector2){
+        getCurrentScreen().updateCam(vector2.x,vector2.y);
     }
 
     public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }

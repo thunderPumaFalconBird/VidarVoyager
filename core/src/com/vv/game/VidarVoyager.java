@@ -3,13 +3,19 @@ package com.vv.game;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
-import com.vv.game.entities.movable.Astronaut;
-import com.vv.game.entities.Level;
+import com.badlogic.gdx.physics.box2d.World;
 import com.vv.game.screens.ScreenController;
+import com.vv.game.screens.ScreenController.SCREEN_STATE;
+import com.vv.game.utils.GameController;
 import com.vv.game.utils.GameInput;
 
+/**
+ * This is the Vidar Voyager Class. It is the Presenter in the Model View Presenter design. It has a screen controller
+ * which contains the views and a game controller which contains the models.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
 public class VidarVoyager implements ApplicationListener {
 	public static final boolean debugging = false; // set to false when not debugging. This will control the debug renderer
 	public static final int APP_WIDTH = 1000;
@@ -19,31 +25,29 @@ public class VidarVoyager implements ApplicationListener {
 	public static final int VELOCITY_ITERATIONS = 7;
 	public static final int POSITION_ITERATIONS = 3;
 	private ScreenController screenController;
+	private GameController gameController;
 	private GameInput gameInput;
-	private Astronaut player;
-	private Array<Level> levels;
-	private int currentLevelIndex = 0;
 
 	@Override
 	public void create () {
-		levels = new Array<>();
-		levels.add(new Level(1));
-		screenController = new ScreenController(this);
-		player = new Astronaut(screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN),
-				levels.get(currentLevelIndex).getWorld(),
-				new Vector2(levels.get(currentLevelIndex).getPlayerStartPosition().x,
-						levels.get(currentLevelIndex).getPlayerStartPosition().y));
+
+		gameController = new GameController();
+
+		screenController = new ScreenController();
+		screenController.initRescueMissionScreen(
+				gameController.getWorld(SCREEN_STATE.RESCUE_MISSION_SCREEN),
+				gameController.getMap(SCREEN_STATE.RESCUE_MISSION_SCREEN)
+				);
+		screenController.initMainMenu(new World(new Vector2(0f, 0f), false));
+
 		//Add actors to stage.
-		Stage stage = screenController.getScreenStage(ScreenController.SCREEN_STATE.GAME_SCREEN);
-		levels.get(currentLevelIndex).addActors(stage);
-		stage.addActor(player);//add player last. Actors will be drawn in the order they are added.
+		gameController.addActors(
+				SCREEN_STATE.RESCUE_MISSION_SCREEN,
+				screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN)
+				);
 
 		gameInput = GameInput.getInstance();
 		Gdx.input.setInputProcessor(gameInput);
-	}
-
-	public Level getCurrentLevel() {
-		return levels.get(currentLevelIndex);
 	}
 
 	@Override
@@ -53,16 +57,16 @@ public class VidarVoyager implements ApplicationListener {
 
 		//HANDLE  UI INPUT
 		//TODO create separate ui input for menu options, esc, pause, etc.
-		if(screenController.getCurrentScreenState() == ScreenController.SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
-			screenController.setScreen(ScreenController.SCREEN_STATE.GAME_SCREEN);
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
+			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 		}
 
 		//UPDATE
-		if(screenController.getCurrentScreenState() == ScreenController.SCREEN_STATE.GAME_SCREEN) {
-			player.update();
-			levels.get(currentLevelIndex).update();
+		gameController.update();
+
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
 			//TODO possibly add check for app width and height
-			screenController.updateCam(player.getBody().getPosition().x * PPM, player.getBody().getPosition().y * PPM);
+			screenController.updateCam(gameController.getCamUpdate());
 		}
 	}
 
@@ -78,8 +82,6 @@ public class VidarVoyager implements ApplicationListener {
 	@Override
 	public void dispose () {
 		screenController.dispose();
-		for(int i = 0; i < levels.size; i++){
-			levels.get(i).dispose();
-		}
+		gameController.dispose();
 	}
 }
