@@ -1,0 +1,82 @@
+items.png
+size: 32, 214
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Banana
+  rotate: false
+  xy: 0, 0
+  size: 30, 18
+  orig: 30, 18
+  offset: 0, 0
+  index: -1
+Battery
+  rotate: false
+  xy: 0, 18
+  size: 23, 19
+  orig: 23, 19
+  offset: 0, 0
+  index: -1
+BlueTeddyBear
+  rotate: false
+  xy: 0, 37
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+c4
+  rotate: false
+  xy: 0, 57
+  size: 26, 20
+  orig: 26, 20
+  offset: 0, 0
+  index: -1
+GreenTeddyBear
+  rotate: false
+  xy: 0, 77
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+OrangeTeddyBear
+  rotate: false
+  xy: 0, 97
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+PinkTeddyBear
+  rotate: false
+  xy: 0, 117
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+RedTeddyBear
+  rotate: false
+  xy: 0, 137
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+SodaCan
+  rotate: false
+  xy: 0, 157
+  size: 22, 20
+  orig: 22, 20
+  offset: 0, 0
+  index: -1
+ToDoList
+  rotate: false
+  xy: 0, 177
+  size: 32, 20
+  orig: 32, 20
+  offset: 0, 0
+  index: -1
+Tube
+  rotate: false
+  xy: 0, 197
+  size: 27, 17
+  orig: 27, 17
+  offset: 0, 0
+  index: -1

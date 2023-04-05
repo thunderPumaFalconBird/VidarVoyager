@@ -14,6 +14,7 @@ public abstract class Collectable extends Actor {
         this.world = world;
     }
 
+
     public void createBody(RectangleMapObject object){
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
