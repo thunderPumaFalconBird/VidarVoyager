@@ -45,7 +45,7 @@
 8,16,79,79,79,79,24,26,79,79,79,79,79,79,79,79,79,67,79,79,79,53,79,53,14,16,79,79,79,79,79,64,14,16,79,79,79,79,79,79,79,79,79,79,79,79,79,73,14,18,
 8,16,79,79,79,79,79,79,79,79,79,79,79,79,79,79,79,77,79,79,79,63,79,63,14,16,79,79,4,5,5,5,48,47,5,5,5,5,5,5,5,5,5,5,5,5,5,5,48,28,
 8,16,79,79,79,79,4,6,79,79,79,79,79,79,4,5,5,5,5,5,5,5,5,5,48,16,79,79,14,37,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,38,18,
-8,16,79,79,79,79,14,16,79,79,79,79,79,79,14,16,25,25,25,25,25,25,25,25,25,26,79,79,14,16,1610612748,79,79,79,79,79,12,79,79,79,79,79,79,79,79,79,2684354572,74,14,17,
+8,16,79,79,79,79,14,16,79,79,79,79,79,79,14,37,25,25,25,25,25,25,25,25,25,26,79,79,14,16,1610612748,79,79,79,79,79,12,79,79,79,79,79,79,79,79,79,2684354572,74,14,17,
 8,16,79,79,79,79,14,16,79,79,79,79,79,79,14,16,79,79,79,79,79,79,79,79,79,79,79,79,14,16,79,79,79,79,79,79,79,79,79,79,2684354572,79,79,79,79,79,79,79,14,8,
 8,16,79,79,79,79,14,16,79,79,79,79,79,79,14,16,79,79,59,22,44,22,22,22,22,60,79,79,14,16,79,12,79,79,79,1610612748,79,79,79,79,79,79,79,79,79,79,79,79,14,8,
 8,16,79,79,79,79,14,47,5,5,5,5,5,5,48,16,79,79,13,34,2684354616,20,20,20,34,11,79,79,14,16,79,79,79,79,79,79,79,79,79,3221225484,79,79,79,79,79,2684354572,79,79,14,8,
@@ -58,10 +58,10 @@
 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
 </data>
  </layer>
- <objectgroup id="4" name="StartPosition">
+ <objectgroup id="4" name="StartPosition" visible="0">
   <object id="9" name="StartPosition" x="2650" y="1270" width="1" height="1"/>
  </objectgroup>
- <objectgroup id="13" name="Collectables">
+ <objectgroup id="13" name="Collectables" visible="0">
   <object id="111" name="BLUE_TEDDY" x="900" y="300" width="100" height="100"/>
   <object id="112" name="PINK_TEDDY" x="2900" y="700" width="100" height="100"/>
   <object id="113" name="GREEN_TEDDY" x="900" y="2600" width="100" height="100"/>
@@ -77,7 +77,7 @@
   <object id="124" name="Tube" x="3800" y="3500" width="100" height="100"/>
   <object id="125" name="Tube" x="500" y="1700" width="100" height="100"/>
  </objectgroup>
- <objectgroup id="12" name="Door">
+ <objectgroup id="12" name="Door" visible="0">
   <object id="62" x="1950" y="400" width="100" height="250"/>
   <object id="103" x="2850" y="4300" width="100" height="250"/>
   <object id="108" x="650" y="3600" width="100" height="250"/>
@@ -85,7 +85,7 @@
   <object id="109" x="3250" y="3100" width="100" height="250"/>
   <object id="110" x="3950" y="600" width="100" height="250"/>
  </objectgroup>
- <objectgroup id="6" name="LifeSupport">
+ <objectgroup id="6" name="LifeSupport" visible="0">
   <object id="11" name="LifeSupport" x="4600" y="4600" width="200" height="200"/>
  </objectgroup>
  <objectgroup id="7" name="Cannon">
@@ -109,7 +109,7 @@
   <object id="29" x="4300" y="2700" width="100" height="100"/>
   <object id="30" x="2700" y="1700" width="100" height="100"/>
  </objectgroup>
- <objectgroup id="8" name="OxygenStation">
+ <objectgroup id="8" name="OxygenStation" visible="0">
   <object id="31" name="OxygenStation" x="2200" y="1300" width="100" height="100"/>
   <object id="32" name="OxygenStation" x="3100" y="3600" width="100" height="100"/>
  </objectgroup>
@@ -134,11 +134,11 @@
   <object id="51" x="4300" y="2400" width="100" height="300"/>
   <object id="52" x="2700" y="1800" width="100" height="300"/>
  </objectgroup>
- <objectgroup id="10" name="AmmoStation">
+ <objectgroup id="10" name="AmmoStation" visible="0">
   <object id="53" x="3420" y="2295" width="65" height="60"/>
   <object id="54" x="1720" y="3695" width="65" height="60"/>
  </objectgroup>
- <objectgroup id="11" name="Wall">
+ <objectgroup id="11" name="Wall" visible="0">
   <object id="56" x="100" y="100" width="80" height="4800"/>
   <object id="58" x="180" y="100" width="2320" height="40"/>
   <object id="59" x="180" y="920" width="1900" height="120"/>

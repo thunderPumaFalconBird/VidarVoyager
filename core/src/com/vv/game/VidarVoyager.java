@@ -61,6 +61,7 @@ public class VidarVoyager implements ApplicationListener {
 		//TODO create separate ui input for menu options, esc, pause, etc.
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
 			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+			gameController.setCurrentScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 		}
 
 		//UPDATE

@@ -18,7 +18,7 @@ import com.vv.game.screens.ScreenController.SCREEN_STATE;
 public class GameController {
     private final RescueMission rescueMission;
     private MadPlanets madPlanets;
-    private SCREEN_STATE currentScreen = SCREEN_STATE.RESCUE_MISSION_SCREEN;
+    private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
 
 
     public GameController(){

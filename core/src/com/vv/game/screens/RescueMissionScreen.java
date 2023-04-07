@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 
 /**
- * This is the Game Screen Class. It handles rendering the map, stage, and box2d shapes. It also updates the camera
- * position based on the player's location.
+ * This is the Game Screen Class. It handles rendering the map and stage. It also renders box2d shapes when debugging.
+ * It also updates the camera position based on the player's location.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
