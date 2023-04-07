@@ -1,6 +1,7 @@
 package com.vv.game.rescueMission;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.vv.game.rescueMission.entities.collectable.Collectable;
 import com.vv.game.rescueMission.entities.movable.Astronaut;
 import com.vv.game.rescueMission.entities.immovable.Cannon;
 import com.vv.game.rescueMission.entities.immovable.Door;
@@ -36,6 +37,19 @@ public class CollisionHandler implements ContactListener {
             Door door = (Door) fixA.getBody().getUserData();
             door.setActive(true);
         }
+        if(fixA.getBody().getUserData() instanceof Collectable && fixB.getBody().getUserData() instanceof Astronaut ) {
+            handleItem(fixA, fixB);
+        }
+        if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Collectable){
+            handleItem(fixB, fixA);
+        }
+    }
+
+    private void handleItem(Fixture fixA, Fixture fixB){
+        Astronaut player = (Astronaut) fixB.getBody().getUserData();
+        Collectable item = (Collectable) fixA.getBody().getUserData();
+        player.pickUpItem(item);
+        item.setCollected(true);
     }
 
     @Override

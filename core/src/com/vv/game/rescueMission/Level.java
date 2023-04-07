@@ -94,6 +94,12 @@ public class Level {
     public void update(){
         world.step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
                 VidarVoyager.POSITION_ITERATIONS);
+
+        for(int i = 0; i < collectables.size; i++){
+            if(collectables.get(i).isCollected()){
+                collectables.get(i).pickUpItem();
+            }
+        }
     }
 
     public void setPlayerStartPosition(int index) {

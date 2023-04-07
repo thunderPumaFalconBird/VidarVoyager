@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.rescueMission.entities.collectable.Collectable;
 import com.vv.game.utils.GameInput;
 
 import java.util.EnumMap;
@@ -48,10 +49,13 @@ public class Astronaut  extends Movable {
     private float stateTime = 0f;
     private STATE currentState = STATE.idleFront;
     private TextureRegion currentFrame;
+    private Array<Collectable> inventory;
+    private int currentItem = 0;
 
     public Astronaut(Stage stage, World world, Vector2 startPosition){
         super(world);
         currentFrame = new TextureRegion();
+        inventory = new Array<>();
         setStage(stage);
         initAnimations();
         setBounds(currentFrame.getRegionX(), currentFrame.getRegionY(),
@@ -60,6 +64,10 @@ public class Astronaut  extends Movable {
         setY(startPosition.y/VidarVoyager.PPM);
         createBody();
         body.setUserData(this);
+    }
+
+    public void pickUpItem(Collectable item){
+        inventory.add(item);
     }
 
     @Override
@@ -123,6 +131,13 @@ public class Astronaut  extends Movable {
                             currentFrame.flip(true, false);
                         }
                         body.applyLinearImpulse(new Vector2(PLAYER_VELOCITY, 0), body.getWorldCenter(), true);
+                        break;
+                    case Input.Keys.D:
+                        boolean temp = true;
+                        if(!inventory.isEmpty()) {
+                            inventory.get(currentItem).putDownItem(body.getPosition());
+                            inventory.removeIndex(currentItem);
+                        }
                         break;
                 }
             }
