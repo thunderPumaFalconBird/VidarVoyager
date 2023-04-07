@@ -32,7 +32,9 @@ public class SodaCan extends Collectable{
 
     @Override
     public void draw(Batch batch, float parentAlpha){
-        batch.draw(textureRegion, getX() * VidarVoyager.PPM - (getWidth() / 2),
-                getY() * VidarVoyager.PPM - (getHeight() / 2));
+        if(body != null) {
+            batch.draw(textureRegion, body.getPosition().x * VidarVoyager.PPM - (getWidth() / 2),
+                    body.getPosition().y * VidarVoyager.PPM - (getHeight() / 2));
+        }
     }
 }

@@ -133,7 +133,8 @@ public class Astronaut  extends Movable {
                         body.applyLinearImpulse(new Vector2(PLAYER_VELOCITY, 0), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.D:
-                        boolean temp = true;
+                        //you have to remove this key from game input so that multiple items do not drop
+                        gameInput.keyUp(integer);
                         if(!inventory.isEmpty()) {
                             inventory.get(currentItem).putDownItem(body.getPosition());
                             inventory.removeIndex(currentItem);
