@@ -48,8 +48,9 @@ public class CollisionHandler implements ContactListener {
     private void handleItem(Fixture fixA, Fixture fixB){
         Astronaut player = (Astronaut) fixB.getBody().getUserData();
         Collectable item = (Collectable) fixA.getBody().getUserData();
-        player.pickUpItem(item);
-        item.setCollected(true);
+        if(player.pickUpItem(item)) {
+            item.setCollected(true);
+        }
     }
 
     @Override

@@ -32,9 +32,15 @@ public class Battery extends Collectable{
 
     @Override
     public void draw(Batch batch, float parentAlpha){
-        if(body != null) {
+        if(!collected) {
             batch.draw(textureRegion, body.getPosition().x * VidarVoyager.PPM - (getWidth() / 2),
                     body.getPosition().y * VidarVoyager.PPM - (getHeight() / 2));
+        }
+        else {
+            batch.draw(textureRegion,
+                    inventoryPosition.x + indexOffset + inventoryOffsetY,
+                    inventoryPosition.y + inventoryOffsetY
+            );
         }
     }
 

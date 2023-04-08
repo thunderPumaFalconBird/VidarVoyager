@@ -44,6 +44,7 @@ public class Astronaut  extends Movable {
     private final float PLAYER_VELOCITY = 1.2f;
     private final float IDLE_FRAME_RATE = 0.1f;
     private final float WALKING_FRAME_RATE = 0.055f;
+    private final int INVENTORY_MAX = 5;
     private final GameInput gameInput = GameInput.getInstance();
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
@@ -66,8 +67,13 @@ public class Astronaut  extends Movable {
         body.setUserData(this);
     }
 
-    public void pickUpItem(Collectable item){
-        inventory.add(item);
+    public boolean pickUpItem(Collectable item){
+        boolean temp = false;
+        if(inventory.size < INVENTORY_MAX) {
+            inventory.add(item);
+            temp = true;
+        }
+        return temp;
     }
 
     @Override
@@ -152,6 +158,14 @@ public class Astronaut  extends Movable {
                 currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
             }
         }
+
+        //Update inventory position
+        for(int i = 0; i < inventory.size; i++){
+            inventory.get(i).setInventoryPosition(new Vector2(
+                    body.getPosition().x * VidarVoyager.PPM- ((float)VidarVoyager.APP_HEIGHT/2),
+                    body.getPosition().y * VidarVoyager.PPM- ((float)VidarVoyager.APP_HEIGHT/2)),
+                    i);
+        }
     }
 
     @Override
@@ -206,4 +220,5 @@ public class Astronaut  extends Movable {
         //SET CURRENT FRAME TO CURRENT STATE
         currentFrame.setRegion(animations.get(currentState).getKeyFrame(stateTime, true));
     }
+
 }

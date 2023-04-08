@@ -107,12 +107,18 @@ public class MainMenu extends AbstractScreen {
     }
 
     @Override
-    public void pause() { }
+    public void pause() {
+        timer.stop();
+    }
 
     @Override
-    public void resume() { }
+    public void resume() {
+        timer.start();
+    }
 
     @Override
-    public void hide() { }
+    public void hide() {
+        timer.stop();
+    }
 }
 

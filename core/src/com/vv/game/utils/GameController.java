@@ -1,9 +1,12 @@
 package com.vv.game.utils;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.vv.game.madPlanets.MadPlanets;
 import com.vv.game.rescueMission.RescueMission;
 import com.vv.game.screens.ScreenController.SCREEN_STATE;
@@ -19,6 +22,7 @@ public class GameController {
     private final RescueMission rescueMission;
     private MadPlanets madPlanets;
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
+    private int inventorySize = 0;
 
 
     public GameController(){
