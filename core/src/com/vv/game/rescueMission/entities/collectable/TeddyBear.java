@@ -20,7 +20,6 @@ public class TeddyBear extends Collectable{
     }
     private COLOR color;
     private int item_index;
-    private TextureRegion textureRegion;
 
     public TeddyBear(World world, RectangleMapObject object, String name) {
         super(world);
@@ -45,12 +44,6 @@ public class TeddyBear extends Collectable{
         if(!collected) {
             batch.draw(textureRegion, body.getPosition().x * VidarVoyager.PPM - (getWidth() / 2),
                     body.getPosition().y * VidarVoyager.PPM - (getHeight() / 2));
-        }
-        else {
-            batch.draw(textureRegion,
-                    inventoryPosition.x + indexOffset + inventoryOffsetY,
-                    inventoryPosition.y + inventoryOffsetY
-            );
         }
     }
 

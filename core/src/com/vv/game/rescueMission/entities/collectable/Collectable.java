@@ -12,6 +12,7 @@ public abstract class Collectable extends Actor {
     protected final float inventoryOffsetY = 60;
     protected final World world;
     protected Body body;
+    protected TextureRegion textureRegion;
     protected boolean collected = false;
     protected Vector2 inventoryPosition;
     protected float indexOffset;
@@ -54,6 +55,8 @@ public abstract class Collectable extends Actor {
     public void setCollected(boolean collect) { collected = collect; }
 
     public boolean isCollected() { return collected; }
+
+    public TextureRegion getTextureRegion(){ return textureRegion; }
 
     public void setInventoryPosition(Vector2 vec2, int index){
         inventoryPosition = vec2;

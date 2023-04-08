@@ -12,7 +12,6 @@ import java.io.File;
 
 public class Tube extends Collectable{
     private final int item_index = 10;
-    private TextureRegion textureRegion;
 
     public Tube(World world, RectangleMapObject object) {
         super(world);
@@ -35,12 +34,6 @@ public class Tube extends Collectable{
         if(!collected) {
             batch.draw(textureRegion, body.getPosition().x * VidarVoyager.PPM - (getWidth() / 2),
                     body.getPosition().y * VidarVoyager.PPM - (getHeight() / 2));
-        }
-        else {
-            batch.draw(textureRegion,
-                    inventoryPosition.x + indexOffset + inventoryOffsetY,
-                    inventoryPosition.y + inventoryOffsetY
-            );
         }
     }
 }

@@ -12,7 +12,6 @@ import java.io.File;
 
 public class ToDoList extends Collectable{
     private final int item_index = 9;
-    private TextureRegion textureRegion;
     public ToDoList(World world, RectangleMapObject object) {
         super(world);
         TextureAtlas textureAtlas = new TextureAtlas("collectables" + File.separator + "items.txt");
@@ -34,12 +33,6 @@ public class ToDoList extends Collectable{
         if(!collected) {
             batch.draw(textureRegion, body.getPosition().x * VidarVoyager.PPM - (getWidth() / 2),
                     body.getPosition().y * VidarVoyager.PPM - (getHeight() / 2));
-        }
-        else {
-            batch.draw(textureRegion,
-                    inventoryPosition.x + indexOffset + inventoryOffsetY,
-                    inventoryPosition.y + inventoryOffsetY
-            );
         }
     }
 }

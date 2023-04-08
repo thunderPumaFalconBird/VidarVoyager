@@ -12,7 +12,6 @@ import java.io.File;
 
 public class C4 extends Collectable{
     private final int item_index = 3;
-    private TextureRegion textureRegion;
 
     public C4(World world, RectangleMapObject object) {
         super(world);
@@ -36,13 +35,5 @@ public class C4 extends Collectable{
             batch.draw(textureRegion, body.getPosition().x * VidarVoyager.PPM - (getWidth() / 2),
                     body.getPosition().y * VidarVoyager.PPM - (getHeight() / 2));
         }
-        else {
-            batch.draw(textureRegion,
-                    inventoryPosition.x + indexOffset + inventoryOffsetY,
-                    inventoryPosition.y + inventoryOffsetY
-            );
-        }
     }
-
-
 }
