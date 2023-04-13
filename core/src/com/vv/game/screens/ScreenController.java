@@ -34,9 +34,7 @@ public class ScreenController {
     public void initRescueMissionScreen(World world, TiledMap map){
         this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen(map, world));
     }
-    public void initMainMenu(World world){
-        this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu(world));
-    }
+    public void initMainMenu(World world){ this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu(world)); }
 
     public void setScreen(SCREEN_STATE screen){
         screens.get(currentScreen).hide();
@@ -49,11 +47,10 @@ public class ScreenController {
     public Screen getScreen(SCREEN_STATE screen){ return screens.get(screen); }
 
     public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
+
     public Stage getScreenStage(SCREEN_STATE screen){ return screens.get(screen).getStage(); }
 
-    public void updateCam(Vector2 vector2){
-        getCurrentScreen().updateCam(vector2.x,vector2.y);
-    }
+    public void updateCam(Vector2 vector2){ getCurrentScreen().updateCam(vector2.x,vector2.y); }
 
     public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }
 
