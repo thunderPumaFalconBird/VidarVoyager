@@ -30,9 +30,8 @@ public class MainMenu extends AbstractScreen {
     public static int window3x = 0;
     public static int window4x = 0;
 
-    public MainMenu(World world){
+    public MainMenu(){
         super();
-        //this.world = world;
         cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
         stage = new Stage(new FitViewport(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT, this.cam));
         cam.setToOrtho(false);
@@ -90,7 +89,6 @@ public class MainMenu extends AbstractScreen {
     }
 
     private void drawBackground(){
-
         batch.draw(window1, 0, 0);
         batch.draw(window2, window2x, 0);
         batch.draw(window2, window2x + VidarVoyager.APP_WIDTH, 0);
@@ -102,23 +100,15 @@ public class MainMenu extends AbstractScreen {
     }
 
     @Override
-    public void show() {
-        batch.setProjectionMatrix(cam.combined);
-    }
+    public void show() { batch.setProjectionMatrix(cam.combined); }
 
     @Override
-    public void pause() {
-        timer.stop();
-    }
+    public void pause() { timer.stop(); }
 
     @Override
-    public void resume() {
-        timer.start();
-    }
+    public void resume() { timer.start(); }
 
     @Override
-    public void hide() {
-        timer.stop();
-    }
+    public void hide() { timer.stop(); }
 }
 

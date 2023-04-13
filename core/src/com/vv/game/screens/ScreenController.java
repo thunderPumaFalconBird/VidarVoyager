@@ -34,7 +34,7 @@ public class ScreenController {
     public void initRescueMissionScreen(World world, TiledMap map){
         this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen(map, world));
     }
-    public void initMainMenu(World world){ this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu(world)); }
+    public void initMainMenu(){ this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu()); }
 
     public void setScreen(SCREEN_STATE screen){
         screens.get(currentScreen).hide();

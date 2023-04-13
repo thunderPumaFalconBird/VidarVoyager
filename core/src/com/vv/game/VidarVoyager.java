@@ -41,7 +41,7 @@ public class VidarVoyager implements ApplicationListener {
 				gameController.getWorld(SCREEN_STATE.RESCUE_MISSION_SCREEN),
 				gameController.getMap(SCREEN_STATE.RESCUE_MISSION_SCREEN)
 				);
-		screenController.initMainMenu(new World(new Vector2(0f, 0f), false));
+		screenController.initMainMenu();
 
 		//Add actors to stage.
 		gameController.addActors(
