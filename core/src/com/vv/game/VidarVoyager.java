@@ -58,18 +58,29 @@ public class VidarVoyager implements ApplicationListener {
 		screenController.getCurrentScreen().render(Gdx.graphics.getDeltaTime());
 
 		//HANDLE  UI INPUT
-		//TODO create separate ui input for menu options, esc, pause, etc.
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
 			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 			gameController.setCurrentScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 		}
 
 		//UPDATE
-		gameController.update();
+		if(!gameController.isGameOver() && !gameController.isGameWon()) {
+			gameController.update();
+		}
 
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
 			//TODO possibly add check for app width and height
-			screenController.updateCam(gameController.getCamUpdate());
+			if(gameController.isGameOver()){
+				screenController.setScreen(SCREEN_STATE.GAME_OVER);
+				System.out.println("You died!!");
+			}
+			else if(gameController.isGameWon()){
+				screenController.setScreen(SCREEN_STATE.GAME_WON);
+				System.out.println("You Won The Game!!");
+			}
+			else{
+				screenController.updateCam(gameController.getCamUpdate());
+			}
 		}
 	}
 

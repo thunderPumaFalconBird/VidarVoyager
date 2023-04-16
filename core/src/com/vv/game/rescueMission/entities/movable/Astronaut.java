@@ -45,6 +45,7 @@ public class Astronaut  extends Movable {
     private final float IDLE_FRAME_RATE = 0.1f;
     private final float WALKING_FRAME_RATE = 0.055f;
     private final int INVENTORY_MAX = 5;
+    private final float OXYGEN_DEPLETION_AMOUNT = 0.008f;
     private final GameInput gameInput = GameInput.getInstance();
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
@@ -52,6 +53,8 @@ public class Astronaut  extends Movable {
     private TextureRegion currentFrame;
     private Array<Collectable> inventory;
     private int currentItem = 0;
+    private float oxygenLevel = 100;
+    private boolean refillingOxygen = false;
 
     public Astronaut(Stage stage, World world, Vector2 startPosition){
         super(world);
@@ -75,6 +78,20 @@ public class Astronaut  extends Movable {
         }
         return temp;
     }
+
+    public STATE getCurrentState() { return currentState; }
+
+    public float getOxygenLevel(){ return oxygenLevel; }
+
+    public void setOxygenLevel(float oxygenLevel){ this.oxygenLevel = oxygenLevel; }
+
+    public boolean getRefillingOxygen() { return refillingOxygen; }
+
+    public void setRefillingOxygen(boolean refillingOxygen) { this.refillingOxygen = refillingOxygen; }
+
+    public Array<Collectable> getInventory() { return inventory; }
+
+    public int getCurrentItem() { return currentItem; }
 
     @Override
     public void update(){
@@ -105,6 +122,7 @@ public class Astronaut  extends Movable {
 
         stateTime += Gdx.graphics.getDeltaTime();
 
+        //Check for user inputs that effect the player
         if(currentState != STATE.dead){
 
             for (Integer integer : gameInput.getKeyInputs()) {
@@ -144,6 +162,21 @@ public class Astronaut  extends Movable {
                         if(!inventory.isEmpty()) {
                             inventory.get(currentItem).putDownItem(body.getPosition());
                             inventory.removeIndex(currentItem);
+                            if(currentItem != 0){
+                                currentItem--;
+                            }
+                        }
+                        break;
+                    case Input.Keys.I:
+                        //you have to remove this key from game input so that the currentItem doesn't get incremented
+                        //multiple times
+                        gameInput.keyUp(integer);
+
+                        if(currentItem < inventory.size - 1) {
+                            currentItem++;
+                        }
+                        else{
+                            currentItem = 0;
                         }
                         break;
                 }
@@ -166,16 +199,25 @@ public class Astronaut  extends Movable {
                     body.getPosition().y * VidarVoyager.PPM- ((float)VidarVoyager.APP_HEIGHT/2)),
                     i);
         }
+
+        //deplete the Oxygen Level if the astronaut is not in contact with an oxygen station
+        if(!refillingOxygen) {
+            oxygenLevel -= OXYGEN_DEPLETION_AMOUNT;
+        }
+        else {
+            if(oxygenLevel < 100) {
+                oxygenLevel += OXYGEN_DEPLETION_AMOUNT * 100;
+            }
+        }
+        if(oxygenLevel < 0){
+            currentState = STATE.dead;
+        }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha){
         batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
                 body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
-    }
-
-    public STATE getCurrentState() {
-        return currentState;
     }
 
     private void initAnimations(){

@@ -18,6 +18,8 @@ public abstract class AbstractScreen implements Screen {
     protected World world;
     protected Box2DDebugRenderer b2dr;
     protected SpriteBatch batch;
+    protected boolean gameOver = false;
+    protected boolean gameWon = false;
 
     public AbstractScreen() {
         batch = new SpriteBatch();
@@ -29,6 +31,10 @@ public abstract class AbstractScreen implements Screen {
     public abstract void updateCam(float x, float y);
 
     public abstract Stage getStage();
+
+    public abstract void setGameOver(boolean gameOver);
+
+    public abstract void setGameWon(boolean gameWon);
 
     @Override
     public void resize(int width, int height){ getStage().getViewport().update(width, height, true); }

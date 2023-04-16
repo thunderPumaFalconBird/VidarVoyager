@@ -23,6 +23,8 @@ public class GameController {
     private MadPlanets madPlanets;
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
     private int inventorySize = 0;
+    private boolean gameOver = false;
+    private boolean gameWon = false;
 
 
     public GameController(){
@@ -52,6 +54,10 @@ public class GameController {
         return tempWorld;
     }
 
+    public boolean isGameOver() { return gameOver; }
+
+    public boolean isGameWon() { return gameWon; }
+
     public void addActors(SCREEN_STATE screen_state, Stage stage){
         switch (screen_state){
             case RESCUE_MISSION_SCREEN:
@@ -66,6 +72,12 @@ public class GameController {
     public void update(){
         if(currentScreen == SCREEN_STATE.RESCUE_MISSION_SCREEN){
             rescueMission.update();
+            if(rescueMission.checkForDeath()){
+                gameOver = true;
+            }
+            else if(rescueMission.checkForWin()){
+                gameWon = true;
+            }
         }
         else if(currentScreen == SCREEN_STATE.MAD_PLANETS_SCREEN){
             //TODO finish this once madPlanets is done
@@ -86,9 +98,7 @@ public class GameController {
         return tempVec;
     }
 
-    public void setCurrentScreen(SCREEN_STATE screenState){
-        currentScreen = screenState;
-    }
+    public void setCurrentScreen(SCREEN_STATE screenState){ currentScreen = screenState; }
 
     public void dispose(){
         rescueMission.dispose();

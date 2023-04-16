@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.entities.collectable.Collectable;
+import com.vv.game.rescueMission.entities.movable.Astronaut;
 
 import java.io.File;
 
@@ -25,12 +26,19 @@ import java.io.File;
 public class RescueMissionScreen extends AbstractScreen {
     private final float inventoryOffsetX = 96;
     private final float inventoryOffsetY = 60;
+    private final float oxygenOffsetX = 796;
+    private final float oxygenOffsetY = 85;
+    private final float oxygenBarWidth = 15;
     private final Stage stage;
     private final OrthographicCamera cam;
     private final OrthogonalTiledMapRenderer mapRenderer;
     private final Texture inventoryOxygenBar;
+    private final Texture oxygenBarTexture;
+    private final Texture highlight;
     private Array<TextureRegion> inventoryTextures;
-    private float inventoryX, inventoryY;
+    private float inventoryX, inventoryY, oxygenX, oxygenY;
+    private int oxygenBarsNumber = 10;
+    private int inventoryHighlightX = 0;
 
     public RescueMissionScreen(TiledMap map, World world){
         super();
@@ -45,7 +53,9 @@ public class RescueMissionScreen extends AbstractScreen {
         cam.update();
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-        inventoryOxygenBar = new Texture("screens" + File.separator + "InventoryBar.png");
+        inventoryOxygenBar = new Texture("screens" + File.separator + "InventoryOxygenBar.png");
+        oxygenBarTexture = new Texture("screens" + File.separator + "OxygenLevelBar.png");
+        highlight = new Texture("screens" + File.separator + "Highlight2.png");
         inventoryTextures = new Array<>();
     }
 
@@ -57,6 +67,12 @@ public class RescueMissionScreen extends AbstractScreen {
     }
 
     @Override
+    public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
+
+    @Override
+    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
+
+    @Override
     public void update(float deltaTime) {
         cam.update();
         mapRenderer.setView(cam);
@@ -64,15 +80,20 @@ public class RescueMissionScreen extends AbstractScreen {
 
         Array<Actor> temp = stage.getActors();
         inventoryTextures.clear();
-        //TODO fix the index problem. Items show up and drop from inventory in random order.
         for(int i = 0; i < temp.size; i++){
-            if(temp.get(i) instanceof Collectable){
-                Collectable tempCollectable = (Collectable) ((Collectable) temp.get(i)).getBody().getUserData();
-                if(tempCollectable.isCollected()){
-                    inventoryTextures.add(tempCollectable.getTextureRegion());
-                }
-            }
+            if(temp.get(i) instanceof Astronaut){
+                Astronaut player = (Astronaut) ((Astronaut) temp.get(i)).getBody().getUserData();
 
+                Array<Collectable> inventory = player.getInventory();
+                for (int j = 0; j < inventory.size; j++){
+                    inventoryTextures.add(inventory.get(j).getTextureRegion());
+                }
+
+                float oxygenLevel = player.getOxygenLevel();
+                oxygenBarsNumber = ((int) oxygenLevel / 10) + 1;
+
+                inventoryHighlightX = player.getCurrentItem();
+            }
         }
 
         inventoryX = cam.position.x - ((float)VidarVoyager.APP_HEIGHT/2);
@@ -99,14 +120,21 @@ public class RescueMissionScreen extends AbstractScreen {
                     inventoryY + inventoryOffsetY
                     );
         }
+        for(int i = 0; i < oxygenBarsNumber; i++){
+            batch.draw(oxygenBarTexture,
+                    inventoryX + i*oxygenBarWidth + oxygenOffsetX,
+                    inventoryY + oxygenOffsetY);
+        }
+
+        batch.draw(highlight,
+                inventoryX + inventoryHighlightX*100,
+                inventoryY);
 
         batch.end();
     }
 
     @Override
-    public void show() {
-        batch.setProjectionMatrix(cam.combined);
-    }
+    public void show() { batch.setProjectionMatrix(cam.combined); }
 
     @Override
     public void dispose(){

@@ -60,12 +60,16 @@ public class MainMenu extends AbstractScreen {
     }
 
     @Override
-    public void updateCam(float x, float y) {
-        cam.position.set(x, y,0);
-    }
+    public void updateCam(float x, float y) { cam.position.set(x, y,0); }
 
     @Override
     public Stage getStage() { return this.stage; }
+
+    @Override
+    public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
+
+    @Override
+    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
 
     @Override
     public void render(float deltaTime) {

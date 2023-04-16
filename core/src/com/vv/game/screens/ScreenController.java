@@ -22,7 +22,9 @@ public class ScreenController {
     public enum SCREEN_STATE {
         MAIN_MENU,
         RESCUE_MISSION_SCREEN,
-        MAD_PLANETS_SCREEN
+        MAD_PLANETS_SCREEN,
+        GAME_OVER,
+        GAME_WON
     }
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
     private EnumMap<SCREEN_STATE, AbstractScreen> screens;
@@ -37,11 +39,19 @@ public class ScreenController {
     public void initMainMenu(){ this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu()); }
 
     public void setScreen(SCREEN_STATE screen){
-        screens.get(currentScreen).hide();
-        currentScreen = screen;
+        if(screen == SCREEN_STATE.GAME_OVER){
+            screens.get(currentScreen).setGameOver(true);
+        }
+        else if(screen == SCREEN_STATE.GAME_WON){
+            screens.get(currentScreen).setGameWon(true);
+        }
+        else {
+            screens.get(currentScreen).hide();
+            currentScreen = screen;
 
-        screens.get(screen).show();
-        screens.get(screen).resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            screens.get(screen).show();
+            screens.get(screen).resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
     public Screen getScreen(SCREEN_STATE screen){ return screens.get(screen); }

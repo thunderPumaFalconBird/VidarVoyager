@@ -77,6 +77,19 @@ public class Level {
         world.setContactListener(new CollisionHandler());
     }
 
+    public boolean checkForWin() {
+        boolean temp = false;
+        if(levelNumber == 1){
+            temp = lifeSupports.get(0).getFixed();
+        }
+        return temp;
+    }
+
+    public void resetWinFlag() {
+        if(levelNumber == 1){
+            lifeSupports.get(0).setFixed(false);
+        }
+    }
 
     public TiledMap getMap() { return map; }
 

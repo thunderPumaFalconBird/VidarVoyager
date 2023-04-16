@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.VidarVoyager;
 
 public class OxygenStation extends Immovable {
+    private int refills = 2;
 
     public OxygenStation(World world, RectangleMapObject object){
         super(world);
@@ -16,4 +17,8 @@ public class OxygenStation extends Immovable {
         createBody(object);
         body.setUserData(this);
     }
+
+    public int getRefills() { return refills; }
+
+    public void setRefills(int refills) { this.refills = refills; }
 }

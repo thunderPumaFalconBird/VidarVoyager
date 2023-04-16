@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.VidarVoyager;
 
 public class LifeSupport extends Immovable {
+    private boolean fixed = false;
 
     public LifeSupport(World world, RectangleMapObject object){
         super(world);
@@ -16,4 +17,8 @@ public class LifeSupport extends Immovable {
         createBody(object);
         body.setUserData(this);
     }
+
+    public boolean getFixed() { return fixed; }
+
+    public void setFixed(boolean fixed) { this.fixed = fixed; }
 }

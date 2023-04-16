@@ -29,7 +29,8 @@ public class GameInput implements InputProcessor {
     public boolean keyDown(int keycode) {
         boolean returnValue = false;
         if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN
-                || keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT  || keycode == Input.Keys.D){
+                || keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT  || keycode == Input.Keys.D
+                || keycode == Input.Keys.I){
             keyInputs.add(keycode);
             returnValue = true;
         }
@@ -40,7 +41,8 @@ public class GameInput implements InputProcessor {
     public boolean keyUp(int keycode) {
         boolean returnValue = false;
         if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN
-                || keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT || keycode == Input.Keys.D){
+                || keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT || keycode == Input.Keys.D
+                || keycode == Input.Keys.I){
             keyInputs.removeValue(keycode, true);
             returnValue = true;
         }
