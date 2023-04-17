@@ -17,7 +17,7 @@ import com.vv.game.utils.GameInput;
  * @version 1.0
  */
 public class VidarVoyager implements ApplicationListener {
-	public static final boolean debugging = false; // set to false when not debugging. This will control the debug renderer
+	public static final boolean debugging = true; // set to false when not debugging. This will control the debug renderer
 	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 1000;
 	public static final float PPM = 100;
@@ -58,9 +58,9 @@ public class VidarVoyager implements ApplicationListener {
 		screenController.getCurrentScreen().render(Gdx.graphics.getDeltaTime());
 
 		//HANDLE  UI INPUT
-		if(screenController.getCurrentScreenState() == SCREEN_STATE.MAIN_MENU && Gdx.input.isTouched()){
-			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
-			gameController.setCurrentScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+		if(gameInput.getMouseInputs() != null){
+			screenController.setButtonPressed(gameInput.getMouseInputs().x, gameInput.getMouseInputs().y);
+			gameController.setCurrentScreen(screenController.getCurrentScreenState());
 		}
 
 		//UPDATE
@@ -68,6 +68,7 @@ public class VidarVoyager implements ApplicationListener {
 			gameController.update();
 		}
 
+		//Check for win/game over
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
 			//TODO possibly add check for app width and height
 			if(gameController.isGameOver()){

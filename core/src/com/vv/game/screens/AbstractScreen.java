@@ -36,6 +36,8 @@ public abstract class AbstractScreen implements Screen {
 
     public abstract void setGameWon(boolean gameWon);
 
+    public abstract String getButtonPressed(float x, float y);
+
     @Override
     public void resize(int width, int height){ getStage().getViewport().update(width, height, true); }
 

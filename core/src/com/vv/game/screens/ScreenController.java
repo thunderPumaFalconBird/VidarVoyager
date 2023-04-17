@@ -62,6 +62,18 @@ public class ScreenController {
 
     public void updateCam(Vector2 vector2){ getCurrentScreen().updateCam(vector2.x,vector2.y); }
 
+    public void setButtonPressed(float x, float y){
+        String temp = screens.get(currentScreen).getButtonPressed(x, y);
+        switch (temp){
+            case"start": setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+                break;
+            case"login":
+                break;
+            case"backToMain": setScreen(SCREEN_STATE.MAIN_MENU);
+                break;
+        }
+    }
+
     public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }
 
     public void dispose(){

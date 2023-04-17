@@ -67,6 +67,13 @@ public class RescueMissionScreen extends AbstractScreen {
     }
 
     @Override
+    public String getButtonPressed(float x, float y){
+        String temp = "none";
+
+        return temp;
+    }
+
+    @Override
     public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
 
     @Override
@@ -111,9 +118,6 @@ public class RescueMissionScreen extends AbstractScreen {
         batch.draw(inventoryOxygenBar, inventoryX, inventoryY);
 
         stage.draw();
-        if(VidarVoyager.debugging){
-            b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
-        }
         for(int i = 0; i < inventoryTextures.size; i++){
             batch.draw(inventoryTextures.get(i),
                     inventoryX + i*inventoryOffsetX + inventoryOffsetY,
@@ -129,6 +133,9 @@ public class RescueMissionScreen extends AbstractScreen {
         batch.draw(highlight,
                 inventoryX + inventoryHighlightX*100,
                 inventoryY);
+        if(VidarVoyager.debugging){
+            b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
+        }
 
         batch.end();
     }
