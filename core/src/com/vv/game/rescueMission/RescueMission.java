@@ -1,5 +1,6 @@
 package com.vv.game.rescueMission;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -29,16 +30,20 @@ public class RescueMission {
         levels.add(new Level(1));
     }
 
-    public void initPlayer(Stage stage){
+    public void initPlayer(Stage stage, InputMultiplexer multiplexer){
         player = new Astronaut(stage,
                 levels.get(currentLevelIndex).getWorld(),
                 new Vector2(levels.get(currentLevelIndex).getPlayerStartPosition().x,
                         levels.get(currentLevelIndex).getPlayerStartPosition().y));
+        //add the players input processor to the multiplexer
+        multiplexer.addProcessor(player);
     }
 
     public TiledMap getMap(){ return levels.get(currentLevelIndex).getMap(); }
 
     public World getWorld(){ return levels.get(currentLevelIndex).getWorld(); }
+
+    public Astronaut getPlayer(){ return player; }
 
     public void addActors(Stage stage){
         levels.get(currentLevelIndex).addActors(stage);
@@ -56,6 +61,7 @@ public class RescueMission {
         return (player.getCurrentState() == Astronaut.STATE.dead);
     }
 
+    //TODO fix this. The collision handler has the same code... what is this?
     public boolean checkForWin() {
         boolean temp = false;
         if(levels.get(currentLevelIndex).checkForWin()){

@@ -2,6 +2,7 @@ package com.vv.game.rescueMission.entities.movable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.entities.collectable.Collectable;
-import com.vv.game.utils.GameInput;
 
 import java.util.EnumMap;
 import java.io.File;
@@ -28,7 +28,11 @@ import java.io.File;
  * @version 1.0
  */
 
-public class Astronaut  extends Movable {
+public class Astronaut  extends Movable implements InputProcessor {
+
+    /**
+     * This enumeration is used as keys for the animations enumMap of the astronaut.
+     */
     public enum STATE {
         idleFront,
         idleBack,
@@ -46,12 +50,13 @@ public class Astronaut  extends Movable {
     private final float WALKING_FRAME_RATE = 0.055f;
     private final int INVENTORY_MAX = 5;
     private final float OXYGEN_DEPLETION_AMOUNT = 0.008f;
-    private final GameInput gameInput = GameInput.getInstance();
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
     private STATE currentState = STATE.idleFront;
     private TextureRegion currentFrame;
-    private Array<Collectable> inventory;
+    private final Array<Collectable> inventory = new Array<>();;
+    //Using an array of keyInputs allows to check for keys that are being held down. see keyUp and keyDown methods.
+    private final Array<Integer> keyInputs = new Array<>();
     private int currentItem = 0;
     private float oxygenLevel = 100;
     private boolean refillingOxygen = false;
@@ -59,7 +64,6 @@ public class Astronaut  extends Movable {
     public Astronaut(Stage stage, World world, Vector2 startPosition){
         super(world);
         currentFrame = new TextureRegion();
-        inventory = new Array<>();
         setStage(stage);
         initAnimations();
         setBounds(currentFrame.getRegionX(), currentFrame.getRegionY(),
@@ -83,10 +87,6 @@ public class Astronaut  extends Movable {
 
     public float getOxygenLevel(){ return oxygenLevel; }
 
-    public void setOxygenLevel(float oxygenLevel){ this.oxygenLevel = oxygenLevel; }
-
-    public boolean getRefillingOxygen() { return refillingOxygen; }
-
     public void setRefillingOxygen(boolean refillingOxygen) { this.refillingOxygen = refillingOxygen; }
 
     public Array<Collectable> getInventory() { return inventory; }
@@ -96,99 +96,69 @@ public class Astronaut  extends Movable {
     @Override
     public void update(){
 
-        //reset velocity
-        body.setLinearVelocity(0,0);
-
-        //reset frame if it's flipped from walking left or idle left
-        if(currentFrame.isFlipX()) {
-            currentFrame.flip(true, false);
-        }
-
-        //reset to idle state
-        switch (currentState){
-            case walkingBack:
-                currentState = STATE.idleBack;
-                break;
-            case walkingFront:
-                currentState = STATE.idleFront;
-                break;
-            case walkingLeft:
-                currentState = STATE.idleLeft;
-                break;
-            case walkingRight:
-                currentState = STATE.idleRight;
-                break;
-        }
-
         stateTime += Gdx.graphics.getDeltaTime();
 
-        //Check for user inputs that effect the player
-        if(currentState != STATE.dead){
+        if(currentState == STATE.idleLeft){
+            currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
+            if(!currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
+            }
+        }
+        else if(currentState == STATE.walkingLeft){
+            currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
+            if (!currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
+            }
+        }
+        else {
+            currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
+            if (currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
+            }
+        }
 
-            for (Integer integer : gameInput.getKeyInputs()) {
-                switch (integer) {
+        if(currentState != STATE.dead) {
+            for(int i = 0; i < keyInputs.size; i++) {
+                switch (keyInputs.get(i)) {
                     case Input.Keys.UP:
-                        body.setLinearVelocity(0,0); //this will make sure player only moves in one direction
+                        body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
                         currentState = STATE.walkingBack;
                         body.applyLinearImpulse(new Vector2(0, PLAYER_VELOCITY), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.DOWN:
-                        body.setLinearVelocity(0,0); //this will make sure player only moves in one direction
+                        body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
                         currentState = STATE.walkingFront;
                         body.applyLinearImpulse(new Vector2(0, -PLAYER_VELOCITY), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.LEFT:
-                        body.setLinearVelocity(0,0); //this will make sure player only moves in one direction
+                        body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
                         currentState = STATE.walkingLeft;
-                        // walking left uses the walking right animation flipped on the x-axis
-                        currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
-                        if(!currentFrame.isFlipX()) {
-                            currentFrame.flip(true, false);
-                        }
                         body.applyLinearImpulse(new Vector2(-PLAYER_VELOCITY, 0), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.RIGHT:
-                        body.setLinearVelocity(0,0); //this will make sure player only moves in one direction
+                        body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
                         currentState = STATE.walkingRight;
-                        // this if statement prevents moon walking
-                        if(currentFrame.isFlipX()) {
-                            currentFrame.flip(true, false);
-                        }
                         body.applyLinearImpulse(new Vector2(PLAYER_VELOCITY, 0), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.D:
-                        //you have to remove this key from game input so that multiple items do not drop
-                        gameInput.keyUp(integer);
-                        if(!inventory.isEmpty()) {
+                        keyUp(Input.Keys.D); //Remove key to avoid dropping multiple items
+                        if (!inventory.isEmpty()) {
                             inventory.get(currentItem).putDownItem(body.getPosition());
                             inventory.removeIndex(currentItem);
-                            if(currentItem != 0){
+                            if (currentItem != 0) {
                                 currentItem--;
                             }
                         }
                         break;
                     case Input.Keys.I:
-                        //you have to remove this key from game input so that the currentItem doesn't get incremented
-                        //multiple times
-                        gameInput.keyUp(integer);
-
-                        if(currentItem < inventory.size - 1) {
+                        keyUp(Input.Keys.I); //Remove key to avoid incrementing multiple times
+                        if (currentItem < inventory.size - 1) {
                             currentItem++;
-                        }
-                        else{
+                        } else {
                             currentItem = 0;
                         }
                         break;
                 }
-            }
-            if(currentState == STATE.idleLeft){
-                currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
-                if(!currentFrame.isFlipX()) {
-                    currentFrame.flip(true, false);
-                }
-            }
-            else if(currentState != STATE.walkingLeft){ //Walking left is handled in the above switch statement
-                currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
             }
         }
 
@@ -204,11 +174,11 @@ public class Astronaut  extends Movable {
         if(!refillingOxygen) {
             oxygenLevel -= OXYGEN_DEPLETION_AMOUNT;
         }
-        else {
-            if(oxygenLevel < 100) {
-                oxygenLevel += OXYGEN_DEPLETION_AMOUNT * 100;
-            }
+        else if(oxygenLevel < 100) {
+            oxygenLevel += OXYGEN_DEPLETION_AMOUNT * 100;
         }
+
+        //Kill astronaut if oxygen runs out.
         if(oxygenLevel < 0){
             currentState = STATE.dead;
         }
@@ -218,6 +188,85 @@ public class Astronaut  extends Movable {
     public void draw(Batch batch, float parentAlpha){
         batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
                 body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        boolean returnValue = false;
+        if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN
+                || keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT  || keycode == Input.Keys.D
+                || keycode == Input.Keys.I){
+            keyInputs.add(keycode);
+            returnValue = true;
+        }
+        return returnValue;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        boolean returnValue = false;
+        switch (keycode) {
+            case Input.Keys.UP:
+                body.setLinearVelocity(0, 0);
+                currentState = STATE.idleBack;
+                keyInputs.removeValue(keycode, true);
+                returnValue = true;
+                break;
+            case Input.Keys.DOWN:
+                body.setLinearVelocity(0, 0);
+                currentState = STATE.idleFront;
+                keyInputs.removeValue(keycode, true);
+                returnValue = true;
+                break;
+            case Input.Keys.LEFT:
+                body.setLinearVelocity(0, 0);
+                currentState = STATE.idleLeft;
+                keyInputs.removeValue(keycode, true);
+                returnValue = true;
+                break;
+            case Input.Keys.RIGHT:
+                body.setLinearVelocity(0, 0);
+                currentState = STATE.idleRight;
+                keyInputs.removeValue(keycode, true);
+                returnValue = true;
+                break;
+            case Input.Keys.D:
+            case Input.Keys.I:
+                keyInputs.removeValue(keycode, true);
+                returnValue = true;
+                break;
+        }
+        return returnValue;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
     }
 
     private void initAnimations(){

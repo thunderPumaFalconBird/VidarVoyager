@@ -1,7 +1,5 @@
 package com.vv.game.rescueMission.entities.movable;
 
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.vv.game.VidarVoyager;

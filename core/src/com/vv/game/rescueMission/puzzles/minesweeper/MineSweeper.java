@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.puzzles.Puzzle;
-import com.vv.game.utils.GameInput;
 
 import java.util.HashMap;
 
@@ -15,8 +14,6 @@ public class MineSweeper extends Puzzle {
     private final World world;
     private Body body;
     private Stage stage;
-
-    private final GameInput gameInput = GameInput.getInstance();
     private HashMap<Vector2, Square> squares;
     private boolean active = false;
 

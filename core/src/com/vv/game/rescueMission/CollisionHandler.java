@@ -11,7 +11,7 @@ import com.vv.game.rescueMission.entities.immovable.Cannon;
 import com.vv.game.rescueMission.entities.immovable.Door;
 
 /**
- * This is the collision handler class.
+ * This is the collision handler class. The Level class sets a new collisionHandler for each level.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
@@ -21,6 +21,10 @@ public class CollisionHandler implements ContactListener {
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {}
 
+    /**
+     * This method is called whenever two bodies in the box2d world collide.
+     * @param contact
+     */
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
@@ -61,6 +65,10 @@ public class CollisionHandler implements ContactListener {
         }
     }
 
+    /**
+     * This method is called whenever two bodies are no longer in contact.
+     * @param contact
+     */
     @Override
     public void endContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
@@ -73,6 +81,12 @@ public class CollisionHandler implements ContactListener {
         }
     }
 
+    /**
+     * This method is called when an astronaut collides with a collectable item. The item will be picked up if the
+     * astronauts inventory is not full. If the player's inventory is full pickUpItem(item) will return false.
+     * @param fixA
+     * @param fixB
+     */
     private void handleItem(Fixture fixA, Fixture fixB){
         Astronaut player = (Astronaut) fixB.getBody().getUserData();
         Collectable item = (Collectable) fixA.getBody().getUserData();
@@ -81,6 +95,13 @@ public class CollisionHandler implements ContactListener {
         }
     }
 
+    /**
+     * This method is called when an astronaut collides with an oxygen station. As long as the oxygen station still has
+     * a refill it will set the player's refilling boolean to true. The player's update method will increment the oxygen
+     * level while refilling is true.
+     * @param fixA
+     * @param fixB
+     */
     private void handleOxygenRefill(Fixture fixA, Fixture fixB) {
         OxygenStation oxy = (OxygenStation) fixA.getBody().getUserData();
         Astronaut player = (Astronaut) fixB.getBody().getUserData();
@@ -91,12 +112,24 @@ public class CollisionHandler implements ContactListener {
         }
     }
 
+    /**
+     * This method sets the player's refilling boolean to false. The player's update method will no longer increment the
+     * oxygen level when refilling is false.
+     * @param fix
+     */
     private void handleOxygenRefillEnd(Fixture fix) {
         Astronaut player = (Astronaut) fix.getBody().getUserData();
         //The refilling logic is in the astronauts update method. If refilling is true the level increments else it decrements.
         player.setRefillingOxygen(false);
     }
 
+    /**
+     * This method is called when the astronaut collides with the life support structure. It check's the player's
+     * inventory for one of each color bear. If the player has all the bears it will set the life support structure to
+     * fixed.
+     * @param fixA
+     * @param fixB
+     */
     private void handleLifeSupport(Fixture fixA, Fixture fixB){
         Astronaut player = (Astronaut) fixB.getBody().getUserData();
         LifeSupport lifeSupport = (LifeSupport) fixA.getBody().getUserData();

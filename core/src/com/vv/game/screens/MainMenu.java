@@ -1,24 +1,13 @@
 package com.vv.game.screens;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
-import com.vv.game.utils.GameInput;
-
 import java.io.File;
 
-import static com.vv.game.VidarVoyager.PPM;
-import static com.vv.game.VidarVoyager.debugging;
 
 /**
  * This is the Main Menu Screen Class. It uses an orthographic camera and a fitViewport. There will be a simple puzzle
@@ -30,7 +19,6 @@ import static com.vv.game.VidarVoyager.debugging;
 public class MainMenu extends AbstractScreen {
     private final Stage stage;
     private final OrthographicCamera cam;
-    private final Texture startTexture;
     private final int startX = 430;
     private final int startY = 525;
     private final int buttonWidth = 150;
@@ -40,11 +28,16 @@ public class MainMenu extends AbstractScreen {
     private final Texture window2 = new Texture("screens" + File.separator + "background2.png");
     private final Texture window3 = new Texture("screens" + File.separator + "background3.png");
     private final Texture window4 = new Texture("screens" + File.separator + "background4.png");
+    private final Texture startTexture = new Texture("screens" + File.separator + "StartButton.png");
     private final Timer timer = new Timer();
     public static int window2x = 0;
     public static int window3x = 0;
     public static int window4x = 0;
 
+    /**
+     * The Main Menu constructor sets up the camera and stage which are used to render textures. It also starts 3 timers
+     * to increment the x position of the window textures giving them a parallax effect.
+     */
     public MainMenu(){
         super();
         cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
@@ -54,25 +47,18 @@ public class MainMenu extends AbstractScreen {
         cam.position.set((float) VidarVoyager.APP_WIDTH/2, (float) VidarVoyager.APP_HEIGHT/2, 0);
         cam.update();
 
-        startTexture = new Texture("screens" + File.separator + "StartButton.png");
-
         timer.scheduleTask(new Timer.Task() { @Override public void run() {MainMenu.window4x--;}},1f,1f);
         timer.scheduleTask(new Timer.Task() { @Override public void run() {MainMenu.window3x--;}},.1f,.1f);
         timer.scheduleTask(new Timer.Task() {@Override public void run() {MainMenu.window2x--;}},.06f,.06f);
         timer.start();
     }
 
-    private void drawBackground(){
-        batch.draw(window1, 0, 0);
-        batch.draw(window2, window2x, 0);
-        batch.draw(window2, window2x + VidarVoyager.APP_WIDTH, 0);
-        batch.draw(window3, window3x, 0);
-        batch.draw(window3, window3x + VidarVoyager.APP_WIDTH, 0);
-        batch.draw(window4, window4x, 0);
-        batch.draw(window4, window4x + VidarVoyager.APP_WIDTH, 0);
-        batch.draw(ship, 0, 0);
-    }
-
+    /**
+     * This method will return the name of a button as a string if there are any buttons being pressed.
+     * @param x
+     * @param y
+     * @return
+     */
     @Override
     public String getButtonPressed(float x, float y){
         String temp = "none";
@@ -84,6 +70,11 @@ public class MainMenu extends AbstractScreen {
         return temp;
     }
 
+    /**
+     * This method is used to call the stage's act method and to reset window texture x positions so that the parallax
+     * effect will continue in an infinite loop.
+     * @param deltaTime
+     */
     @Override
     public void update(float deltaTime) {
         stage.act(deltaTime);
@@ -98,6 +89,11 @@ public class MainMenu extends AbstractScreen {
         }
     }
 
+    /**
+     * This method is called and the player's position is used to update the camera position.
+     * @param x
+     * @param y
+     */
     @Override
     public void updateCam(float x, float y) { cam.position.set(x, y,0); }
 
@@ -110,6 +106,10 @@ public class MainMenu extends AbstractScreen {
     @Override
     public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
 
+    /**
+     * This is the render method. The order that things get rendered in matters. Everything draws over the previous thing.
+     * @param deltaTime The time in seconds since the last render.
+     */
     @Override
     public void render(float deltaTime) {
         super.render(deltaTime);
@@ -122,6 +122,24 @@ public class MainMenu extends AbstractScreen {
         batch.end();
     }
 
+    /**
+     * This method is used to draw the background textures in the correct order. Everything else will be drawn after
+     * this method is called.
+     */
+    private void drawBackground(){
+        batch.draw(window1, 0, 0);
+        batch.draw(window2, window2x, 0);
+        batch.draw(window2, window2x + VidarVoyager.APP_WIDTH, 0);
+        batch.draw(window3, window3x, 0);
+        batch.draw(window3, window3x + VidarVoyager.APP_WIDTH, 0);
+        batch.draw(window4, window4x, 0);
+        batch.draw(window4, window4x + VidarVoyager.APP_WIDTH, 0);
+        batch.draw(ship, 0, 0);
+    }
+
+    /**
+     * This method is called when the game is destroyed.
+     */
     @Override
     public void dispose() {
         super.dispose();
@@ -132,15 +150,27 @@ public class MainMenu extends AbstractScreen {
         window4.dispose();
     }
 
+    /**
+     * Called when this screen becomes the current screen for the Game.
+     */
     @Override
     public void show() { batch.setProjectionMatrix(cam.combined); }
 
+    /**
+     * This method is called when the screen is paused.
+     */
     @Override
     public void pause() { timer.stop(); }
 
+    /**
+     * This method is called when resuming the screen from a paused state.
+     */
     @Override
     public void resume() { timer.start(); }
 
+    /**
+     * This method is called when the screen is no longer the current screen for the game.
+     */
     @Override
     public void hide() { timer.stop(); }
 }
