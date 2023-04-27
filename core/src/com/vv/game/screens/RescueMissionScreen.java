@@ -88,12 +88,6 @@ public class RescueMissionScreen extends AbstractScreen {
         return temp;
     }
 
-    @Override
-    public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
-
-    @Override
-    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
-
     /**
      * This method is called to update camera and act on the stage. It also updates the inventory textures that need to
      * be displayed and the oxygen level of the player.

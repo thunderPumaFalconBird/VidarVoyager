@@ -1,16 +1,13 @@
 package com.vv.game.rescueMission;
 
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.vv.game.rescueMission.entities.collectable.Collectable;
-import com.vv.game.rescueMission.entities.collectable.TeddyBear;
 import com.vv.game.rescueMission.entities.movable.Astronaut;
+import com.vv.game.rescueMission.puzzles.Puzzle;
 
 
 /**
@@ -25,80 +22,93 @@ public class RescueMission {
     private Array<Level> levels;
     private int currentLevelIndex = 0;
 
+    /**
+     * This rescue mission constructor initializes the first level.
+     */
     public RescueMission(){
         levels = new Array<>();
         levels.add(new Level(1));
     }
 
-    public void initPlayer(Stage stage, InputMultiplexer multiplexer){
+    /**
+     * This method initializes the player. It is used to place the player in the current level and activate the input
+     * processor.
+     * @param stage
+     */
+    public void initPlayer(Stage stage){
         player = new Astronaut(stage,
                 levels.get(currentLevelIndex).getWorld(),
                 new Vector2(levels.get(currentLevelIndex).getPlayerStartPosition().x,
                         levels.get(currentLevelIndex).getPlayerStartPosition().y));
         //add the players input processor to the multiplexer
-        multiplexer.addProcessor(player);
+        stage.addActor(player);
     }
 
     public TiledMap getMap(){ return levels.get(currentLevelIndex).getMap(); }
 
     public World getWorld(){ return levels.get(currentLevelIndex).getWorld(); }
 
-    public Astronaut getPlayer(){ return player; }
+    public Vector2 getPlayerPosition(){ return player.getBody().getPosition(); }
 
-    public void addActors(Stage stage){
-        levels.get(currentLevelIndex).addActors(stage);
-        stage.addActor(player);
-    }
+    public Puzzle getPuzzle(){ return levels.get(currentLevelIndex).getActivePuzzle(); }
 
+    /**
+     * This method adds any drawable actors in the current level that are not playable.
+     * @param stage
+     */
+    public void addLevelActors(Stage stage){ levels.get(currentLevelIndex).addActors(stage); }
+
+    /**
+     * This method is called based on the APP_FPS (frames per second) to update the current level and player.
+     */
     public void update(){
         levels.get(currentLevelIndex).update();
         player.update();
     }
 
-    public Vector2 getPlayerPosition(){ return player.getBody().getPosition(); }
+    /**
+     * This method checks if the players current state is dead.
+     * @return
+     */
+    public boolean checkForDeath() { return (player.getCurrentState() == Astronaut.STATE.dead); }
 
-    public boolean checkForDeath() {
-        return (player.getCurrentState() == Astronaut.STATE.dead);
+    /**
+     * This method is called to check if the main task of the current level is complete.
+     * @return
+     */
+    public boolean checkForWin() { return levels.get(currentLevelIndex).checkForWin(); }
+
+    /**
+     * This method is used to remove the input processing of the player from the multiplexer.
+     * @param multiplexer
+     */
+    public void removeAstroMultiplexer(InputMultiplexer multiplexer){ player.removeMultiplexer(multiplexer); }
+
+    /**
+     * This method is used to remove the input processing of the current puzzle from the multiplexer.
+     * @param multiplexer
+     */
+    public void removePuzzleMultiplexer(InputMultiplexer multiplexer){
+        multiplexer.removeProcessor(levels.get(currentLevelIndex).getActivePuzzle());
     }
 
-    //TODO fix this. The collision handler has the same code... what is this?
-    public boolean checkForWin() {
-        boolean temp = false;
-        if(levels.get(currentLevelIndex).checkForWin()){
-            boolean[] bears = {false, false, false, false, false};
+    /**
+     * This method is used to add the input processing of the player from the multiplexer.
+     * @param multiplexer
+     */
+    public void addAstroMultiplexer(InputMultiplexer multiplexer){ multiplexer.addProcessor(player); }
 
-            Array<Collectable> tempInventory = player.getInventory();
-            for (int i = 0; i < tempInventory.size; i++){
-                if(tempInventory.get(i).getBody().getUserData() instanceof TeddyBear){
-                    TeddyBear tempBear = (TeddyBear) tempInventory.get(i).getBody().getUserData();
-                    TeddyBear.COLOR tempColor = tempBear.getTeddyColor();
-                    if(tempColor == TeddyBear.COLOR.BLUE){
-                        bears[0] = true;
-                    }
-                    else if(tempColor == TeddyBear.COLOR.GREEN){
-                        bears[1] = true;
-                    }
-                    else if(tempColor == TeddyBear.COLOR.ORANGE){
-                        bears[2] = true;
-                    }
-                    else if(tempColor == TeddyBear.COLOR.PINK){
-                        bears[3] = true;
-                    }
-                    else if(tempColor == TeddyBear.COLOR.RED){
-                        bears[4] = true;
-                    }
-                }
-            }
-            if(bears[0] && bears[1] && bears[2] && bears[3] && bears[4]){
-                temp = true;
-            }
-            else{
-                levels.get(currentLevelIndex).resetWinFlag();
-            }
-        }
-        return temp;
+    /**
+     * This method is used to add the input processing of the current puzzle from the multiplexer.
+     * @param multiplexer
+     */
+    public void addPuzzleMultiplexer(InputMultiplexer multiplexer){
+        multiplexer.addProcessor(levels.get(currentLevelIndex).getActivePuzzle());
     }
 
+    /**
+     * This method is called when the game is destroyed.
+     */
     public void dispose () {
         for(int i = 0; i < levels.size; i++){
             levels.get(i).dispose();

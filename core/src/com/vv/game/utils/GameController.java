@@ -17,22 +17,27 @@ import com.vv.game.screens.ScreenController.SCREEN_STATE;
  * @version 1.0
  */
 public class GameController {
-    private final InputMultiplexer multiplexer;
+    private static GameController instance = new GameController();
     private final RescueMission rescueMission;
+    private InputMultiplexer multiplexer;
     private MadPlanets madPlanets;
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
-    private boolean gameOver = false;
-    private boolean gameWon = false;
 
     /**
      * The GameController constructor creates all the games. The multiplexer reference is used to add or remove input
      * processors for any playable characters.
-     * @param multiplexer
      */
-    public GameController(InputMultiplexer multiplexer){
-        this.multiplexer = multiplexer;
+    private GameController(){
         rescueMission = new RescueMission();
     }
+
+    /**
+     * The multiplexer reference is used to add or remove input processors for any playable characters.
+     * @param multiplexer
+     */
+    public void initMultiplexer(InputMultiplexer multiplexer) { this.multiplexer = multiplexer; }
+
+    public static GameController getInstance() { return instance; }
 
 
     /**
@@ -67,9 +72,47 @@ public class GameController {
         return tempWorld;
     }
 
-    public boolean isGameOver() { return gameOver; }
+    /**
+     * This method checks the appropriate conditions for the current game being over and returns a boolean
+     * @return
+     */
+    public boolean isGameOver() {
+        boolean over = false;
+        switch (currentScreen){
+            case RESCUE_MISSION_SCREEN:
+                over = rescueMission.checkForDeath();
+                break;
+            case MAD_PLANETS_SCREEN: //TODO finish this once madPlanets is done
+                break;
+            case PUZZLE_SCREEN:
+                if(rescueMission.getPuzzle() != null) {
+                    over = rescueMission.getPuzzle().isSolved();
+                }
+                break;
+        }
+        return over;
+    }
 
-    public boolean isGameWon() { return gameWon; }
+    /**
+     * This method checks the appropriate conditions for the current game being won and returns a boolean
+     * @return
+     */
+    public boolean isGameWon() {
+        boolean won = false;
+        switch (currentScreen){
+            case RESCUE_MISSION_SCREEN:
+                won = rescueMission.checkForWin();
+                break;
+            case MAD_PLANETS_SCREEN: //TODO finish this once madPlanets is done
+                break;
+            case PUZZLE_SCREEN:
+                if(rescueMission.getPuzzle() != null) {
+                    won = rescueMission.getPuzzle().isSolved();
+                }
+                break;
+        }
+        return won;
+    }
 
     /**
      * This method is called to add the actors that need to be displayed to the stage of it's corresponding screen.
@@ -79,8 +122,8 @@ public class GameController {
     public void addActors(SCREEN_STATE screen_state, Stage stage){
         switch (screen_state){
             case RESCUE_MISSION_SCREEN:
-                rescueMission.initPlayer(stage, multiplexer);
-                rescueMission.addActors(stage);
+                rescueMission.addLevelActors(stage);
+                rescueMission.initPlayer(stage);
                 break;
             case MAD_PLANETS_SCREEN: //TODO finish this once madPlanets is done
                 break;
@@ -93,16 +136,15 @@ public class GameController {
     public void update(){
         if(currentScreen == SCREEN_STATE.RESCUE_MISSION_SCREEN){
             rescueMission.update();
-            if(rescueMission.checkForDeath()){
-                gameOver = true;
-            }
-            else if(rescueMission.checkForWin()){
-                gameWon = true;
-            }
         }
         else if(currentScreen == SCREEN_STATE.MAD_PLANETS_SCREEN){
             //TODO finish this once madPlanets is done
             int done = 0;
+        }
+        else if(currentScreen == SCREEN_STATE.PUZZLE_SCREEN){
+            if(rescueMission.getPuzzle() != null && !rescueMission.getPuzzle().isSolved()) {
+                rescueMission.getPuzzle().update();
+            }
         }
     }
 
@@ -128,7 +170,35 @@ public class GameController {
      * This method is used to set the current game based on UI input for the screen controller.
      * @param screenState
      */
-    public void setCurrentGame(SCREEN_STATE screenState){ currentScreen = screenState; }
+    public void setCurrentGame(SCREEN_STATE screenState){
+        if(currentScreen!= screenState){
+            //remove old processor
+            switch (currentScreen){
+                case RESCUE_MISSION_SCREEN:
+                    rescueMission.removeAstroMultiplexer(multiplexer);
+                    break;
+                case MAD_PLANETS_SCREEN: //TODO finish this once madPlanets is done
+                    break;
+                case PUZZLE_SCREEN:
+                    rescueMission.removePuzzleMultiplexer(multiplexer);
+                    break;
+            }
+
+            currentScreen = screenState;
+
+            //add new processor
+            switch (screenState){
+                case RESCUE_MISSION_SCREEN:
+                    rescueMission.addAstroMultiplexer(multiplexer);
+                    break;
+                case MAD_PLANETS_SCREEN: //TODO finish this once madPlanets is done
+                    break;
+                case PUZZLE_SCREEN:
+                    rescueMission.addPuzzleMultiplexer(multiplexer);
+                    break;
+            }
+        }
+    }
 
     /**
      * This method is called when the game is destroyed.

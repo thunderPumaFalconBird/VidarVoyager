@@ -1,32 +1,21 @@
-package com.vv.game.rescueMission.puzzles.minesweeper;
+package com.vv.game.rescueMission.puzzles;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.vv.game.rescueMission.puzzles.Puzzle;
 
-import java.util.HashMap;
+import static com.vv.game.VidarVoyager.debugging;
 
-public class MineSweeper extends Puzzle {
+/**
+ * The is a test puzzle class. It is only used for test purposes to ensure the puzzle logic is implemented properly.
+ *
+ */
+public class TestPuzzle extends Puzzle {
     private Stage stage;
-    private HashMap<Vector2, Square> squares;
-    private boolean active = false;
 
-    public MineSweeper(){
-        squares = new HashMap<>();
-    }
-
-
-    public void setStage(Stage stage){
-        //TODO add textures
-        this.stage = stage;
-        stage.addActor(this);
-    }
 
     @Override
-    public void update(){
-        //check input new vec2 - x%100 - y%100 to get vec2 of square.
-        //set Texture based on type of square.
+    public void update() {
+
     }
 
     @Override
@@ -37,7 +26,13 @@ public class MineSweeper extends Puzzle {
 
     @Override
     public boolean isSolved(){
-        return false;
+        return solved;
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        stage.addActor(this);
     }
 
     @Override
@@ -57,13 +52,15 @@ public class MineSweeper extends Puzzle {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //TODO check x and y is within the mineboard
+        solved = true;
+        if(debugging) {
+            System.out.println("solved");
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        //TODO check x and y is within the mineboard
         return false;
     }
 

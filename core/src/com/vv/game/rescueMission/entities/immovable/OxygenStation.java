@@ -5,6 +5,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.VidarVoyager;
 
+/**
+ * This is the Oxygen Station Class. It extends immovable so that it can be added to a box2d world as a stationary
+ * object.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
 public class OxygenStation extends Immovable {
     private int refills = 2;
 

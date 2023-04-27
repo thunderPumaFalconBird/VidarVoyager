@@ -100,12 +100,6 @@ public class MainMenu extends AbstractScreen {
     @Override
     public Stage getStage() { return this.stage; }
 
-    @Override
-    public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
-
-    @Override
-    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
-
     /**
      * This is the render method. The order that things get rendered in matters. Everything draws over the previous thing.
      * @param deltaTime The time in seconds since the last render.

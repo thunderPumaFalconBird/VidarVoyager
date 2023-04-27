@@ -2,7 +2,6 @@ package com.vv.game.rescueMission.entities.collectable;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
@@ -47,6 +46,10 @@ public class TeddyBear extends Collectable{
         }
     }
 
+    /**
+     * this method is used to set the teddy bear color. The map tmx file has a string that is passed in.
+     * @param name
+     */
     private void setTeddyColor(String name) {
         switch (name){
             case "BLUE_TEDDY":

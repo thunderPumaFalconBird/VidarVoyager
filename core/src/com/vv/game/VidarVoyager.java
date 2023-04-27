@@ -34,8 +34,11 @@ public class VidarVoyager implements ApplicationListener {
 	@Override
 	public void create () {
 		multiplexer = new InputMultiplexer();
-		gameController = new GameController(multiplexer);
-		screenController = new ScreenController(multiplexer);
+		gameController = GameController.getInstance();
+		gameController.initMultiplexer(multiplexer);
+
+		screenController = ScreenController.getInstance();
+		screenController.initMultiplexer(multiplexer);
 
 		//Initialize all the screens
 		screenController.initRescueMissionScreen(
@@ -43,6 +46,7 @@ public class VidarVoyager implements ApplicationListener {
 				gameController.getMap(SCREEN_STATE.RESCUE_MISSION_SCREEN)
 				);
 		screenController.initMainMenu();
+		screenController.initPuzzleScreen();
 
 		//Add actors to stage.
 		gameController.addActors(
@@ -63,19 +67,12 @@ public class VidarVoyager implements ApplicationListener {
 		gameController.setCurrentGame(screenController.getCurrentScreenState());
 
 		//UPDATE
-		if(!gameController.isGameOver() && !gameController.isGameWon()) {
-			gameController.update();
-			screenController.updateCam(gameController.getCamUpdate());
-		}
+		gameController.update();
+		screenController.updateCam(gameController.getCamUpdate());
 
-		//This will be handled in the screenController when it is fully implemented
-		else if(gameController.isGameOver()){
-			screenController.setScreen(SCREEN_STATE.GAME_OVER);
-			System.out.println("You died!!");
-		}
-		else if(gameController.isGameWon()){
-			screenController.setScreen(SCREEN_STATE.GAME_WON);
-			System.out.println("You Won The Game!!");
+		//CHECK FOR WIN
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.PUZZLE_SCREEN && gameController.isGameWon()){
+			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 		}
 	}
 

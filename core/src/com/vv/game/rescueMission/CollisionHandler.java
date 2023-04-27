@@ -9,6 +9,8 @@ import com.vv.game.rescueMission.entities.immovable.OxygenStation;
 import com.vv.game.rescueMission.entities.movable.Astronaut;
 import com.vv.game.rescueMission.entities.immovable.Cannon;
 import com.vv.game.rescueMission.entities.immovable.Door;
+import com.vv.game.screens.ScreenController;
+import com.vv.game.utils.GameController;
 
 /**
  * This is the collision handler class. The Level class sets a new collisionHandler for each level.
@@ -17,6 +19,7 @@ import com.vv.game.rescueMission.entities.immovable.Door;
  * @version 1.0
  */
 public class CollisionHandler implements ContactListener {
+    private ScreenController screenController = ScreenController.getInstance();
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {}
@@ -40,10 +43,14 @@ public class CollisionHandler implements ContactListener {
         else if(fixA.getBody().getUserData() instanceof Door && fixB.getBody().getUserData() instanceof Astronaut){
             Door door = (Door) fixA.getBody().getUserData();
             door.setActive(true);
+            screenController.setScreen(ScreenController.SCREEN_STATE.PUZZLE_SCREEN);
+            door.getPuzzle().setStage(screenController.getScreenStage(ScreenController.SCREEN_STATE.PUZZLE_SCREEN));
         }
         else if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Door){
             Door door = (Door) fixA.getBody().getUserData();
             door.setActive(true);
+            screenController.setScreen(ScreenController.SCREEN_STATE.PUZZLE_SCREEN);
+            door.getPuzzle().setStage(screenController.getScreenStage(ScreenController.SCREEN_STATE.PUZZLE_SCREEN));
         }
         else if(fixA.getBody().getUserData() instanceof Collectable && fixB.getBody().getUserData() instanceof Astronaut){
             handleItem(fixA, fixB);

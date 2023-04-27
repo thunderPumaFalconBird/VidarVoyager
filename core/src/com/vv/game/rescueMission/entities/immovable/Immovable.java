@@ -6,14 +6,28 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.vv.game.VidarVoyager;
 
+/**
+ * This is the immovable abstract class. It is used by objects that do not move.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
 public abstract class Immovable extends Actor {
     protected final World world;
     protected Body body;
 
+    /**
+     * The immovable constructor sets the box2d world.
+     * @param world
+     */
     public Immovable(World world){
         this.world = world;
     }
 
+    /**
+     * This method is called to create a static body in the box2d world.
+     * @param object
+     */
     public void createBody(RectangleMapObject object){
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -34,6 +48,4 @@ public abstract class Immovable extends Actor {
     }
 
     public Body getBody(){ return body; }
-
-    public void destroyBody() { world.destroyBody(body); }
 }

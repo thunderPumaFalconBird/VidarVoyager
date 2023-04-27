@@ -5,6 +5,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.VidarVoyager;
 
+/**
+ * This is the ammoStation class. Currently, the player can not collect ammo.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
 public class AmmoStation extends Immovable {
 
     public AmmoStation(World world, RectangleMapObject object){

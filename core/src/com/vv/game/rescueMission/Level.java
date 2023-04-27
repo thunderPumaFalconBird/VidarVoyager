@@ -1,7 +1,5 @@
 package com.vv.game.rescueMission;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.entities.collectable.*;
 import com.vv.game.rescueMission.entities.immovable.*;
+import com.vv.game.rescueMission.puzzles.Puzzle;
 
 import java.io.File;
 import java.util.HashMap;
@@ -37,6 +36,9 @@ public class Level {
     private HashMap<Vector2, Cannon> cannons;
     private Array<Door> doors;
 
+    /**
+     * The constructor initializes the level based on the levelNumber.
+     */
     public Level(int levelNumber){
         world = new World(new Vector2(0f, 0f), false);
         this.levelNumber = levelNumber;
@@ -77,6 +79,10 @@ public class Level {
         world.setContactListener(new CollisionHandler());
     }
 
+    /**
+     * This method checks if the main task for the level is completed.
+     * @return
+     */
     public boolean checkForWin() {
         boolean temp = false;
         if(levelNumber == 1){
@@ -85,18 +91,30 @@ public class Level {
         return temp;
     }
 
-    public void resetWinFlag() {
-        if(levelNumber == 1){
-            lifeSupports.get(0).setFixed(false);
-        }
-    }
-
     public TiledMap getMap() { return map; }
 
     public World getWorld() { return world; }
 
     public Vector2 getPlayerStartPosition() { return playerStartPosition; }
 
+    /**
+     * This method checks all the doors for an active puzzle and returns it. If there is no puzzle it will return null.
+     * @return
+     */
+    public Puzzle getActivePuzzle(){
+        Puzzle temp = null;
+        for(int i = 0; i < doors.size; i++){
+            if(doors.get(i).isActive()){
+                temp = doors.get(i).getPuzzle();
+            }
+        }
+        return temp;
+    }
+
+    /**
+     * This method adds any drawable actors to the stage. Immovable map objects are not added to the stage.
+     * @param stage
+     */
     public void addActors(Stage stage){
         for(int i = 0; i < doors.size; i++){
             stage.addActor(doors.get(i));
@@ -106,6 +124,10 @@ public class Level {
         }
     }
 
+    /**
+     * This method is called based on the APP_FPS (frames per second). It steps the world forward which applies any
+     * box2d physics changes to bodies in the World. It also updated collectable items.
+     */
     public void update(){
         world.step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
                 VidarVoyager.POSITION_ITERATIONS);
@@ -115,8 +137,17 @@ public class Level {
                 collectables.get(i).pickUpItem();
             }
         }
+        for(int i = 0; i < doors.size; i++){
+            if(doors.get(i).getPuzzle().isSolved()){
+                doors.get(i).getBody().setActive(false);
+            }
+        }
     }
 
+    /**
+     * This method is used to start the players position based on an object name startPosition in the level tmx file.
+     * @param index
+     */
     public void setPlayerStartPosition(int index) {
         if(map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0) != null) {
             RectangleMapObject object = map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0);
@@ -148,6 +179,10 @@ public class Level {
         }
     }
 
+    /**
+     * This initializes ammoStations. The index indicates the current map layer.
+     * @param index
+     */
     public void initAmmoStations(int index){
         ammoStations = new Array<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
@@ -155,6 +190,11 @@ public class Level {
         }
     }
 
+    /**
+     * This initializes cannons. The index indicates the current map layer. This also initializes th ranges for cannons.
+     * The ranges are used in the collision handler to activate the cannons.
+     * @param index
+     */
     private void initCannons(int index) {
         cannons = new HashMap<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
@@ -181,6 +221,10 @@ public class Level {
         }
     }
 
+    /**
+     * This initializes the lifeSupport object. The index indicates the current map layer.
+     * @param index
+     */
     private void initLifeSupports(int index) {
         lifeSupports = new Array<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
@@ -188,6 +232,10 @@ public class Level {
         }
     }
 
+    /**
+     * This initializes oxygen stations. The index indicates the current map layer.
+     * @param index
+     */
     private void initOxygenStations(int index) {
         oxygenStations = new Array<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
@@ -195,6 +243,10 @@ public class Level {
         }
     }
 
+    /**
+     * This initializes doors. The index indicates the current map layer.
+     * @param index
+     */
     private void initDoors(int index) {
         doors = new Array<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
@@ -202,6 +254,10 @@ public class Level {
         }
     }
 
+    /**
+     * This initializes collectable items. The index indicates the current map layer.
+     * @param index
+     */
     private void initCollectables(int index) {
         collectables = new Array<>();
         for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
@@ -232,6 +288,9 @@ public class Level {
         }
     }
 
+    /**
+     * this method is called when the game is destroyed.
+     */
     public void dispose(){
         world.dispose();
         map.dispose();

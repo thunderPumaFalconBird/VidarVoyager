@@ -2,6 +2,7 @@ package com.vv.game.rescueMission.entities.movable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -61,6 +62,13 @@ public class Astronaut  extends Movable implements InputProcessor {
     private float oxygenLevel = 100;
     private boolean refillingOxygen = false;
 
+    /**
+     * The astronaut constructor calls the movable constructor to set the world. It then initializes the animations and
+     * world body.
+     * @param stage
+     * @param world
+     * @param startPosition
+     */
     public Astronaut(Stage stage, World world, Vector2 startPosition){
         super(world);
         currentFrame = new TextureRegion();
@@ -74,6 +82,11 @@ public class Astronaut  extends Movable implements InputProcessor {
         body.setUserData(this);
     }
 
+    /**
+     * This method is called when the astronaut collides with a collectable item.
+     * @param item
+     * @return
+     */
     public boolean pickUpItem(Collectable item){
         boolean temp = false;
         if(inventory.size < INVENTORY_MAX) {
@@ -93,6 +106,22 @@ public class Astronaut  extends Movable implements InputProcessor {
 
     public int getCurrentItem() { return currentItem; }
 
+    /**
+     * This is used to remove the multiplexer as well as take away any key inputs the player was pressing before this
+     * method was called.
+     * @param multiplexer
+     */
+    public void removeMultiplexer(InputMultiplexer multiplexer){
+        multiplexer.removeProcessor(this);
+        for(int i = 0; i < keyInputs.size; i++){
+            keyUp(keyInputs.get(i));
+        }
+    }
+
+    /**
+     * This method is called based on APP_FPS (frames per second) and updates the player based on user input. The oxygen
+     * is updated based on refilling boolean.
+     */
     @Override
     public void update(){
 
@@ -184,12 +213,24 @@ public class Astronaut  extends Movable implements InputProcessor {
         }
     }
 
+    /**
+     * This method is called to display the animation on the screen.
+     * @param batch
+     * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
+     *           children.
+     */
     @Override
     public void draw(Batch batch, float parentAlpha){
         batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
                 body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
     }
 
+    /**
+     * This method checks input for keys that are used by the astronaut and adds those keys to an array. It returns true
+     * if a key is added to the array.
+     * @param keycode one of the constants in {@link Input.Keys}
+     * @return
+     */
     @Override
     public boolean keyDown(int keycode) {
         boolean returnValue = false;
@@ -202,6 +243,12 @@ public class Astronaut  extends Movable implements InputProcessor {
         return returnValue;
     }
 
+    /**
+     * This method checks input for keys that are used by the astronaut and removes those keys from the array. It
+     * returns true if a key is removed from the array.
+     * @param keycode one of the constants in {@link Input.Keys}
+     * @return
+     */
     @Override
     public boolean keyUp(int keycode) {
         boolean returnValue = false;
@@ -269,6 +316,9 @@ public class Astronaut  extends Movable implements InputProcessor {
         return false;
     }
 
+    /**
+     * This method initializes the astronaut animations.
+     */
     private void initAnimations(){
         animations = new EnumMap<>(STATE.class);
         TextureAtlas textureAtlas = new TextureAtlas("astronaut" + File.separator + "astronaut2.txt");

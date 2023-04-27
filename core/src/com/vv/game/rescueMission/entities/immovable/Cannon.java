@@ -7,6 +7,13 @@ import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.entities.movable.Lasers;
 
+/**
+ * This is the connon class. Cannons have a range that is used to fire the cannon when a playable character collides
+ * with the range.
+ *
+ * @author thunderPumaFalconBird
+ * @version 1.0
+ */
 public class Cannon extends Immovable {
     private Body rangeBody;
     private Array<Lasers> lasers;
@@ -21,11 +28,19 @@ public class Cannon extends Immovable {
         lasers = new Array<>();
     }
 
+    /**
+     * This method is called when a playable character collides the cannon range.
+     */
     public void fireCannon(){
         //TODO create lasers
 
     }
 
+    /**
+     * This method is called after the cannon is initialized. The range body is used by the collision handler to fire
+     * the cannon.
+     * @param object
+     */
     public void setRangeBody(RectangleMapObject object){
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -46,6 +61,4 @@ public class Cannon extends Immovable {
         rangeBody.createFixture(fdef);
         rangeBody.setUserData(this);
     }
-
-    public void destroyRangeBody(){ world.destroyBody(rangeBody);}
 }

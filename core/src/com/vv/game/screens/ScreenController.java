@@ -19,10 +19,12 @@ import static com.vv.game.VidarVoyager.debugging;
  * @version 1.0
  */
 public class ScreenController implements InputProcessor {
+    private static ScreenController instance = new ScreenController();
     /* This enumeration is used as keys for the enumMap that holds the screens */
     public enum SCREEN_STATE {
         MAIN_MENU,
         RESCUE_MISSION_SCREEN,
+        PUZZLE_SCREEN,
         MAD_PLANETS_SCREEN,
         GAME_OVER,
         GAME_WON
@@ -33,13 +35,10 @@ public class ScreenController implements InputProcessor {
 
     /**
      * The ScreenController constructor creates the enumMap of the screens. The screens are added to the enumMap using
-     * init methods below. The screenController is also added to the multiplexer so that input can be handled for UI.
-     * @param multiplexer
+     * init methods below. This constructor is private because screenController is a singleton.
      */
-    public ScreenController(InputMultiplexer multiplexer) {
-        this.multiplexer = multiplexer;
+    private ScreenController() {
         this.screens = new EnumMap<>(SCREEN_STATE.class);
-        multiplexer.addProcessor(this);
     }
 
     /**
@@ -58,23 +57,40 @@ public class ScreenController implements InputProcessor {
     public void initMainMenu(){ this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu()); }
 
     /**
+     * This method initializes the puzzle screen and adds it to the enumMap.
+     */
+    public void initPuzzleScreen(){ this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen()); }
+
+
+    /**
+     *  The multiplexer is set and the screenController is also added to the multiplexer so that input can be handled
+     *  for UI.
+     * @param multiplexer
+     */
+    public void initMultiplexer(InputMultiplexer multiplexer){
+        this.multiplexer = multiplexer;
+        multiplexer.addProcessor(this);
+    }
+
+    /**
      * This method sets the current screen using the SCREEN_STATE enum. It also calls the hide method for the previous
      * screen and the show method for the current screen.
      * @param screen
      */
     public void setScreen(SCREEN_STATE screen){
-        if(screen == SCREEN_STATE.GAME_OVER){
-            screens.get(currentScreen).setGameOver(true);
-        }
-        else if(screen == SCREEN_STATE.GAME_WON){
-            screens.get(currentScreen).setGameWon(true);
-        }
-        else {
-            screens.get(currentScreen).hide();
-            currentScreen = screen;
+        if(screen != currentScreen) {
+            if (screen == SCREEN_STATE.GAME_OVER) {
+                screens.get(currentScreen).setGameOver(true);
+            } else if (screen == SCREEN_STATE.GAME_WON) {
+                screens.get(currentScreen).setGameWon(true);
+            }
+            else {
+                screens.get(currentScreen).hide();
+                currentScreen = screen;
 
-            screens.get(screen).show();
-            screens.get(screen).resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                screens.get(screen).show();
+                screens.get(screen).resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            }
         }
     }
 
@@ -87,6 +103,8 @@ public class ScreenController implements InputProcessor {
             getCurrentScreen().updateCam(vector2.x, vector2.y);
         }
     }
+
+    public static ScreenController getInstance() { return instance; }
 
     public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
 
