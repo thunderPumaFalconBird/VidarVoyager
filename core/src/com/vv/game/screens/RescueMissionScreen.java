@@ -24,11 +24,13 @@ import java.io.File;
  * @version 1.0
  */
 public class RescueMissionScreen extends AbstractScreen {
-    private final float inventoryOffsetX = 96;
-    private final float inventoryOffsetY = 60;
-    private final float oxygenOffsetX = 796;
-    private final float oxygenOffsetY = 85;
-    private final float oxygenBarWidth = 15;
+    private final float INVENTORY_OFFSET_X = 96;
+    private final float INVENTORY_BAR_OFFSET_X = 60;
+    private final float INVENTORY_BAR_OFFSET_Y = 81;
+    private final float OXYGEN_OFFSET_X = 796;
+    private final float OXYGEN_OFFSET_Y = 86;
+    private final float OXYGEN_BAR_WIDTH = 15;
+    private final float INVENTORY_HIGHLIGHT_OFFSET = 21;
     private final Stage stage;
     private final OrthographicCamera cam;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -144,19 +146,19 @@ public class RescueMissionScreen extends AbstractScreen {
 
         for(int i = 0; i < inventoryTextures.size; i++){
             batch.draw(inventoryTextures.get(i),
-                    inventoryX + i*inventoryOffsetX + inventoryOffsetY,
-                    inventoryY + inventoryOffsetY
+                    inventoryX + i* INVENTORY_OFFSET_X + INVENTORY_BAR_OFFSET_X,
+                    inventoryY + INVENTORY_BAR_OFFSET_Y
                     );
         }
         for(int i = 0; i < oxygenBarsNumber; i++){
             batch.draw(oxygenBarTexture,
-                    inventoryX + i*oxygenBarWidth + oxygenOffsetX,
-                    inventoryY + oxygenOffsetY);
+                    inventoryX + i* OXYGEN_BAR_WIDTH + OXYGEN_OFFSET_X,
+                    inventoryY + OXYGEN_OFFSET_Y);
         }
 
         batch.draw(highlight,
                 inventoryX + inventoryHighlightX*100,
-                inventoryY);
+                inventoryY + INVENTORY_HIGHLIGHT_OFFSET);
         if(VidarVoyager.debugging){
             b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
         }

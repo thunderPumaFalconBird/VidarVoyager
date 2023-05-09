@@ -23,7 +23,7 @@ public class MainMenu extends AbstractScreen {
     private final int startY = 525;
     private final int buttonWidth = 150;
     private final int buttonHeight = 50;
-    private final Texture ship = new Texture("screens" + File.separator + "shipRedWithInstructions.png");
+    private final Texture ship = new Texture("screens" + File.separator + "shipRed.png");
     private final Texture window1 = new Texture("screens" + File.separator + "background1.png");
     private final Texture window2 = new Texture("screens" + File.separator + "background2.png");
     private final Texture window3 = new Texture("screens" + File.separator + "background3.png");
