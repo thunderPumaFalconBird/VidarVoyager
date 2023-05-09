@@ -362,6 +362,12 @@ public class MineSweeper extends Puzzle {
 
             handled = true;
         }
+        else{
+            if(screenX < 100 && screenY < 100 && button == Input.Buttons.RIGHT){
+                solved = true;
+                handled = true;
+            }
+        }
         return handled;
     }
 
