@@ -11,13 +11,13 @@ import java.io.File;
 /**
  * This is the abstract puzzle class. It extends the actor class so that a puzzle can be added to a stage and the
  * overriden draw method will be called during rendering of the stage. It implements inputProcessor and each puzzle
- * will handle it's own input. The puzzle background will be the same for all puzzles.
+ * will handle its own input. The puzzle background will be the same for all puzzles.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
  */
 public abstract class Puzzle extends Actor implements InputProcessor {
-    private Texture background = new Texture("screens" + File.separator + "PuzzleBackgroundStars.png");
+    private Texture background = new Texture("screens" + File.separator + "PuzzleBackground.png");
     protected boolean solved = false;
 
     public Puzzle(){
@@ -30,9 +30,18 @@ public abstract class Puzzle extends Actor implements InputProcessor {
 
     public abstract boolean isSolved();
 
+    public abstract boolean isActive();
+
+    public abstract void setActive(boolean active);
+
+    /**
+     * This method is called by the subclass to draw a simple background.
+     * @param batch
+     * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
+     *           children.
+     */
     @Override
     public void draw(Batch batch, float parentAlpha){
         batch.draw(background, 0,0);
     }
-
 }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.puzzles.Puzzle;
 import com.vv.game.rescueMission.puzzles.TestPuzzle;
+import com.vv.game.rescueMission.puzzles.minesweeper.MineSweeper;
 
 import java.io.File;
 
@@ -19,8 +20,7 @@ import java.io.File;
  */
 public class Door extends Immovable {
     private final Texture doorTexture = new Texture("maps" + File.separator + "doorClosed300.png");
-    private Puzzle puzzle = new TestPuzzle();
-    private boolean active = false;
+    private Puzzle puzzle = new MineSweeper();
 
     /**
      * The door constructor is used to call the immovable constructor. Then the box2d body is created.
@@ -43,13 +43,13 @@ public class Door extends Immovable {
      * This method is called when a player collides with the door.
      * @param active
      */
-    public void setActive(boolean active){ this.active = active; }
+    public void setActive(boolean active){ puzzle.setActive(active); }
 
     /**
      * This method is called to check if the puzzle is being used.
      * @return
      */
-    public boolean isActive(){ return active; }
+    public boolean isActive(){ return puzzle.isActive(); }
 
     /**
      * This method is called to draw doors if the door has not been unlocked.
@@ -62,9 +62,6 @@ public class Door extends Immovable {
         if(!puzzle.isSolved()) {
             batch.draw(doorTexture, body.getPosition().x * VidarVoyager.PPM - ((float) doorTexture.getWidth() / 2),
                     body.getPosition().y * VidarVoyager.PPM - ((float) doorTexture.getHeight() / 2));
-        }
-        else{
-            active = false;
         }
     }
 

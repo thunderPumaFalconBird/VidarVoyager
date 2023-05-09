@@ -1,10 +1,14 @@
-package com.vv.game.screens;
+package com.vv.game.utils;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.vv.game.screens.AbstractScreen;
+import com.vv.game.screens.MainMenu;
+import com.vv.game.screens.PuzzleScreen;
+import com.vv.game.screens.RescueMissionScreen;
 
 import java.util.EnumMap;
 
@@ -170,7 +174,7 @@ public class ScreenController implements InputProcessor {
                 returnValue = true;
                 break;
         }
-        return false;
+        return returnValue;
     }
 
     /**

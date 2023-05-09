@@ -3,8 +3,8 @@ package com.vv.game;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.vv.game.screens.ScreenController;
-import com.vv.game.screens.ScreenController.SCREEN_STATE;
+import com.vv.game.utils.ScreenController;
+import com.vv.game.utils.ScreenController.SCREEN_STATE;
 import com.vv.game.utils.GameController;
 
 /**

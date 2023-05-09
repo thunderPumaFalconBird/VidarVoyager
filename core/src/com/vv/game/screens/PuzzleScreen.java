@@ -81,5 +81,5 @@ public class PuzzleScreen extends AbstractScreen{
      * This method is called when the screen is no longer the current screen for the game.
      */
     @Override
-    public void hide() { }
+    public void hide() { /* TODO might want to dispose the stage here. check docs */ }
 }

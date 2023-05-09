@@ -11,6 +11,7 @@ import static com.vv.game.VidarVoyager.debugging;
  */
 public class TestPuzzle extends Puzzle {
     private Stage stage;
+    private boolean active = false;
 
 
     @Override
@@ -25,9 +26,13 @@ public class TestPuzzle extends Puzzle {
     }
 
     @Override
-    public boolean isSolved(){
-        return solved;
-    }
+    public boolean isSolved(){ return solved; }
+
+    @Override
+    public boolean isActive() { return active; }
+
+    @Override
+    public void setActive(boolean active) { this.active = active; }
 
     @Override
     public void setStage(Stage stage) {
@@ -52,10 +57,11 @@ public class TestPuzzle extends Puzzle {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        solved = true;
+        //solved = true;
         if(debugging) {
             System.out.println("solved");
         }
+        System.out.println("x: " + screenX + "  y:" + screenY);
         return false;
     }
 

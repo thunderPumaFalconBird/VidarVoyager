@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.vv.game.madPlanets.MadPlanets;
 import com.vv.game.rescueMission.RescueMission;
-import com.vv.game.screens.ScreenController.SCREEN_STATE;
+import com.vv.game.utils.ScreenController.SCREEN_STATE;
 
 /**
  * This is the Game Controller Class. It is the Model in the Model View Presenter design. It contains rescueMission and
@@ -62,7 +62,7 @@ public class GameController {
      * @return
      */
     public World getWorld(SCREEN_STATE screen_state){
-        World tempWorld = rescueMission.getWorld();;
+        World tempWorld = rescueMission.getWorld();
         switch (screen_state){
             case RESCUE_MISSION_SCREEN: tempWorld = rescueMission.getWorld();
                 break;
@@ -123,6 +123,7 @@ public class GameController {
         switch (screen_state){
             case RESCUE_MISSION_SCREEN:
                 rescueMission.addLevelActors(stage);
+                //Add the player last. Everything in the stage is drawn in the order it was added.
                 rescueMission.initPlayer(stage);
                 break;
             case MAD_PLANETS_SCREEN: //TODO finish this once madPlanets is done
