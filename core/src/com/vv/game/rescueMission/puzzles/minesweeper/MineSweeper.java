@@ -363,6 +363,7 @@ public class MineSweeper extends Puzzle {
             handled = true;
         }
         else{
+            //Cheater's corner for debugging or a reward for curiosity.
             if(screenX < 100 && screenY < 100 && button == Input.Buttons.RIGHT){
                 solved = true;
                 handled = true;
