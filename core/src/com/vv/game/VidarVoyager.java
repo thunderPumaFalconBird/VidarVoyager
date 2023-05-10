@@ -35,10 +35,7 @@ public class VidarVoyager implements ApplicationListener {
 	public void create () {
 		multiplexer = new InputMultiplexer();
 		gameController = GameController.getInstance();
-		gameController.initMultiplexer(multiplexer);
-
 		screenController = ScreenController.getInstance();
-		screenController.initMultiplexer(multiplexer);
 
 		//Initialize all the screens
 		screenController.initRescueMissionScreen(
@@ -47,6 +44,10 @@ public class VidarVoyager implements ApplicationListener {
 				);
 		screenController.initMainMenu();
 		screenController.initPuzzleScreen();
+
+		//Initialize multiplexer
+		screenController.initMultiplexer(multiplexer);
+		gameController.initMultiplexer(multiplexer);
 
 		//Add actors to stage.
 		gameController.addActors(
@@ -68,7 +69,7 @@ public class VidarVoyager implements ApplicationListener {
 
 		//UPDATE
 		gameController.update();
-		screenController.updateCam(gameController.getCamUpdate());
+		screenController.update(gameController.getCamUpdate());
 
 		//CHECK FOR WIN
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.PUZZLE_SCREEN && gameController.isGameWon()){
@@ -87,11 +88,15 @@ public class VidarVoyager implements ApplicationListener {
 	/** Called when the application is paused, usually when it's not active or visible on-screen. An Application is also
 	 * paused before it is destroyed. */
 	@Override
-	public void pause() { screenController.getCurrentScreen().pause(); }
+	public void pause() {
+		screenController.getCurrentScreen().pause();
+		}
 
 	/** Called when the application is resumed from a paused state, usually when it regains focus. */
 	@Override
-	public void resume() { screenController.getCurrentScreen().resume(); }
+	public void resume() {
+		screenController.getCurrentScreen().resume();
+	}
 
 	/** Called when the application is destroyed. Preceded by a call to the pause method. */
 	@Override

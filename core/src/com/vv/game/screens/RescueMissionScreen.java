@@ -1,5 +1,7 @@
 package com.vv.game.screens;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -66,6 +68,23 @@ public class RescueMissionScreen extends AbstractScreen {
 
     public Stage getStage(){ return this.stage; }
 
+    @Override
+    public void initMultiplexer(InputMultiplexer multiplexer){
+
+    }
+
+    @Override
+    public void removeMultiplexer(InputMultiplexer multiplexer){
+
+    }
+
+    @Override
+    public String getButtonPressed(){
+        String temp = "none";
+
+        return temp;
+    }
+
     /**
      * This method is called and the player's position is used to update the camera position.
      * @param x
@@ -74,20 +93,6 @@ public class RescueMissionScreen extends AbstractScreen {
     public void updateCam(float x, float y){
         cam.position.set(x * VidarVoyager.PPM, y * VidarVoyager.PPM, 0);
         cam.update();
-    }
-
-    /**
-     * This method will return the name of a button as a string if there are any buttons being pressed. Currently,
-     * there are no buttons.
-     * @param x
-     * @param y
-     * @return
-     */
-    @Override
-    public String getButtonPressed(float x, float y){
-        String temp = "none";
-
-        return temp;
     }
 
     /**
@@ -182,25 +187,118 @@ public class RescueMissionScreen extends AbstractScreen {
     /**
      * Called when this screen becomes the current screen for the Game.
      */
-    @Override
+
     public void show() { batch.setProjectionMatrix(cam.combined); }
 
     /**
      * This method is called when the screen is paused.
      */
-    @Override
+
     public void pause() { }
 
     /**
      * This method is called when resuming the screen from a paused state.
      */
-    @Override
+
     public void resume() { }
 
     /**
      * This method is called when the screen is no longer the current screen for the game.
      */
-    @Override
+
     public void hide() { }
+
+    /**
+     * Called when a key was pressed.
+     * @param keycode one of the constants in {@link Input.Keys}
+     * @return
+     */
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    /**
+     * Called when a key was released.
+     * @param keycode one of the constants in {@link Input.Keys}
+     * @return
+     */
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    /**
+     * Called when a key was typed.
+     * @param character The character
+     * @return
+     */
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    /**
+     * Called when the screen was touched or a mouse button was pressed. The button parameter will be Input.Buttons.LEFT
+     * on iOS. This is used to set UI buttons pressed.
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @param pointer the pointer for the event.
+     * @param button the button
+     * @return
+     */
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        return false;
+    }
+
+    /**
+     * Called when a finger was lifted or a mouse button was released. The button parameter will be Input.Buttons.LEFT
+     * on iOS.
+     * @param screenX
+     * @param screenY
+     * @param pointer the pointer for the event.
+     * @param button the button
+     * @return
+     */
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    /**
+     * Called when a finger or the mouse was dragged.
+     * @param screenX
+     * @param screenY
+     * @param pointer the pointer for the event.
+     * @return
+     */
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    /**
+     * Called when the mouse was moved without any buttons being pressed. Will not be called on iOS.
+     * @param screenX
+     * @param screenY
+     * @return
+     */
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    /**
+     * Called when the mouse wheel was scrolled. Will not be called on iOS.
+     * @param amountX the horizontal scroll amount, negative or positive depending on the direction the wheel was scrolled.
+     * @param amountY the vertical scroll amount, negative or positive depending on the direction the wheel was scrolled.
+     * @return
+     */
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
+    }
 }
 

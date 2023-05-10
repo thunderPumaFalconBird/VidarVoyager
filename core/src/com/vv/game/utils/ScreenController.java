@@ -22,7 +22,7 @@ import static com.vv.game.VidarVoyager.debugging;
  * @author thunderPumaFalconBird
  * @version 1.0
  */
-public class ScreenController implements InputProcessor {
+public class ScreenController  {
     private static ScreenController instance = new ScreenController();
     /* This enumeration is used as keys for the enumMap that holds the screens */
     public enum SCREEN_STATE {
@@ -73,7 +73,7 @@ public class ScreenController implements InputProcessor {
      */
     public void initMultiplexer(InputMultiplexer multiplexer){
         this.multiplexer = multiplexer;
-        multiplexer.addProcessor(this);
+        screens.get(currentScreen).initMultiplexer(multiplexer);
     }
 
     /**
@@ -89,9 +89,11 @@ public class ScreenController implements InputProcessor {
                 screens.get(currentScreen).setGameWon(true);
             }
             else {
+                screens.get(currentScreen).removeMultiplexer(multiplexer);
                 screens.get(currentScreen).hide();
                 currentScreen = screen;
 
+                screens.get(currentScreen).initMultiplexer(multiplexer);
                 screens.get(screen).show();
                 screens.get(screen).resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
@@ -99,12 +101,23 @@ public class ScreenController implements InputProcessor {
     }
 
     /**
-     * This method will update the camera for any screens that follow the player. The vector2 is the players position.
+     * This method will update the controller. it updates the camera for any screens that follow the player. The
+     * vector2 is the players position.
      * @param vector2
      */
-    public void updateCam(Vector2 vector2){
+    public void update(Vector2 vector2){
         if(currentScreen == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
             getCurrentScreen().updateCam(vector2.x, vector2.y);
+        }
+
+        //if buttons pressed change screen.
+        switch (screens.get(currentScreen).getButtonPressed()){
+            case "start":
+                setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+                break;
+            case "back":
+                break;
+
         }
     }
 
@@ -115,115 +128,6 @@ public class ScreenController implements InputProcessor {
     public Stage getScreenStage(SCREEN_STATE screen){ return screens.get(screen).getStage(); }
 
     public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }
-
-    /**
-     * Called when a key was pressed.
-     * @param keycode one of the constants in {@link Input.Keys}
-     * @return
-     */
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    /**
-     * Called when a key was released.
-     * @param keycode one of the constants in {@link Input.Keys}
-     * @return
-     */
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    /**
-     * Called when a key was typed.
-     * @param character The character
-     * @return
-     */
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    /**
-     * Called when the screen was touched or a mouse button was pressed. The button parameter will be Input.Buttons.LEFT
-     * on iOS. This is used to set UI buttons pressed.
-     * @param screenX The x coordinate, origin is in the upper left corner
-     * @param screenY The y coordinate, origin is in the upper left corner
-     * @param pointer the pointer for the event.
-     * @param button the button
-     * @return
-     */
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(debugging) {
-            System.out.println(screenX + ", " + screenY);
-        }
-        boolean returnValue = false;
-        String temp = screens.get(currentScreen).getButtonPressed(screenX, screenY);
-        switch (temp){
-            case"start":
-                setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
-                returnValue = true;
-                break;
-            case"login":
-                break;
-            case"backToMain":
-                setScreen(SCREEN_STATE.MAIN_MENU);
-                returnValue = true;
-                break;
-        }
-        return returnValue;
-    }
-
-    /**
-     * Called when a finger was lifted or a mouse button was released. The button parameter will be Input.Buttons.LEFT
-     * on iOS.
-     * @param screenX
-     * @param screenY
-     * @param pointer the pointer for the event.
-     * @param button the button
-     * @return
-     */
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    /**
-     * Called when a finger or the mouse was dragged.
-     * @param screenX
-     * @param screenY
-     * @param pointer the pointer for the event.
-     * @return
-     */
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    /**
-     * Called when the mouse was moved without any buttons being pressed. Will not be called on iOS.
-     * @param screenX
-     * @param screenY
-     * @return
-     */
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    /**
-     * Called when the mouse wheel was scrolled. Will not be called on iOS.
-     * @param amountX the horizontal scroll amount, negative or positive depending on the direction the wheel was scrolled.
-     * @param amountY the vertical scroll amount, negative or positive depending on the direction the wheel was scrolled.
-     * @return
-     */
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return false;
-    }
 
     /**
      * This method is called when the game is destroyed.

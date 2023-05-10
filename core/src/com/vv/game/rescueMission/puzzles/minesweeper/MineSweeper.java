@@ -176,7 +176,7 @@ public class MineSweeper extends Puzzle {
                     }
                 }
                 if(X_lessThanBorderLimits){
-                    //Set square on top right
+                    //top right
                     if(!squares.get(new Vector2(x + SQUARE_WIDTH, y - SQUARE_WIDTH)).isRevealed()) {
                         revealSquares(x + SQUARE_WIDTH, y - SQUARE_WIDTH);
                     }
@@ -201,13 +201,13 @@ public class MineSweeper extends Puzzle {
                 }
             }
             if(x > BOARD_OFFSET){
-                //Set square on left middle
+                //left middle
                 if(!squares.get(new Vector2(x - SQUARE_WIDTH, y)).isRevealed()) {
                     revealSquares(x - SQUARE_WIDTH, y);
                 }
             }
             if(X_lessThanBorderLimits){
-                //Set square on right middle
+                //right middle
                 if(!squares.get(new Vector2(x + SQUARE_WIDTH, y)).isRevealed()) {
                     revealSquares(x + SQUARE_WIDTH, y);
                 }
