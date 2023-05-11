@@ -13,7 +13,7 @@ public class GameState {
     private String object3;
     private String object4;
     private String object5;
-    private Array<Door> doors;
+    private Array<Door> doors = new Array<>();
     private static GameState instance = new GameState();
 
     private GameState(){}

@@ -14,13 +14,12 @@ public class Database {
     private static final String DATABASE_PASSWORD = "UWlu82PMrs@*";
     private static final String DATABASE_DRIVER = "org.postgresql.Driver";
     private Connection connection;
-    private static Database instance = new Database();
+    private static final Database instance = new Database();
 
 
     private Database(){
         try {
-            //Class.forName(DATABASE_DRIVER);
-            Class.forName("org.postgresql.Driver");
+            Class.forName(DATABASE_DRIVER);
             connection = DriverManager.getConnection("jdbc:postgresql://" + DATABASE_URL + ":5432/"
                     + DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD);
             if (connection != null) {
