@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -17,6 +19,8 @@ public class LogInEntry {
     private Table table;
     private TextField userName;
     private TextField password;
+    private ImageButton enterButton;
+    private ImageButton backButton;
     private Stage stage;
     private boolean active = false;
 
@@ -25,7 +29,7 @@ public class LogInEntry {
         background = new Texture("screens" + File.separator + "LogInEntry.png");
 
         table = new Table();
-        table.bottom().padBottom(550).padLeft(148);
+        table.bottom().padBottom(520);
         table.setFillParent(true);
 
         TextField.TextFieldStyle style = new TextField.TextFieldStyle();
@@ -42,19 +46,32 @@ public class LogInEntry {
         password.setPasswordMode(true);
         password.setMaxLength(32);
 
+        Texture textureUp = new Texture("buttons" + File.separator + "EnterButton.png");
+        TextureRegion textureRegionUp = new TextureRegion(textureUp);
+        enterButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+
+        textureUp = new Texture("buttons" + File.separator + "BackButton.png");
+        textureRegionUp = new TextureRegion(textureUp);
+        backButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+
         stage.addActor(table);
     }
 
     public void setActive(boolean active) {
         if (active) {
-            table.add(userName);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
-            table.add(password);
+            table.add(userName).colspan(2).padLeft(135);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add(password).colspan(2).padLeft(135);
+            table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add(backButton);
+            table.add(enterButton);
         }
         else {
             table.removeActor(userName);
             table.removeActor(password);
+            table.removeActor(enterButton);
+            table.removeActor(backButton);
         }
         this.active = active;
     }
@@ -63,6 +80,15 @@ public class LogInEntry {
 
     public void draw(Batch batch){
         batch.draw(background, 250, 500);
+    }
+
+    public String getUserInputUsername() { return userName.getText(); }
+
+    public String getUserInputPassword() { return password.getText(); }
+
+    public void failedLogIn(){
+        userName.setColor(Color.RED);
+        password.setColor(Color.RED);
     }
 
 }

@@ -362,4 +362,8 @@ public class Astronaut  extends Movable implements InputProcessor {
         currentFrame.setRegion(animations.get(currentState).getKeyFrame(stateTime, true));
     }
 
+    public void dispose(){
+        //TODO add gamestate
+    }
+
 }

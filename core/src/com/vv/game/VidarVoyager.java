@@ -3,9 +3,11 @@ package com.vv.game;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.vv.game.utils.Database;
 import com.vv.game.utils.ScreenController;
 import com.vv.game.utils.ScreenController.SCREEN_STATE;
 import com.vv.game.utils.GameController;
+import com.vv.game.utils.User;
 
 /**
  * This is the Vidar Voyager Class. It is the Presenter in the Model View Presenter design. It has a screen controller
@@ -101,6 +103,9 @@ public class VidarVoyager implements ApplicationListener {
 	/** Called when the application is destroyed. Preceded by a call to the pause method. */
 	@Override
 	public void dispose () {
+		Database db = Database.getInstance();
+		db.updateLogIntEvent(User.getInstance());
+
 		screenController.dispose();
 		gameController.dispose();
 	}

@@ -55,7 +55,7 @@ public class SignUpEntry {
         middleInitial.setSize(190, 20);
         middleInitial.setMaxLength(4);
 
-        dateOfBirth = new TextField("", style);
+        dateOfBirth = new TextField("yyy-mm-dd", style);
         dateOfBirth.setSize(190, 20);
         dateOfBirth.setMaxLength(12);
 
@@ -114,4 +114,41 @@ public class SignUpEntry {
         batch.draw(background, 250, 300);
     }
 
+    public String getUserInputUsername() { return userName.getText(); }
+
+    public String getUserInputFirstName() { return firstName.getText(); }
+
+    public String getUserInputLastName() { return lastName.getText(); }
+
+    public String getUserInputMiddleInitial() { return middleInitial.getText(); }
+
+    public String getUserInputDateOfBirth() { return dateOfBirth.getText(); }
+
+    public String getUserInputEmail() { return email.getText(); }
+
+    public String getUserInputPassword() { return password.getText(); }
+
+    public boolean verifyPassword(){
+        boolean result = password.getText().equals(passwordVerified.getText());
+        if(!result){
+            password.setText("");
+            passwordVerified.setText("");
+        }
+        return result;
+    }
+
+    public void userNameTaken(){
+        userName.setText("This user name is taken");
+    }
+
+    public void failedSignUp(){
+        userName.setColor(Color.RED);
+        firstName.setColor(Color.RED);
+        lastName.setColor(Color.RED);
+        middleInitial.setColor(Color.RED);
+        dateOfBirth.setColor(Color.RED);
+        email.setColor(Color.RED);
+        password.setColor(Color.RED);
+        passwordVerified.setColor(Color.RED);
+    }
 }

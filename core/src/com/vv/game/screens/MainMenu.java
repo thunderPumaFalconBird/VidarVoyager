@@ -15,10 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
+import com.vv.game.utils.Database;
 import com.vv.game.utils.LogInEntry;
 import com.vv.game.utils.SignUpEntry;
+import com.vv.game.utils.User;
 
 import java.io.File;
+import java.sql.SQLException;
 
 
 /**
@@ -103,6 +106,46 @@ public class MainMenu extends AbstractScreen {
         textureDown = new Texture("buttons" + File.separator + "GuestButtonHighlighted.png");
         textureRegionDown = new TextureRegion(textureDown);
         guestButton = new ImageButton(new TextureRegionDrawable(textureRegionUp),new TextureRegionDrawable(textureRegionDown));
+    }
+
+    private boolean handleLogIn() {
+        boolean success = false;
+        User user = User.getInstance();
+        user.setUsername(logInEntry.getUserInputUsername());
+        user.setPassword(logInEntry.getUserInputPassword());
+
+        Database db = Database.getInstance();
+        try {
+            success = db.checkUserPassword(user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if(success){
+            success = db.createLogInEvent(user);
+        }
+        return success;
+    }
+
+    private boolean handleSignUp(){
+        boolean success = false;
+        User user = User.getInstance();
+        user.setUsername(signUpEntry.getUserInputUsername());
+        user.setFirstName(signUpEntry.getUserInputFirstName());
+        user.setLastName(signUpEntry.getUserInputLastName());
+        user.setMiddleInitial(signUpEntry.getUserInputMiddleInitial());
+        user.setDateOfBirth(signUpEntry.getUserInputDateOfBirth());
+        user.setEmail(signUpEntry.getUserInputEmail());
+        user.setPassword(signUpEntry.getUserInputPassword());
+
+        Database db = Database.getInstance();
+
+        if(!db.checkUsernameTaken(user)){
+            success = db.insertUser(user);
+        }
+        else{
+            signUpEntry.userNameTaken();
+        }
+        return success;
     }
 
     /**
@@ -260,20 +303,31 @@ public class MainMenu extends AbstractScreen {
         boolean temp = false;
         if(keycode == Input.Keys.ENTER){
             if(logInEntry.isActive()){
-                //TODO use database
-                logInEntry.setActive(false);
-                table.add(logInButton);
-                table.add(signUpButton);
-                table.add(guestButton);
+                if(handleLogIn()) {
+                    logInEntry.setActive(false);
+                    table.add(startButton);
+                    //TODO add continue game option
+                }
+                else{
+                    logInEntry.failedLogIn();
+                }
             }
             if(signUpEntry.isActive()){
-                //TODO use database
-                signUpEntry.setActive(false);
-                table.add(logInButton);
-                table.add(signUpButton);
-                table.add(guestButton);
+                if(signUpEntry.verifyPassword()){
+                    if(handleSignUp()) {
+                        signUpEntry.setActive(false);
+                        table.add(logInButton);
+                        table.add(signUpButton);
+                        table.add(guestButton);
+                    }
+                    else{
+                        signUpEntry.failedSignUp();
+                    }
+                }
+                else{
+                    signUpEntry.failedSignUp();
+                }
             }
-
         }
         return false;
     }

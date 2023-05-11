@@ -9,7 +9,12 @@ import com.vv.game.rescueMission.entities.immovable.OxygenStation;
 import com.vv.game.rescueMission.entities.movable.Astronaut;
 import com.vv.game.rescueMission.entities.immovable.Cannon;
 import com.vv.game.rescueMission.entities.immovable.Door;
+import com.vv.game.utils.Database;
+import com.vv.game.utils.GameState;
 import com.vv.game.utils.ScreenController;
+import com.vv.game.utils.User;
+
+import javax.xml.crypto.Data;
 
 /**
  * This is the collision handler class. The Level class sets a new collisionHandler for each level.
@@ -88,10 +93,16 @@ public class CollisionHandler implements ContactListener {
         else if(fixA.getBody().getUserData() instanceof Door && fixB.getBody().getUserData() instanceof Astronaut){
             Door door = (Door) fixA.getBody().getUserData();
             door.setActive(false);
+            //When the door is open add it to the game state so the database can save opened doors
+            GameState gs = GameState.getInstance();
+            gs.getDoors().add(door);
         }
         else if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Door){
             Door door = (Door) fixA.getBody().getUserData();
             door.setActive(false);
+            //When the door is open add it to the game state so the database can save opened doors
+            GameState gs = GameState.getInstance();
+            gs.getDoors().add(door);
         }
     }
 
