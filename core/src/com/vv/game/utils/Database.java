@@ -8,9 +8,10 @@ import java.sql.DriverManager;
  * The Database class uses the singleton pattern. It is used by any class that needs to store or retrieve data.
  */
 public class Database {
-    private static final String DATABASE_NAME = "schwankew";
+    //TODO Change constant variables
+    private static final String DATABASE_NAME = "username";
     private static final String DATABASE_URL = "localhost";
-    private static final String DATABASE_USER = "schwankew";
+    private static final String DATABASE_USER = "username";
     private static final String DATABASE_PASSWORD = "password";
     private static final String DATABASE_DRIVER = "org.postgresql.Driver";
     private Connection connection;
