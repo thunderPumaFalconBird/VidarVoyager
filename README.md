@@ -6,6 +6,12 @@ This project will require an android sdk
 Please follow the android guide to downloading an android sdk
 https://android-doc.github.io/sdk/installing/index.html
 
+Once you have downloaded android studios you will have to change the sdk to Android 31.
+
+![alt text](https://github.com/thunderPumaFalconBird/VidarVoyager/blob/master/AndroidSDK.png?raw=true)
+
+![alt text](https://github.com/thunderPumaFalconBird/VidarVoyager/blob/master/AndroidPlatform.png?raw=true)
+
 Please follow the libgdx setup guide to import and edit the Desktop Launcher build and run configuration 
 https://libgdx.com/wiki/start/import-and-running
 
