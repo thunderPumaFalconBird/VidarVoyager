@@ -3,12 +3,12 @@ CREATE EXTENSION pgcrypto;
 CREATE TABLE vidar_voyager.users
 (
     id serial NOT NULL,
-    username varchar(32) NOT NULL,
+    username varchar(32) NOT NULL UNIQUE,
     first_name varchar(32) NOT NULL,
 	last_name varchar(32) NOT NULL,
     middle_initial varchar(32),
     date_of_birth date,
-    email varchar(32) NOT NULL,
+    email varchar(32) NOT NULL UNIQUE,
 	created_on time with time zone NOT NULL,
 	updated_on time with time zone NOT NULL,
 	deleted bit,
@@ -18,7 +18,7 @@ CREATE TABLE vidar_voyager.users
 CREATE TABLE vidar_voyager.accounts
 (
 	id serial NOT NULL,
-    user_id bigInt NOT NULL,
+    user_id bigInt NOT NULL UNIQUE,
     password text NOT NULL,
 	deleted bit,
 	FOREIGN KEY(user_id) REFERENCES vidar_voyager.users(id),
@@ -154,35 +154,3 @@ CREATE TABLE vidar_voyager.last_played_game
 	PRIMARY KEY (id),
 	FOREIGN KEY(user_id) REFERENCES vidar_voyager.users(id)
 );
-
--- TODO add map and map objects 
-
-
--- Test that user and password is working properly
-INSERT INTO vidar_voyager.users 
-(username, first_name, last_name, middle_initial, date_of_birth, email, created_on, updated_on)
-	VALUES ('bob82','bob','smith','f','01-15-1982','bob82@gmail.com', current_timestamp, current_timestamp);
-	
-INSERT INTO vidar_voyager.accounts (user_id, password) 
-	VALUES ((SELECT id FROM vidar_voyager.users WHERE username = 'bob82'), 
-			crypt('bobspassword', gen_salt('bf')));
-			
-			
-SELECT last_name FROM vidar_voyager.users u
-RIGHT JOIN vidar_voyager.accounts a ON u.id = a.user_id
-WHERE u.username = 'bob82' AND a.password = 'bobspassword';
-
-SELECT last_name FROM vidar_voyager.users u
-RIGHT JOIN vidar_voyager.accounts a ON u.id = a.user_id
-WHERE u.username = 'bob82' AND a.password = crypt('wrongpassword', a.password);
-
-SELECT last_name FROM vidar_voyager.users u
-RIGHT JOIN vidar_voyager.accounts a ON u.id = a.user_id
-WHERE u.username = 'bob82' AND a.password = crypt('bobspassword', a.password);
-
-
-
-SELECT * FROM vidar_voyager.users;
-
-SELECT * FROM vidar_voyager.accounts;
-
