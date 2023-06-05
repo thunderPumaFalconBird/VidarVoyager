@@ -117,7 +117,6 @@ public class ScreenController  {
                 break;
             case "back":
                 break;
-
         }
     }
 

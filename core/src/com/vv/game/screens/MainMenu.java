@@ -55,13 +55,13 @@ public class MainMenu extends AbstractScreen {
      * The Main Menu constructor sets up the camera and stage which are used to render textures. It also starts 3 timers
      * to increment the x position of the window textures giving them a parallax effect.
      */
-    public MainMenu(){
+    public MainMenu() {
         super();
         cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
         stage = new Stage(new FitViewport(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT, this.cam));
         cam.setToOrtho(false);
         stage.getViewport().apply();
-        cam.position.set((float) VidarVoyager.APP_WIDTH/2, (float) VidarVoyager.APP_HEIGHT/2, 0);
+        cam.position.set((float) VidarVoyager.APP_WIDTH / 2, (float) VidarVoyager.APP_HEIGHT / 2, 0);
         cam.update();
 
         initButtons();
@@ -70,9 +70,16 @@ public class MainMenu extends AbstractScreen {
         table.center().padBottom(120);
         table.setFillParent(true);
 
+        //CHECK DATABASE FOR CONNECTION AND ADD BUTTONS
+        if (Database.getInstance().isConnected()) {
         table.add(logInButton);
         table.add(signUpButton);
         table.add(guestButton);
+        }
+        else{
+            table.add(startButton);
+        }
+
         stage.addActor(table);
 
         signUpEntry = new SignUpEntry(stage);
@@ -108,6 +115,10 @@ public class MainMenu extends AbstractScreen {
         guestButton = new ImageButton(new TextureRegionDrawable(textureRegionUp),new TextureRegionDrawable(textureRegionDown));
     }
 
+    /**
+     * This method is used to set the username and check the user's password.
+     * @return successful
+     */
     private boolean handleLogIn() {
         boolean success = false;
         User user = User.getInstance();
@@ -126,6 +137,10 @@ public class MainMenu extends AbstractScreen {
         return success;
     }
 
+    /**
+     * This method handles a users signing up.
+     * @return successful
+     */
     private boolean handleSignUp(){
         boolean success = false;
         User user = User.getInstance();
@@ -190,6 +205,10 @@ public class MainMenu extends AbstractScreen {
         multiplexer.removeProcessor(stage);
     }
 
+    /**
+     * This method is used to handle buttons pressed.
+     * @return the name of the button
+     */
     @Override
     public String getButtonPressed(){
         String temp = "none";

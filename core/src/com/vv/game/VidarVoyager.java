@@ -104,7 +104,7 @@ public class VidarVoyager implements ApplicationListener {
 	@Override
 	public void dispose () {
 		Database db = Database.getInstance();
-		boolean trueornot = db.updateLogIntEvent(User.getInstance());
+		boolean trueornot = db.updateLogInEvent(User.getInstance());
 
 		screenController.dispose();
 		gameController.dispose();

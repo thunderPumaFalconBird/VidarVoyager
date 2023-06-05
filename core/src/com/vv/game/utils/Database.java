@@ -8,7 +8,7 @@ import java.sql.DriverManager;
  * The Database class uses the singleton pattern. It is used by any class that needs to store or retrieve data.
  */
 public class Database {
-    //TODO Change constant variables
+    //TODO Change name,url,user,password
     private static final String DATABASE_NAME = "username";
     private static final String DATABASE_URL = "localhost";
     private static final String DATABASE_USER = "username";
@@ -39,6 +39,12 @@ public class Database {
      * @return Database
      */
     public static Database getInstance() { return instance; }
+
+    /**
+     * This method is used to determine if the database is connected.
+     * @return true if connected
+     */
+    public boolean isConnected(){ return connection != null; }
 
     /**
      * This method is used to check that a user's input for username is not already taken.
@@ -170,7 +176,7 @@ public class Database {
             System.out.println(e);
         }
 
-        //
+        //store id of login event so that the logout time can be updated.
         String query2 = "SELECT id FROM vidar_voyager.login_events WHERE user_id = "
                 + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "')"
                 + "ORDER BY logged_in_on DESC\n" +
@@ -196,7 +202,7 @@ public class Database {
      * @param user
      * @return true if it was successful. false if it was not.
      */
-    public boolean updateLogIntEvent(User user) {
+    public boolean updateLogInEvent(User user) {
         int returnValue = 0;
         String query = "UPDATE vidar_voyager.login_events SET logged_out_on = current_timestamp"
                 + " WHERE user_id = (SELECT id FROM vidar_voyager.users WHERE username = '"
