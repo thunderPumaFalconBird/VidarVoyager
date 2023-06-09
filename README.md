@@ -4,7 +4,7 @@ Vidar Voyager is a top-down 2d puzzle game that I am currently developing. I am 
 # How to Build
 This project will require an android sdk
 Please follow the android guide to downloading an android sdk
-https://android-doc.github.io/sdk/installing/index.html
+[https://android-doc.github.io/sdk/installing/index.html](https://developer.android.com/studio/install)
 
 Once you have downloaded android studios you will have to change the sdk to Android 31.
 
