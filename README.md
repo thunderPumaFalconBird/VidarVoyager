@@ -21,12 +21,17 @@ The build should look like this when you are done
 
 There is also a basic SQL database that can be set up for this game. The initialization script is located in 
 the sql directory. There is a Database class in the core/src/com/vv/game/utils directory that allows users 
-to Sign Up and Sign in. There is no other functionality at this time. Installing PostgreSQL is not required,
+to Sign Up and Log In. There is no other functionality at this time. Installing PostgreSQL is not required,
 but you can set up the database by following the Getting Started tutorial
 https://www.postgresql.org/docs/current/tutorial-start.html and running initVidarVoyagerDB.sql. Then you will need 
-to change the variables in the Database class to match the database that you set up.
+to change the variables such as, DATABASE_NAME, DATABASE_URL, etc., in the Database class to match the database that 
+you set up.
 
 # How to Play
-There is a jar file located in the out directory. Simply download and double click the file. 
-There currently is no puzzle on the main menu. You can click anywhere to continue to the game.
-There are no puzzles implemented in the game yet either. Check back soon.
+If you do not want to build and run the program there is a jar file located in the out directory. 
+Simply download and double click the file. The first level has a basic game of minesweeper as the
+puzzle to unlock doors. The goal of the first level is to collect one of every color teddy bear and
+take them to the lifesupport system. Be sure to keep an eye on your oxygen level and refill your tank
+at an oxygen station when needed. There is no second level right now. I am working to implement more levels.
+
+Check back soon.
