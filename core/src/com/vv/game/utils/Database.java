@@ -9,10 +9,10 @@ import java.sql.DriverManager;
  */
 public class Database {
     //TODO Change name,url,user,password
-    private static final String DATABASE_NAME = "schwankew";
+    private static final String DATABASE_NAME = "DatabaseName";
     private static final String DATABASE_URL = "localhost";
-    private static final String DATABASE_USER = "schwankew";
-    private static final String DATABASE_PASSWORD = "OWlu82PMrs@*";
+    private static final String DATABASE_USER = "userName";
+    private static final String DATABASE_PASSWORD = "password";
     private static final String DATABASE_DRIVER = "org.postgresql.Driver";
     private Connection connection;
     private static final Database instance = new Database();
