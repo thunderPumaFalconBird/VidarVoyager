@@ -91,6 +91,7 @@ public class VidarVoyager implements ApplicationListener {
 	 * paused before it is destroyed. */
 	@Override
 	public void pause() {
+		System.out.println("Pause was called");
 		screenController.getCurrentScreen().pause();
 		}
 
@@ -103,9 +104,6 @@ public class VidarVoyager implements ApplicationListener {
 	/** Called when the application is destroyed. Preceded by a call to the pause method. */
 	@Override
 	public void dispose () {
-		Database db = Database.getInstance();
-		boolean trueornot = db.updateLogInEvent(User.getInstance());
-
 		screenController.dispose();
 		gameController.dispose();
 	}

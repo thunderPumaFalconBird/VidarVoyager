@@ -3,20 +3,12 @@ package com.vv.game.screens;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
-import com.vv.game.rescueMission.entities.collectable.Collectable;
-import com.vv.game.rescueMission.entities.movable.Astronaut;
-
-import java.io.File;
 
 /**
  * This is the Rescue Mission Class. It handles rendering the map and stage. It also renders box2d shapes when debugging.
@@ -26,23 +18,9 @@ import java.io.File;
  * @version 1.0
  */
 public class RescueMissionScreen extends AbstractScreen {
-    private final float INVENTORY_OFFSET_X = 96;
-    private final float INVENTORY_BAR_OFFSET_X = 60;
-    private final float INVENTORY_BAR_OFFSET_Y = 81;
-    private final float OXYGEN_OFFSET_X = 796;
-    private final float OXYGEN_OFFSET_Y = 86;
-    private final float OXYGEN_BAR_WIDTH = 15;
-    private final float INVENTORY_HIGHLIGHT_OFFSET = 21;
     private final Stage stage;
     private final OrthographicCamera cam;
     private final OrthogonalTiledMapRenderer mapRenderer;
-    private final Texture inventoryOxygenBar = new Texture("screens" + File.separator + "InventoryOxygenBar.png");
-    private final Texture oxygenBarTexture = new Texture("screens" + File.separator + "OxygenLevelBar.png");
-    private final Texture highlight = new Texture("screens" + File.separator + "Highlight2.png");
-    private final Array<TextureRegion> inventoryTextures = new Array<>();
-    private float inventoryX, inventoryY;
-    private int oxygenBarsNumber = 10;
-    private int inventoryHighlightX = 0;
 
     /**
      * The Rescue Mission Screen constructor sets up the camera and stage which are used to render textures. It also
@@ -105,32 +83,6 @@ public class RescueMissionScreen extends AbstractScreen {
         cam.update();
         mapRenderer.setView(cam);
         stage.act(deltaTime);
-
-        //Find the actor in the stage that is an astronaut.
-        Array<Actor> temp = stage.getActors();
-        inventoryTextures.clear();
-        for(int i = 0; i < temp.size; i++){
-            if(temp.get(i) instanceof Astronaut){
-                Astronaut player = (Astronaut) ((Astronaut) temp.get(i)).getBody().getUserData();
-
-                //update astronaut's inventory
-                Array<Collectable> inventory = player.getInventory();
-                for (int j = 0; j < inventory.size; j++){
-                    inventoryTextures.add(inventory.get(j).getTextureRegion());
-                }
-
-                //update astronaut's oxygen level
-                float oxygenLevel = player.getOxygenLevel();
-                oxygenBarsNumber = ((int) oxygenLevel / 10) + 1;
-
-                //update highlight item in inventory
-                inventoryHighlightX = player.getCurrentItem();
-            }
-        }
-
-        //Update the inventory position based on camera position which changes based on Astronaut position.
-        inventoryX = cam.position.x - ((float)VidarVoyager.APP_HEIGHT/2);
-        inventoryY = cam.position.y - ((float)VidarVoyager.APP_HEIGHT/2);
     }
 
     /**
@@ -145,25 +97,8 @@ public class RescueMissionScreen extends AbstractScreen {
 
         mapRenderer.render();
 
-        batch.draw(inventoryOxygenBar, inventoryX, inventoryY);
-
         stage.draw();
 
-        for(int i = 0; i < inventoryTextures.size; i++){
-            batch.draw(inventoryTextures.get(i),
-                    inventoryX + i* INVENTORY_OFFSET_X + INVENTORY_BAR_OFFSET_X,
-                    inventoryY + INVENTORY_BAR_OFFSET_Y
-                    );
-        }
-        for(int i = 0; i < oxygenBarsNumber; i++){
-            batch.draw(oxygenBarTexture,
-                    inventoryX + i* OXYGEN_BAR_WIDTH + OXYGEN_OFFSET_X,
-                    inventoryY + OXYGEN_OFFSET_Y);
-        }
-
-        batch.draw(highlight,
-                inventoryX + inventoryHighlightX*100,
-                inventoryY + INVENTORY_HIGHLIGHT_OFFSET);
         if(VidarVoyager.debugging){
             b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
         }
@@ -179,9 +114,6 @@ public class RescueMissionScreen extends AbstractScreen {
         super.dispose();
         stage.dispose();
         mapRenderer.dispose();
-        inventoryOxygenBar.dispose();
-        mapRenderer.dispose();
-        highlight.dispose();
     }
 
     /**

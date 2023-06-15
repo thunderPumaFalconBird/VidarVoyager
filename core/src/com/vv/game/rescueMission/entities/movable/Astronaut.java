@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.rescueMission.Inventory;
+import com.vv.game.rescueMission.OxygenBar;
 import com.vv.game.rescueMission.entities.collectable.Collectable;
 
 import java.util.EnumMap;
@@ -49,13 +51,13 @@ public class Astronaut  extends Movable implements InputProcessor {
     private final float PLAYER_VELOCITY = 1.2f;
     private final float IDLE_FRAME_RATE = 0.1f;
     private final float WALKING_FRAME_RATE = 0.055f;
-    private final int INVENTORY_MAX = 5;
     private final float OXYGEN_DEPLETION_AMOUNT = 0.008f;
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
     private STATE currentState = STATE.idleFront;
     private TextureRegion currentFrame;
-    private final Array<Collectable> inventory = new Array<>();;
+    private OxygenBar oxygenBar;
+    private Inventory inventory;
     //Using an array of keyInputs allows to check for keys that are being held down. see keyUp and keyDown methods.
     private final Array<Integer> keyInputs = new Array<>();
     private int currentItem = 0;
@@ -80,6 +82,8 @@ public class Astronaut  extends Movable implements InputProcessor {
         setY(startPosition.y/VidarVoyager.PPM);
         createBody();
         body.setUserData(this);
+        inventory = new Inventory();
+        oxygenBar = new OxygenBar();
     }
 
     /**
@@ -89,8 +93,8 @@ public class Astronaut  extends Movable implements InputProcessor {
      */
     public boolean pickUpItem(Collectable item){
         boolean temp = false;
-        if(inventory.size < INVENTORY_MAX) {
-            inventory.add(item);
+        if(!inventory.isFull()) {
+            inventory.addItem(item);
             temp = true;
         }
         return temp;
@@ -98,13 +102,9 @@ public class Astronaut  extends Movable implements InputProcessor {
 
     public STATE getCurrentState() { return currentState; }
 
-    public float getOxygenLevel(){ return oxygenLevel; }
-
     public void setRefillingOxygen(boolean refillingOxygen) { this.refillingOxygen = refillingOxygen; }
 
-    public Array<Collectable> getInventory() { return inventory; }
-
-    public int getCurrentItem() { return currentItem; }
+    public Array<Collectable> getInventory() { return inventory.getInventory(); }
 
     /**
      * This is used to remove the multiplexer as well as take away any key inputs the player was pressing before this
@@ -172,8 +172,7 @@ public class Astronaut  extends Movable implements InputProcessor {
                     case Input.Keys.D:
                         keyUp(Input.Keys.D); //Remove key to avoid dropping multiple items
                         if (!inventory.isEmpty()) {
-                            inventory.get(currentItem).putDownItem(body.getPosition());
-                            inventory.removeIndex(currentItem);
+                            inventory.dropItem(currentItem, body.getPosition());
                             if (currentItem != 0) {
                                 currentItem--;
                             }
@@ -181,7 +180,7 @@ public class Astronaut  extends Movable implements InputProcessor {
                         break;
                     case Input.Keys.I:
                         keyUp(Input.Keys.I); //Remove key to avoid incrementing multiple times
-                        if (currentItem < inventory.size - 1) {
+                        if (currentItem < inventory.getInventory().size - 1) {
                             currentItem++;
                         } else {
                             currentItem = 0;
@@ -191,13 +190,6 @@ public class Astronaut  extends Movable implements InputProcessor {
             }
         }
 
-        //Update inventory position
-        for(int i = 0; i < inventory.size; i++){
-            inventory.get(i).setInventoryPosition(new Vector2(
-                    body.getPosition().x * VidarVoyager.PPM- ((float)VidarVoyager.APP_HEIGHT/2),
-                    body.getPosition().y * VidarVoyager.PPM- ((float)VidarVoyager.APP_HEIGHT/2)),
-                    i);
-        }
 
         //deplete the Oxygen Level if the astronaut is not in contact with an oxygen station
         if(!refillingOxygen) {
@@ -211,6 +203,8 @@ public class Astronaut  extends Movable implements InputProcessor {
         if(oxygenLevel < 0){
             currentState = STATE.dead;
         }
+        oxygenBar.updateOxygenLevel(oxygenLevel);
+
     }
 
     /**
@@ -221,8 +215,14 @@ public class Astronaut  extends Movable implements InputProcessor {
      */
     @Override
     public void draw(Batch batch, float parentAlpha){
+        float inventoryX = getBody().getPosition().x * VidarVoyager.PPM  - ((float)VidarVoyager.APP_HEIGHT/2);
+        float inventoryY = getBody().getPosition().y * VidarVoyager.PPM  - ((float)VidarVoyager.APP_HEIGHT/2);
+
         batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
                 body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
+
+        inventory.draw(batch, inventoryX, inventoryY);
+        oxygenBar.draw(batch,inventoryX,inventoryY);
     }
 
     /**
