@@ -13,6 +13,10 @@ public class User {
 
     private User(){}
 
+    public boolean hasValidData(){
+        return !username.isEmpty() || !firstName.isEmpty() || !lastName.isEmpty() || !email.isEmpty() || !password.isEmpty();
+    }
+
     public static User getInstance(){ return instance; }
 
     public String getUsername(){ return username; }

@@ -86,6 +86,17 @@ public class LogInEntry {
 
     public String getUserInputPassword() { return password.getText(); }
 
+    public String getButtonsPressed(){
+        String temp = "none";
+        if(backButton.isPressed()){
+            temp = "back";
+        }
+        if(enterButton.isPressed()){
+            temp = "back";
+        }
+        return temp;
+    }
+
     public void failedLogIn(){
         userName.setColor(Color.RED);
         password.setColor(Color.RED);

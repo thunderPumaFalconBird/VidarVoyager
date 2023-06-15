@@ -152,13 +152,17 @@ public class MainMenu extends AbstractScreen {
         user.setEmail(signUpEntry.getUserInputEmail());
         user.setPassword(signUpEntry.getUserInputPassword());
 
-        Database db = Database.getInstance();
+        if(user.hasValidData()) {
+            Database db = Database.getInstance();
 
-        if(!db.checkUsernameTaken(user)){
-            success = db.insertUser(user);
+            if (!db.checkUsernameTaken(user)) {
+                success = db.insertUser(user);
+            } else {
+                signUpEntry.userNameTaken();
+            }
         }
         else{
-            signUpEntry.userNameTaken();
+            System.out.println("Invalid data");
         }
         return success;
     }
@@ -179,6 +183,28 @@ public class MainMenu extends AbstractScreen {
         }
         if(window2x < -VidarVoyager.APP_WIDTH){
             window2x = 0;
+        }
+        String temp = "";
+        if(signUpEntry.isActive()) {
+            temp = signUpEntry.getButtonPressed();
+            if(temp.equals("back")) {
+                signUpEntry.setActive(false);
+                table.add(logInButton);
+                table.add(signUpButton);
+                table.add(guestButton);
+            }
+        }
+        if(logInEntry.isActive()) {
+            temp = logInEntry.getButtonsPressed();
+            if(temp.equals("back")) {
+                logInEntry.setActive(false);
+                table.add(logInButton);
+                table.add(signUpButton);
+                table.add(guestButton);
+            }
+        }
+        if(temp.equals("enter")){
+            keyDown(Input.Keys.ENTER);
         }
     }
 

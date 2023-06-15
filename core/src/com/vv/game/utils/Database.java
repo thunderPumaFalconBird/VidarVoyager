@@ -9,10 +9,10 @@ import java.sql.DriverManager;
  */
 public class Database {
     //TODO Change name,url,user,password
-    private static final String DATABASE_NAME = "username";
+    private static final String DATABASE_NAME = "schwankew";
     private static final String DATABASE_URL = "localhost";
-    private static final String DATABASE_USER = "username";
-    private static final String DATABASE_PASSWORD = "password";
+    private static final String DATABASE_USER = "schwankew";
+    private static final String DATABASE_PASSWORD = "OWlu82PMrs@*";
     private static final String DATABASE_DRIVER = "org.postgresql.Driver";
     private Connection connection;
     private static final Database instance = new Database();
@@ -76,7 +76,7 @@ public class Database {
      * @param user stores the information that user entered
      */
     public boolean insertUser(User user) {
-        int returnValue = 0;
+        int rowsAffected = 0;
         Statement statement;
 
         String query = "INSERT INTO vidar_voyager.users"
@@ -106,25 +106,24 @@ public class Database {
 
         try {
             statement = connection.createStatement();
-            returnValue = statement.executeUpdate(query);
+            rowsAffected = statement.executeUpdate(query);
         } catch (Exception e) {
             System.out.println(e);
         }
 
         //ADD USER TO ACCOUNTS TABLE
-        if (returnValue != 0) {
+        if (rowsAffected != 0) {
             String query2 = "INSERT INTO vidar_voyager.accounts (user_id, password) VALUES ("
                     + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
                     + "crypt('" + user.getPassword() + "', gen_salt('bf')));";
             try {
                 statement = connection.createStatement();
-                returnValue = statement.executeUpdate(query2);
+                rowsAffected = statement.executeUpdate(query2);
             } catch (Exception e) {
-                returnValue = 0;
                 System.out.println(e);
             }
         }
-        return returnValue != 0;
+        return rowsAffected != 0;
     }
 
     /**
@@ -239,6 +238,4 @@ public class Database {
             System.out.println(e + " " + returnValue + " tables returned");
         }
     }
-
-
 }

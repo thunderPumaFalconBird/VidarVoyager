@@ -4,7 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -23,6 +26,8 @@ public class SignUpEntry {
     private TextField email;
     private TextField password;
     private TextField passwordVerified;
+    private ImageButton enterButton;
+    private ImageButton backButton;
     private Stage stage;
     private boolean active = false;
 
@@ -31,7 +36,7 @@ public class SignUpEntry {
         background = new Texture("screens" + File.separator + "SignUpEntry.png");
 
         table = new Table();
-        table.bottom().padBottom(356).padLeft(148);
+        table.bottom().padBottom(294).padRight(50);
         table.setFillParent(true);
 
         TextField.TextFieldStyle style = new TextField.TextFieldStyle();
@@ -73,37 +78,49 @@ public class SignUpEntry {
         passwordVerified.setPasswordMode(true);
         passwordVerified.setMaxLength(32);
 
+        Texture textureUp = new Texture("buttons" + File.separator + "EnterButton.png");
+        TextureRegion textureRegionUp = new TextureRegion(textureUp);
+        enterButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+
+        textureUp = new Texture("buttons" + File.separator + "BackButton.png");
+        textureRegionUp = new TextureRegion(textureUp);
+        backButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+
         stage.addActor(table);
     }
 
     public void setActive(boolean active){
         if(active){
+            table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add().width(180);
             table.add(userName);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(firstName);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(lastName);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(middleInitial);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(dateOfBirth);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(email);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(password);
             table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.add();
             table.add(passwordVerified);
-            table.row().padBottom(PADDING_INBETWEEN).padTop(PADDING_INBETWEEN);
+            table.row().padBottom(PADDING_INBETWEEN-1f).padTop(PADDING_INBETWEEN-1f);
+            table.add(backButton);
+            table.add(enterButton);
         }
         else{
-            table.removeActor(userName);
-            table.removeActor(firstName);
-            table.removeActor(lastName);
-            table.removeActor(middleInitial);
-            table.removeActor(dateOfBirth);
-            table.removeActor(email);
-            table.removeActor(password);
-            table.removeActor(passwordVerified);
+            table.clear();
         }
         this.active = active;
     }
@@ -111,7 +128,7 @@ public class SignUpEntry {
     public boolean isActive(){ return active; }
 
     public void draw(Batch batch){
-        batch.draw(background, 250, 300);
+        batch.draw(background, 250, 260);
     }
 
     public String getUserInputUsername() { return userName.getText(); }
@@ -135,6 +152,17 @@ public class SignUpEntry {
             passwordVerified.setText("");
         }
         return result;
+    }
+
+    public String getButtonPressed(){
+        String temp = "none";
+        if(backButton.isPressed()){
+            temp = "back";
+        }
+        if(enterButton.isPressed()){
+            temp = "enter";
+        }
+        return temp;
     }
 
     public void userNameTaken(){
