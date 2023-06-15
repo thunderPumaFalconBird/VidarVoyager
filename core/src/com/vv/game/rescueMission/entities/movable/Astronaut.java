@@ -195,7 +195,7 @@ public class Astronaut  extends Movable implements InputProcessor {
         if(!refillingOxygen) {
             oxygenLevel -= OXYGEN_DEPLETION_AMOUNT;
         }
-        else if(oxygenLevel < 100) {
+        else if(oxygenLevel <= 99) {
             oxygenLevel += OXYGEN_DEPLETION_AMOUNT * 100;
         }
 
@@ -221,7 +221,7 @@ public class Astronaut  extends Movable implements InputProcessor {
         batch.draw(currentFrame, body.getPosition().x*VidarVoyager.PPM - (getWidth()/2),
                 body.getPosition().y*VidarVoyager.PPM - (getHeight()/2));
 
-        inventory.draw(batch, inventoryX, inventoryY);
+        inventory.draw(batch, inventoryX, inventoryY, currentItem);
         oxygenBar.draw(batch,inventoryX,inventoryY);
     }
 

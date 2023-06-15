@@ -18,7 +18,6 @@ public class Inventory {
     private final Texture highlight;
     private final Texture inventoryOxygenBar;
     private final Array<Collectable> inventory;
-    private float inventoryHighlightX = 0;
 
     public Inventory(){
         highlight = new Texture("screens" + File.separator + "Highlight2.png");
@@ -43,7 +42,7 @@ public class Inventory {
 
     public Array<Collectable> getInventory() { return inventory; }
 
-    public void draw(Batch batch, float x, float y){
+    public void draw(Batch batch, float x, float y, float highlightX){
 
         batch.draw(inventoryOxygenBar, x, y);
 
@@ -54,7 +53,7 @@ public class Inventory {
                     y + INVENTORY_BAR_OFFSET_Y);
         }
         batch.draw(highlight,
-                x + inventoryHighlightX*100,
+                x + highlightX*100,
                 y + INVENTORY_HIGHLIGHT_OFFSET);
     }
 
