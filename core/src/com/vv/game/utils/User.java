@@ -1,5 +1,7 @@
 package com.vv.game.utils;
 
+import java.net.InetAddress;
+
 public class User {
     private String username;
     private String firstName;
@@ -8,10 +10,17 @@ public class User {
     private String dateOfBirth;
     private String email;
     private String password;
+    private InetAddress userInet;
     private int log_in_on_id;
     private static User instance = new User();
 
-    private User(){}
+    private User(){
+        try {
+            userInet = InetAddress.getLocalHost();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
 
     public boolean hasValidData(){
         return !username.isEmpty() || !firstName.isEmpty() || !lastName.isEmpty() || !email.isEmpty() || !password.isEmpty();
@@ -46,6 +55,8 @@ public class User {
     public String getPassword(){ return password; }
 
     public void setPassword(String password) { this.password = password; }
+
+    public String getInet(){ return this.userInet.getHostAddress();}
 
     public int getLog_in_on_id() { return log_in_on_id; }
 

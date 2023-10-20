@@ -2,20 +2,17 @@ package com.vv.game.screens;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
-import com.vv.game.utils.Database;
+import com.vv.game.utils.DatabaseInterface;
 import com.vv.game.utils.LogInEntry;
 import com.vv.game.utils.SignUpEntry;
 import com.vv.game.utils.User;
@@ -71,7 +68,7 @@ public class MainMenu extends AbstractScreen {
         table.setFillParent(true);
 
         //CHECK DATABASE FOR CONNECTION AND ADD BUTTONS
-        if (Database.getInstance().isConnected()) {
+        if (DatabaseInterface.getInstance().isConnected()) {
         table.add(logInButton);
         table.add(signUpButton);
         table.add(guestButton);
@@ -125,8 +122,9 @@ public class MainMenu extends AbstractScreen {
         user.setUsername(logInEntry.getUserInputUsername());
         user.setPassword(logInEntry.getUserInputPassword());
 
-        Database db = Database.getInstance();
+        DatabaseInterface db = DatabaseInterface.getInstance();
         try {
+            db.createLogInAttempt(user);
             success = db.checkUserPassword(user);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -153,7 +151,7 @@ public class MainMenu extends AbstractScreen {
         user.setPassword(signUpEntry.getUserInputPassword());
 
         if(user.hasValidData()) {
-            Database db = Database.getInstance();
+            DatabaseInterface db = DatabaseInterface.getInstance();
 
             if (!db.checkUsernameTaken(user)) {
                 success = db.insertUser(user);

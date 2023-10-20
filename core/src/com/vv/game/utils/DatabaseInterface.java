@@ -7,18 +7,19 @@ import java.sql.DriverManager;
 /**
  * The Database class uses the singleton pattern. It is used by any class that needs to store or retrieve data.
  */
-public class Database {
+public class DatabaseInterface {
     //TODO Change name,url,user,password
+
     private static final String DATABASE_NAME = "DatabaseName";
     private static final String DATABASE_URL = "localhost";
     private static final String DATABASE_USER = "userName";
     private static final String DATABASE_PASSWORD = "password";
     private static final String DATABASE_DRIVER = "org.postgresql.Driver";
     private Connection connection;
-    private static final Database instance = new Database();
+    private static final DatabaseInterface instance = new DatabaseInterface();
 
 
-    private Database(){
+    private DatabaseInterface(){
         try {
             Class.forName(DATABASE_DRIVER);
             connection = DriverManager.getConnection("jdbc:postgresql://" + DATABASE_URL + ":5432/"
@@ -38,7 +39,7 @@ public class Database {
      * This method is used to get the single instance of Database.
      * @return Database
      */
-    public static Database getInstance() { return instance; }
+    public static DatabaseInterface getInstance() { return instance; }
 
     /**
      * This method is used to determine if the database is connected.
@@ -56,7 +57,7 @@ public class Database {
 
         Statement statement;
         try {
-            String query = "SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "';";
+            String query = "SELECT id FROM vidar_voyager2.users WHERE username = '" + user.getUsername() + "';";
 
             statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
@@ -164,8 +165,9 @@ public class Database {
      */
     public boolean createLogInEvent(User user) {
         int returnValue = 0;
-        String query = "INSERT INTO vidar_voyager.login_events (user_id, logged_in_on, logged_out_on) VALUES ("
+        String query = "INSERT INTO vidar_voyager.login_events (user_id, ip_address, logged_in_on, logged_out_on) VALUES ("
                 + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
+                + "'" + user.getInet() + "',"
                 + "current_timestamp, current_timestamp);";
         Statement statement;
         try {
@@ -189,6 +191,31 @@ public class Database {
                 user.setLog_in_on_id(result.getInt("id"));
             }
 
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return returnValue != 0;
+    }
+
+    //TODO finish this up and test it
+    public boolean createLogInAttempt(User user) {
+        int returnValue = 0;
+        boolean isActiveUser = checkUsernameTaken(user);
+        String query = "INSERT INTO vidar_voyager.login_attempt (";
+        if (isActiveUser) {
+            query += "user_id,";
+        }
+        query += "ip_address, login_attempt_on) VALUES (";
+        if(isActiveUser){
+            query +=  "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),";
+        }
+        query += "'" + user.getInet() + "',"
+                + "current_timestamp);";
+        Statement statement;
+        try {
+            statement = connection.createStatement();
+            returnValue = statement.executeUpdate(query);
         } catch (Exception e) {
             System.out.println(e);
         }

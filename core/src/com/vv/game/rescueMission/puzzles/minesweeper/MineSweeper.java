@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.vv.game.rescueMission.puzzles.Puzzle;
-import com.vv.game.utils.Database;
+import com.vv.game.utils.DatabaseInterface;
 import com.vv.game.utils.User;
 
 import java.io.File;
@@ -235,7 +235,7 @@ public class MineSweeper extends Puzzle {
             }
         }
         if(win){
-            Database db = Database.getInstance();
+            DatabaseInterface db = DatabaseInterface.getInstance();
             db.addHighScoreMineSweeper(User.getInstance(), clockTime);
         }
         solved = win;

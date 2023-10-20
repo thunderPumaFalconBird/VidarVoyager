@@ -23,7 +23,6 @@ import static com.vv.game.VidarVoyager.debugging;
  * @version 1.0
  */
 public class ScreenController  {
-    private static ScreenController instance = new ScreenController();
     /* This enumeration is used as keys for the enumMap that holds the screens */
     public enum SCREEN_STATE {
         MAIN_MENU,
@@ -41,29 +40,12 @@ public class ScreenController  {
      * The ScreenController constructor creates the enumMap of the screens. The screens are added to the enumMap using
      * init methods below. This constructor is private because screenController is a singleton.
      */
-    private ScreenController() {
+    public ScreenController(World world, TiledMap map) {
         this.screens = new EnumMap<>(SCREEN_STATE.class);
-    }
-
-    /**
-     * This method initializes the RescueMissionScreen and adds it to the enumMap. The World and Map are passed from
-     * the gameController.
-     * @param world
-     * @param map
-     */
-    public void initRescueMissionScreen(World world, TiledMap map){
+        this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu());
+        this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen());
         this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen(map, world));
     }
-
-    /**
-     * This method initializes the Main Menu and adds it to the enumMap.
-     */
-    public void initMainMenu(){ this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu()); }
-
-    /**
-     * This method initializes the puzzle screen and adds it to the enumMap.
-     */
-    public void initPuzzleScreen(){ this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen()); }
 
 
     /**
@@ -119,8 +101,6 @@ public class ScreenController  {
                 break;
         }
     }
-
-    public static ScreenController getInstance() { return instance; }
 
     public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
 
