@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Array;
 import com.vv.game.rescueMission.entities.collectable.Collectable;
 
 import java.io.File;
-import java.util.Vector;
 
 public class Inventory {
     private final float INVENTORY_HIGHLIGHT_OFFSET = 21;
