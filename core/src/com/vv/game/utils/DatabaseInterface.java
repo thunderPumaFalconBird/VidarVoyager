@@ -224,7 +224,7 @@ public class DatabaseInterface {
     }
 
     /**
-     * This method updates the login event when the player logs out.
+     * This method updates the logged_out_on attribute of the login event when the player logs out.
      * @param user
      * @return true if it was successful. false if it was not.
      */

@@ -67,6 +67,7 @@ public class VidarVoyager implements ApplicationListener {
 
 	}
 
+	/** The checkForActivePuzzles method will change the view and input to the current puzzle and check for a win. */
 	private void checkForActivePuzzles(){
 		//CHANGE SCREEN IF A PUZZLE IS ACTIVE
 		if(rescueMission.getPuzzle() != null && screenController.getCurrentScreenState() != SCREEN_STATE.PUZZLE_SCREEN){

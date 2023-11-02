@@ -12,8 +12,6 @@ import com.vv.game.screens.RescueMissionScreen;
 
 import java.util.EnumMap;
 
-import static com.vv.game.VidarVoyager.debugging;
-
 /**
  * This is the Screen Controller Class. It creates the screens that will be used and sets the proper screen. Screens
  * are stored in an enum map with the enum SCREEN_STATE as the key. It implements the InputProcessor class so that it
@@ -46,6 +44,12 @@ public class ScreenController  {
         this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen());
         this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen(map, world));
     }
+
+    public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
+
+    public Stage getScreenStage(SCREEN_STATE screen){ return screens.get(screen).getStage(); }
+
+    public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }
 
 
     /**
@@ -101,12 +105,6 @@ public class ScreenController  {
                 break;
         }
     }
-
-    public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
-
-    public Stage getScreenStage(SCREEN_STATE screen){ return screens.get(screen).getStage(); }
-
-    public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }
 
     /**
      * This method is called when the game is destroyed.

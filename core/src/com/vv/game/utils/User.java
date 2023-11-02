@@ -2,6 +2,9 @@ package com.vv.game.utils;
 
 import java.net.InetAddress;
 
+/**
+ * The User class is used to store user information. It uses the singleton pattern.
+ */
 public class User {
     private String username;
     private String firstName;

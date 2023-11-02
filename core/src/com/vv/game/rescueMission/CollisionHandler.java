@@ -9,7 +9,6 @@ import com.vv.game.rescueMission.entities.immovable.OxygenStation;
 import com.vv.game.rescueMission.entities.movable.Astronaut;
 import com.vv.game.rescueMission.entities.immovable.Cannon;
 import com.vv.game.rescueMission.entities.immovable.Door;
-import com.vv.game.utils.ScreenController;
 
 /**
  * This is the collision handler class. The Level class sets a new collisionHandler for each level.

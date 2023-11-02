@@ -11,8 +11,8 @@ import com.vv.game.rescueMission.puzzles.Puzzle;
 
 
 /**
- * This is the Rescue Mission Class. It is the main game class. All information about the levels are stored in the Level
- * class. There is currently only one level.
+ * This is the Rescue Mission Class. All information about the levels are stored in the Level
+ * class. There is only one level, but it is designed to allow for more levels to be added.
  *
  * @author thunderPumaFalconBird
  * @version 1.0
