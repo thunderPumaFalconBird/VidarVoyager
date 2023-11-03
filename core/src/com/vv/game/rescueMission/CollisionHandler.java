@@ -81,11 +81,9 @@ public class CollisionHandler implements ContactListener {
         }
         else if(fixA.getBody().getUserData() instanceof Door && fixB.getBody().getUserData() instanceof Astronaut){
             Door door = (Door) fixA.getBody().getUserData();
-            door.setActive(false);
         }
         else if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Door){
             Door door = (Door) fixA.getBody().getUserData();
-            door.setActive(false);
         }
     }
 

@@ -224,21 +224,30 @@ public class MineSweeper extends Puzzle {
      * This method checks if all the none mine square are revealed. If they are, it sets solved to true.
      */
     private void checkForWin(){
-        boolean win = true;
+        boolean unflaggedMine = false;
+        boolean unrevealedSquare = false;
+        //Check if all non mine squares are revealed
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
                 int x = BOARD_OFFSET + j * SQUARE_WIDTH;
                 int y = BOARD_OFFSET + i * SQUARE_WIDTH;
                 if(!squares.get(new Vector2(x,y)).isMine() && !squares.get(new Vector2(x,y)).isRevealed()){
-                    win = false;
+                    unrevealedSquare = true;
+                }
+                if(squares.get(new Vector2(x,y)).isMine() && !squares.get(new Vector2(x,y)).isFlagged()){
+                    unflaggedMine = true;
                 }
             }
         }
-        if(win){
+
+        solved = !unflaggedMine || !unrevealedSquare;
+
+        if(solved){
             DatabaseInterface db = DatabaseInterface.getInstance();
-            db.addHighScoreMineSweeper(User.getInstance(), clockTime);
+            if(db.isConnected()) {
+                db.addHighScoreMineSweeper(User.getInstance(), clockTime);
+            }
         }
-        solved = win;
     }
 
     /**
@@ -353,6 +362,7 @@ public class MineSweeper extends Puzzle {
             if(button == Input.Buttons.LEFT && !squares.get(new Vector2(x, y)).isFlagged()) {
                 if (!squares.get(new Vector2(x, y)).isMine()) {
                     revealSquares(x, y);
+                    checkForWin();
                 } else {
                     explosionX = x;
                     explosionY = y;
@@ -362,9 +372,8 @@ public class MineSweeper extends Puzzle {
             else if(button == Input.Buttons.RIGHT){
                 squares.get(new Vector2(x, y)).setFlagged();
                 numOfMinesLeft--;
+                checkForWin();
             }
-
-            checkForWin();
 
             handled = true;
         }

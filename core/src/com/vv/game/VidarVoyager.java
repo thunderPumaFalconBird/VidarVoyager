@@ -78,7 +78,7 @@ public class VidarVoyager implements ApplicationListener {
 		}
 
 		//CHECK PUZZLE FOR A WIN IF IT IS ACTIVE
-		if(screenController.getCurrentScreenState() == SCREEN_STATE.PUZZLE_SCREEN && rescueMission.checkForWin()){
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.PUZZLE_SCREEN && rescueMission.getPuzzle().isSolved()){
 			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 			rescueMission.removePuzzleMultiplexer(multiplexer);
 			rescueMission.addAstroMultiplexer(multiplexer);

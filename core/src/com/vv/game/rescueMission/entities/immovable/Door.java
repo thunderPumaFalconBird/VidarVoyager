@@ -20,7 +20,7 @@ import java.io.File;
  */
 public class Door extends Immovable {
     private final Texture doorTexture = new Texture("maps" + File.separator + "doorClosed300.png");
-    private Puzzle puzzle = new MineSweeper();
+    private Puzzle puzzle;
 
     /**
      * The door constructor is used to call the immovable constructor. Then the box2d body is created.
@@ -35,6 +35,7 @@ public class Door extends Immovable {
 
         createBody(object);
         body.setUserData(this);
+        puzzle = new MineSweeper();
     }
 
     public Puzzle getPuzzle() { return puzzle; }
