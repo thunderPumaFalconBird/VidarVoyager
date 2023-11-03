@@ -212,13 +212,13 @@ public class Level {
             float rangeOffset = 2;
 
             if (cannons.containsKey(new Vector2(x, y - rangeOffset))) {
-                cannons.get(new Vector2(x, y - rangeOffset)).setRangeBody(object);
+                cannons.get(new Vector2(x, y - rangeOffset)).setRangeBody(object, Cannon.Orientation.DOWN);
             } else if (cannons.containsKey(new Vector2(x, y + rangeOffset))) {
-                cannons.get(new Vector2(x, y + rangeOffset)).setRangeBody(object);
+                cannons.get(new Vector2(x, y + rangeOffset)).setRangeBody(object, Cannon.Orientation.UP);
             } else if (cannons.containsKey(new Vector2(x + rangeOffset, y))) {
-                cannons.get(new Vector2(x + rangeOffset, y)).setRangeBody(object);
+                cannons.get(new Vector2(x + rangeOffset, y)).setRangeBody(object, Cannon.Orientation.RIGHT);
             } else if (cannons.containsKey(new Vector2(x - rangeOffset, y))) {
-                cannons.get(new Vector2(x - rangeOffset, y)).setRangeBody(object);
+                cannons.get(new Vector2(x - rangeOffset, y)).setRangeBody(object, Cannon.Orientation.LEFT);
             }
         }
     }

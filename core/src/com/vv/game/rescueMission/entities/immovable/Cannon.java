@@ -66,7 +66,7 @@ public class Cannon extends Immovable {
      * the cannon.
      * @param object
      */
-    public void setRangeBody(RectangleMapObject object){
+    public void setRangeBody(RectangleMapObject object, Orientation orientation){
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -87,21 +87,6 @@ public class Cannon extends Immovable {
         rangeBody.setUserData(this);
 
         //TODO set animation and x, y position based on orientation. Create rotated animation for left and right.
-        if(rangeBody.getPosition().x == body.getPosition().x){
-            if(rangeBody.getPosition().y < body.getPosition().y){
-                orientation = Orientation.DOWN;
-            }
-            else {
-                orientation = Orientation.UP;
-            }
-        }
-        else{
-            if(rangeBody.getPosition().x < body.getPosition().x){
-                orientation = Orientation.LEFT;
-            }
-            else {
-                orientation = Orientation.RIGHT;
-            }
-        }
+        this.orientation = orientation;
     }
 }
