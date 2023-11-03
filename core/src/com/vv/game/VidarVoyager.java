@@ -18,7 +18,7 @@ import com.vv.game.utils.ScreenController.SCREEN_STATE;
  */
 public class VidarVoyager implements ApplicationListener {
 	// set to false when not debugging. This will control the debug renderer
-	public static final boolean debugging = false;
+	public static final boolean debugging = true;
 	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 1000;
 	public static final float PPM = 100;

@@ -1,11 +1,15 @@
 package com.vv.game.rescueMission.entities.immovable;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
-import com.vv.game.rescueMission.entities.movable.Lasers;
+
+import java.io.File;
 
 /**
  * This is the connon class. Cannons have a range that is used to fire the cannon when a playable character collides
@@ -15,8 +19,13 @@ import com.vv.game.rescueMission.entities.movable.Lasers;
  * @version 1.0
  */
 public class Cannon extends Immovable {
+    public enum Orientation { UP, DOWN, LEFT, RIGHT }
     private Body rangeBody;
-    private Array<Lasers> lasers;
+    private Array<TextureRegion> laserAnimation;
+    private boolean active = false;
+    private int currentFrame = 0;
+    private int halfWidth, halfHeight;
+    private Orientation orientation;
 
     public Cannon(World world, RectangleMapObject object){
         super(world);
@@ -25,7 +34,12 @@ public class Cannon extends Immovable {
         setY((rectangle.getY() + rectangle.getHeight()/2) / VidarVoyager.PPM);
 
         createBody(object);
-        lasers = new Array<>();
+
+        TextureAtlas textureAtlas = new TextureAtlas("laser" + File.separator + "Laser.txt");
+        laserAnimation = new Array<TextureRegion>(textureAtlas.getRegions());
+
+        halfWidth = laserAnimation.get(0).getRegionWidth() / 2;
+        halfHeight = laserAnimation.get(0).getRegionHeight() / 2;
     }
 
     /**
@@ -33,7 +47,18 @@ public class Cannon extends Immovable {
      */
     public void fireCannon(){
         //TODO create lasers
+        active = true;
+    }
 
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        if(active){
+            batch.draw(laserAnimation.get(currentFrame++), rangeBody.getPosition().x*VidarVoyager.PPM - halfWidth,
+                    rangeBody.getPosition().y*VidarVoyager.PPM - halfHeight);
+        }
+        if(currentFrame > 5){
+            currentFrame = 0;
+        }
     }
 
     /**
@@ -60,5 +85,23 @@ public class Cannon extends Immovable {
         fdef.isSensor = true; //This allows the player to pass through the object.
         rangeBody.createFixture(fdef);
         rangeBody.setUserData(this);
+
+        //TODO set animation and x, y position based on orientation. Create rotated animation for left and right.
+        if(rangeBody.getPosition().x == body.getPosition().x){
+            if(rangeBody.getPosition().y < body.getPosition().y){
+                orientation = Orientation.DOWN;
+            }
+            else {
+                orientation = Orientation.UP;
+            }
+        }
+        else{
+            if(rangeBody.getPosition().x < body.getPosition().x){
+                orientation = Orientation.LEFT;
+            }
+            else {
+                orientation = Orientation.RIGHT;
+            }
+        }
     }
 }

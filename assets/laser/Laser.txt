@@ -1,0 +1,47 @@
+Laser.png
+size: 96, 1728
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Laser1
+  rotate: false
+  xy: 0, 0
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser2
+  rotate: false
+  xy: 0, 288
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser3
+  rotate: false
+  xy: 0, 576
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser4
+  rotate: false
+  xy: 0, 864
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser5
+  rotate: false
+  xy: 0, 1152
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser6
+  rotate: false
+  xy: 0, 1440
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1

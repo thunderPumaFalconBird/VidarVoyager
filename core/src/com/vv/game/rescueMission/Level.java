@@ -122,6 +122,10 @@ public class Level {
         for(int i = 0; i < collectables.size; i++){
             stage.addActor(collectables.get(i));
         }
+        for (Cannon cannon : cannons.values()) {
+            stage.addActor(cannon);
+        }
+
     }
 
     /**
@@ -201,22 +205,20 @@ public class Level {
             Cannon temp = new Cannon(world, object);
             cannons.put(new Vector2(temp.getX(), temp.getY()), temp);
         }
-        if(map.getProperties().containsKey("CannonRange")) {
-            for (RectangleMapObject object : map.getLayers().get("CannonRange").getObjects().getByType(RectangleMapObject.class)) {
-                Rectangle rectangle = object.getRectangle();
-                float x = (rectangle.getX() + rectangle.getWidth() / 2) / VidarVoyager.PPM;
-                float y = (rectangle.getY() + rectangle.getHeight() / 2) / VidarVoyager.PPM;
-                float rangeOffset = 2;
+        for (RectangleMapObject object : map.getLayers().get("CannonRange").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = object.getRectangle();
+            float x = (rectangle.getX() + rectangle.getWidth() / 2) / VidarVoyager.PPM;
+            float y = (rectangle.getY() + rectangle.getHeight() / 2) / VidarVoyager.PPM;
+            float rangeOffset = 2;
 
-                if (cannons.containsKey(new Vector2(x, y - rangeOffset))) {
-                    cannons.get(new Vector2(x, y - rangeOffset)).setRangeBody(object);
-                } else if (cannons.containsKey(new Vector2(x, y + rangeOffset))) {
-                    cannons.get(new Vector2(x, y + rangeOffset)).setRangeBody(object);
-                } else if (cannons.containsKey(new Vector2(x + rangeOffset, y))) {
-                    cannons.get(new Vector2(x + rangeOffset, y)).setRangeBody(object);
-                } else if (cannons.containsKey(new Vector2(x - rangeOffset, y))) {
-                    cannons.get(new Vector2(x - rangeOffset, y)).setRangeBody(object);
-                }
+            if (cannons.containsKey(new Vector2(x, y - rangeOffset))) {
+                cannons.get(new Vector2(x, y - rangeOffset)).setRangeBody(object);
+            } else if (cannons.containsKey(new Vector2(x, y + rangeOffset))) {
+                cannons.get(new Vector2(x, y + rangeOffset)).setRangeBody(object);
+            } else if (cannons.containsKey(new Vector2(x + rangeOffset, y))) {
+                cannons.get(new Vector2(x + rangeOffset, y)).setRangeBody(object);
+            } else if (cannons.containsKey(new Vector2(x - rangeOffset, y))) {
+                cannons.get(new Vector2(x - rangeOffset, y)).setRangeBody(object);
             }
         }
     }
