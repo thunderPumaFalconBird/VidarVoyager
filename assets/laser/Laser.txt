@@ -1,5 +1,5 @@
 Laser.png
-size: 96, 1728
+size: 864, 576
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -12,36 +12,106 @@ Laser1
   index: -1
 Laser2
   rotate: false
-  xy: 0, 288
+  xy: 96, 0
   size: 96, 288
   orig: 96, 288
   offset: 0, 0
   index: -1
 Laser3
   rotate: false
-  xy: 0, 576
+  xy: 192, 0
   size: 96, 288
   orig: 96, 288
   offset: 0, 0
   index: -1
 Laser4
   rotate: false
-  xy: 0, 864
+  xy: 288, 0
   size: 96, 288
   orig: 96, 288
   offset: 0, 0
   index: -1
 Laser5
   rotate: false
-  xy: 0, 1152
+  xy: 384, 0
   size: 96, 288
   orig: 96, 288
   offset: 0, 0
   index: -1
 Laser6
   rotate: false
-  xy: 0, 1440
+  xy: 480, 0
   size: 96, 288
   orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser7
+  rotate: false
+  xy: 576, 0
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+Laser8
+  rotate: false
+  xy: 672, 0
+  size: 96, 288
+  orig: 96, 288
+  offset: 0, 0
+  index: -1
+LaserSide1
+  rotate: false
+  xy: 0, 288
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide2
+  rotate: false
+  xy: 288, 288
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide3
+  rotate: false
+  xy: 576, 288
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide4
+  rotate: false
+  xy: 0, 384
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide5
+  rotate: false
+  xy: 288, 384
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide6
+  rotate: false
+  xy: 576, 384
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide7
+  rotate: false
+  xy: 0, 480
+  size: 288, 96
+  orig: 288, 96
+  offset: 0, 0
+  index: -1
+LaserSide8
+  rotate: false
+  xy: 288, 480
+  size: 288, 96
+  orig: 288, 96
   offset: 0, 0
   index: -1

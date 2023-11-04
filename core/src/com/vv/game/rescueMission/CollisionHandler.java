@@ -31,11 +31,15 @@ public class CollisionHandler implements ContactListener {
         Fixture fixB = contact.getFixtureB();
         if(fixA.getBody().getUserData() instanceof Astronaut && fixB.getBody().getUserData() instanceof Cannon){
             Cannon cannon = (Cannon) fixB.getBody().getUserData();
+            Astronaut astronaut = (Astronaut) fixA.getBody().getUserData();
             cannon.fireCannon();
+            astronaut.setCurrentState(Astronaut.STATE.DEAD);
         }
         else if(fixA.getBody().getUserData() instanceof Cannon && fixB.getBody().getUserData() instanceof Astronaut){
             Cannon cannon = (Cannon) fixA.getBody().getUserData();
+            Astronaut astronaut = (Astronaut) fixB.getBody().getUserData();
             cannon.fireCannon();
+            astronaut.setCurrentState(Astronaut.STATE.DEAD);
         }
         else if(fixA.getBody().getUserData() instanceof Door && fixB.getBody().getUserData() instanceof Astronaut){
             Door door = (Door) fixA.getBody().getUserData();

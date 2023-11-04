@@ -37,16 +37,16 @@ public class Astronaut  extends Movable implements InputProcessor {
      * This enumeration is used as keys for the animations enumMap of the astronaut.
      */
     public enum STATE {
-        idleFront,
-        idleBack,
-        idleLeft,
-        idleRight,
-        walkingFront,
-        walkingBack,
-        walkingLeft,
-        walkingRight,
-        stalled,
-        dead
+        IDLE_FRONT,
+        IDLE_BACK,
+        IDLE_LEFT,
+        IDLE_RIGHT,
+        WALKING_FRONT,
+        WALKING_BACK,
+        WALKING_LEFT,
+        WALKING_RIGHT,
+        STALLED,
+        DEAD
     }
     private final float PLAYER_VELOCITY = 1.2f;
     private final float IDLE_FRAME_RATE = 0.1f;
@@ -54,7 +54,7 @@ public class Astronaut  extends Movable implements InputProcessor {
     private final float OXYGEN_DEPLETION_AMOUNT = 0.008f;
     private EnumMap<STATE, Animation<TextureRegion>> animations;
     private float stateTime = 0f;
-    private STATE currentState = STATE.idleFront;
+    private STATE currentState = STATE.IDLE_FRONT;
     private TextureRegion currentFrame;
     private OxygenBar oxygenBar;
     private Inventory inventory;
@@ -102,6 +102,8 @@ public class Astronaut  extends Movable implements InputProcessor {
 
     public STATE getCurrentState() { return currentState; }
 
+    public void setCurrentState(STATE currentState) { this.currentState = currentState; }
+
     public void setRefillingOxygen(boolean refillingOxygen) { this.refillingOxygen = refillingOxygen; }
 
     public Array<Collectable> getInventory() { return inventory.getInventory(); }
@@ -127,17 +129,20 @@ public class Astronaut  extends Movable implements InputProcessor {
 
         stateTime += Gdx.graphics.getDeltaTime();
 
-        if(currentState == STATE.idleLeft){
-            currentFrame = animations.get(STATE.idleRight).getKeyFrame(stateTime, true);
+        if(currentState == STATE.IDLE_LEFT){
+            currentFrame = animations.get(STATE.IDLE_RIGHT).getKeyFrame(stateTime, true);
             if(!currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
         }
-        else if(currentState == STATE.walkingLeft){
-            currentFrame = animations.get(STATE.walkingRight).getKeyFrame(stateTime, true);
+        else if(currentState == STATE.WALKING_LEFT){
+            currentFrame = animations.get(STATE.WALKING_RIGHT).getKeyFrame(stateTime, true);
             if (!currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
+        }
+        else if(currentState == STATE.DEAD){
+            //TODO create death animation
         }
         else {
             currentFrame = animations.get(currentState).getKeyFrame(stateTime, true);
@@ -146,27 +151,27 @@ public class Astronaut  extends Movable implements InputProcessor {
             }
         }
 
-        if(currentState != STATE.dead) {
+        if(currentState != STATE.DEAD) {
             for(int i = 0; i < keyInputs.size; i++) {
                 switch (keyInputs.get(i)) {
                     case Input.Keys.UP:
                         body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
-                        currentState = STATE.walkingBack;
+                        currentState = STATE.WALKING_BACK;
                         body.applyLinearImpulse(new Vector2(0, PLAYER_VELOCITY), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.DOWN:
                         body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
-                        currentState = STATE.walkingFront;
+                        currentState = STATE.WALKING_FRONT;
                         body.applyLinearImpulse(new Vector2(0, -PLAYER_VELOCITY), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.LEFT:
                         body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
-                        currentState = STATE.walkingLeft;
+                        currentState = STATE.WALKING_LEFT;
                         body.applyLinearImpulse(new Vector2(-PLAYER_VELOCITY, 0), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.RIGHT:
                         body.setLinearVelocity(0, 0); //this will make sure player only moves in one direction
-                        currentState = STATE.walkingRight;
+                        currentState = STATE.WALKING_RIGHT;
                         body.applyLinearImpulse(new Vector2(PLAYER_VELOCITY, 0), body.getWorldCenter(), true);
                         break;
                     case Input.Keys.D:
@@ -188,23 +193,25 @@ public class Astronaut  extends Movable implements InputProcessor {
                         break;
                 }
             }
-        }
 
+            //deplete the Oxygen Level if the astronaut is not in contact with an oxygen station
+            if(!refillingOxygen) {
+                oxygenLevel -= OXYGEN_DEPLETION_AMOUNT;
+            }
+            else if(oxygenLevel <= 99) {
+                oxygenLevel += OXYGEN_DEPLETION_AMOUNT * 100;
+            }
 
-        //deplete the Oxygen Level if the astronaut is not in contact with an oxygen station
-        if(!refillingOxygen) {
-            oxygenLevel -= OXYGEN_DEPLETION_AMOUNT;
+            //Kill astronaut if oxygen runs out.
+            if(oxygenLevel < 0){
+                currentState = STATE.DEAD;
+            }
+            oxygenBar.updateOxygenLevel(oxygenLevel);
         }
-        else if(oxygenLevel <= 99) {
-            oxygenLevel += OXYGEN_DEPLETION_AMOUNT * 100;
+        else {
+            //Player is dead
+            body.setLinearVelocity(0, 0);
         }
-
-        //Kill astronaut if oxygen runs out.
-        if(oxygenLevel < 0){
-            currentState = STATE.dead;
-        }
-        oxygenBar.updateOxygenLevel(oxygenLevel);
-
     }
 
     /**
@@ -255,25 +262,33 @@ public class Astronaut  extends Movable implements InputProcessor {
         switch (keycode) {
             case Input.Keys.UP:
                 body.setLinearVelocity(0, 0);
-                currentState = STATE.idleBack;
+                if(currentState != STATE.DEAD) {
+                    currentState = STATE.IDLE_BACK;
+                }
                 keyInputs.removeValue(keycode, true);
                 returnValue = true;
                 break;
             case Input.Keys.DOWN:
                 body.setLinearVelocity(0, 0);
-                currentState = STATE.idleFront;
+                if(currentState != STATE.DEAD) {
+                    currentState = STATE.IDLE_FRONT;
+                }
                 keyInputs.removeValue(keycode, true);
                 returnValue = true;
                 break;
             case Input.Keys.LEFT:
                 body.setLinearVelocity(0, 0);
-                currentState = STATE.idleLeft;
+                if(currentState != STATE.DEAD) {
+                    currentState = STATE.IDLE_LEFT;
+                }
                 keyInputs.removeValue(keycode, true);
                 returnValue = true;
                 break;
             case Input.Keys.RIGHT:
                 body.setLinearVelocity(0, 0);
-                currentState = STATE.idleRight;
+                if(currentState != STATE.DEAD) {
+                    currentState = STATE.IDLE_RIGHT;
+                }
                 keyInputs.removeValue(keycode, true);
                 returnValue = true;
                 break;
@@ -330,32 +345,32 @@ public class Astronaut  extends Movable implements InputProcessor {
 
         // adding right facing idle
         animationTemp.addAll(atlasTemp, 0, 10);
-        animations.put(STATE.idleRight, new Animation<>(IDLE_FRAME_RATE, animationTemp));
+        animations.put(STATE.IDLE_RIGHT, new Animation<>(IDLE_FRAME_RATE, animationTemp));
         animationTemp.clear();
 
         // adding Back facing idle
         animationTemp.addAll(atlasTemp, 10, 9);
-        animations.put(STATE.idleBack, new Animation<>(IDLE_FRAME_RATE, animationTemp));
+        animations.put(STATE.IDLE_BACK, new Animation<>(IDLE_FRAME_RATE, animationTemp));
         animationTemp.clear();
 
         // adding Front facing idle
         animationTemp.addAll(atlasTemp, 19, 10);
-        animations.put(STATE.idleFront, new Animation<>(IDLE_FRAME_RATE, animationTemp));
+        animations.put(STATE.IDLE_FRONT, new Animation<>(IDLE_FRAME_RATE, animationTemp));
         animationTemp.clear();
 
         // adding right facing Walking
         animationTemp.addAll(atlasTemp, 29, 12);
-        animations.put(STATE.walkingRight, new Animation<>(WALKING_FRAME_RATE, animationTemp));
+        animations.put(STATE.WALKING_RIGHT, new Animation<>(WALKING_FRAME_RATE, animationTemp));
         animationTemp.clear();
 
         // adding Back facing Walking
         animationTemp.addAll(atlasTemp, 41, 12);
-        animations.put(STATE.walkingBack, new Animation<>(WALKING_FRAME_RATE, animationTemp));
+        animations.put(STATE.WALKING_BACK, new Animation<>(WALKING_FRAME_RATE, animationTemp));
         animationTemp.clear();
 
         // adding Front facing Walking
         animationTemp.addAll(atlasTemp, 53, 12);
-        animations.put(STATE.walkingFront, new Animation<>(WALKING_FRAME_RATE, animationTemp));
+        animations.put(STATE.WALKING_FRONT, new Animation<>(WALKING_FRAME_RATE, animationTemp));
         animationTemp.clear();
 
         //SET CURRENT FRAME TO CURRENT STATE

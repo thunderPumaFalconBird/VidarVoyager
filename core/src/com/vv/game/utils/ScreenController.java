@@ -28,7 +28,8 @@ public class ScreenController  {
         PUZZLE_SCREEN,
         MAD_PLANETS_SCREEN,
         GAME_OVER,
-        GAME_WON
+        GAME_WON,
+        NEW_GAME
     }
     private InputMultiplexer multiplexer;
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
@@ -102,6 +103,15 @@ public class ScreenController  {
                 setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
                 break;
             case "back":
+                if(currentScreen == SCREEN_STATE.PUZZLE_SCREEN) {
+                    setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+                }
+                else if(currentScreen == SCREEN_STATE.RESCUE_MISSION_SCREEN){
+                    setScreen(SCREEN_STATE.MAIN_MENU);
+                }
+                break;
+            case "newGame":
+                setScreen(SCREEN_STATE.NEW_GAME);
                 break;
         }
     }

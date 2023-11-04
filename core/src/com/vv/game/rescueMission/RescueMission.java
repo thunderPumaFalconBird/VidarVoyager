@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.rescueMission.entities.movable.Astronaut;
+import com.vv.game.rescueMission.levels.Level1;
 import com.vv.game.rescueMission.puzzles.Puzzle;
 
 
@@ -19,7 +20,7 @@ import com.vv.game.rescueMission.puzzles.Puzzle;
  */
 public class RescueMission {
     private Astronaut player;
-    private Array<Level> levels;
+    private Array<Level1> levels;
     private int currentLevelIndex = 0;
 
     /**
@@ -27,7 +28,7 @@ public class RescueMission {
      */
     public RescueMission(){
         levels = new Array<>();
-        levels.add(new Level(1));
+        levels.add(new Level1());
     }
 
     /**
@@ -70,7 +71,7 @@ public class RescueMission {
      * This method checks if the players current state is dead.
      * @return
      */
-    public boolean checkForDeath() { return (player.getCurrentState() == Astronaut.STATE.dead); }
+    public boolean checkForDeath() { return (player.getCurrentState() == Astronaut.STATE.DEAD); }
 
     /**
      * This method is called to check if the main task of the current level is complete.

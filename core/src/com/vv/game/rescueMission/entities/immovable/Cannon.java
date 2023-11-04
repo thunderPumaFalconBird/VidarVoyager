@@ -34,12 +34,6 @@ public class Cannon extends Immovable {
         setY((rectangle.getY() + rectangle.getHeight()/2) / VidarVoyager.PPM);
 
         createBody(object);
-
-        TextureAtlas textureAtlas = new TextureAtlas("laser" + File.separator + "Laser.txt");
-        laserAnimation = new Array<TextureRegion>(textureAtlas.getRegions());
-
-        halfWidth = laserAnimation.get(0).getRegionWidth() / 2;
-        halfHeight = laserAnimation.get(0).getRegionHeight() / 2;
     }
 
     /**
@@ -86,7 +80,27 @@ public class Cannon extends Immovable {
         rangeBody.createFixture(fdef);
         rangeBody.setUserData(this);
 
-        //TODO set animation and x, y position based on orientation. Create rotated animation for left and right.
+        //Set the orientation based on which way the cannon is facing.
         this.orientation = orientation;
+
+        //Set up temporary animation to grab the properly orientated animation.
+        TextureAtlas textureAtlas = new TextureAtlas("laser" + File.separator + "Laser.txt");
+        Array<TextureRegion> atlasTemp = new Array<TextureRegion>(textureAtlas.getRegions());
+        Array<TextureRegion> animationTemp = new Array<>();
+        laserAnimation = new Array<>();
+
+        //Set the animation based on the orientation of the cannon.
+        if(orientation == Orientation.UP || orientation == Orientation.DOWN){
+            //Upright animation
+            laserAnimation.addAll(atlasTemp, 0, 8);
+        }
+        else if(orientation == Orientation.LEFT || orientation == Orientation.RIGHT){
+            //Sideways animation
+            laserAnimation.addAll(atlasTemp, 8, 8);
+        }
+
+        //Set the x and y offsets for the draw method
+        halfWidth = laserAnimation.get(0).getRegionWidth() / 2;
+        halfHeight = laserAnimation.get(0).getRegionHeight() / 2;
     }
 }

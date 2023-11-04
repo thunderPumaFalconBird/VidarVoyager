@@ -1,4 +1,4 @@
-package com.vv.game.rescueMission;
+package com.vv.game.rescueMission.levels;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.vv.game.VidarVoyager;
+import com.vv.game.rescueMission.CollisionHandler;
 import com.vv.game.rescueMission.entities.collectable.*;
 import com.vv.game.rescueMission.entities.immovable.*;
 import com.vv.game.rescueMission.puzzles.Puzzle;
@@ -24,13 +25,12 @@ import java.util.HashMap;
  * @version 1.0
  */
 
-public class Level {
-    private final int levelNumber;
+public class Level1 implements Level {
     private final TiledMap map;
     private final World world;
     private Vector2 playerStartPosition;
     private Array <AmmoStation> ammoStations;
-    private Array<LifeSupport> lifeSupports;
+    private LifeSupport lifeSupports;
     private Array<OxygenStation> oxygenStations;
     private Array<Collectable> collectables;
     private HashMap<Vector2, Cannon> cannons;
@@ -39,11 +39,10 @@ public class Level {
     /**
      * The constructor initializes the level based on the levelNumber.
      */
-    public Level(int levelNumber){
+    public Level1(){
         world = new World(new Vector2(0f, 0f), false);
-        this.levelNumber = levelNumber;
         TmxMapLoader mapLoader = new TmxMapLoader();
-        map = mapLoader.load(("maps" + File.separator + "Level" + this.levelNumber + ".tmx"));
+        map = mapLoader.load(("maps" + File.separator + "Level1.tmx"));
 
         for (int i = 0; i < map.getLayers().size(); i++) {
 
@@ -83,18 +82,20 @@ public class Level {
      * This method checks if the main task for the level is completed.
      * @return
      */
+    @Override
     public boolean checkForWin() {
         boolean temp = false;
-        if(levelNumber == 1){
-            temp = lifeSupports.get(0).getFixed();
-        }
+        temp = lifeSupports.getFixed();
         return temp;
     }
 
+    @Override
     public TiledMap getMap() { return map; }
 
+    @Override
     public World getWorld() { return world; }
 
+    @Override
     public Vector2 getPlayerStartPosition() { return playerStartPosition; }
 
     /**
@@ -115,6 +116,7 @@ public class Level {
      * This method adds any drawable actors to the stage. Immovable map objects are not added to the stage.
      * @param stage
      */
+    @Override
     public void addActors(Stage stage){
         for(int i = 0; i < doors.size; i++){
             stage.addActor(doors.get(i));
@@ -132,6 +134,7 @@ public class Level {
      * This method is called based on the APP_FPS (frames per second). It steps the world forward which applies any
      * box2d physics changes to bodies in the World. It also updated collectable items.
      */
+    @Override
     public void update(){
         world.step(1f / VidarVoyager.APP_FPS, VidarVoyager.VELOCITY_ITERATIONS,
                 VidarVoyager.POSITION_ITERATIONS);
@@ -216,6 +219,8 @@ public class Level {
             } else if (cannons.containsKey(new Vector2(x, y + rangeOffset))) {
                 cannons.get(new Vector2(x, y + rangeOffset)).setRangeBody(object, Cannon.Orientation.UP);
             } else if (cannons.containsKey(new Vector2(x + rangeOffset, y))) {
+                //The cannon range at x = 3600, y = 4100 gets assigned to the cannon at x = 3700, y = 4300.
+                //no reason to fix it, cannon is blocked in by other cannons.
                 cannons.get(new Vector2(x + rangeOffset, y)).setRangeBody(object, Cannon.Orientation.RIGHT);
             } else if (cannons.containsKey(new Vector2(x - rangeOffset, y))) {
                 cannons.get(new Vector2(x - rangeOffset, y)).setRangeBody(object, Cannon.Orientation.LEFT);
@@ -228,10 +233,8 @@ public class Level {
      * @param index
      */
     private void initLifeSupports(int index) {
-        lifeSupports = new Array<>();
-        for(RectangleMapObject object : map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class)){
-            lifeSupports.add(new LifeSupport(world, object));
-        }
+        RectangleMapObject object = map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class).get(0);
+        lifeSupports = new LifeSupport(world, object);
     }
 
     /**

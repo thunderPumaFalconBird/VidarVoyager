@@ -3,12 +3,19 @@ package com.vv.game.screens;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
+
+import java.io.File;
 
 /**
  * This is the Rescue Mission Class. It handles rendering the map and stage. It also renders box2d shapes when debugging.
@@ -21,6 +28,9 @@ public class RescueMissionScreen extends AbstractScreen {
     private final Stage stage;
     private final OrthographicCamera cam;
     private final OrthogonalTiledMapRenderer mapRenderer;
+    private final Table table;
+    private ImageButton newGameButton;
+    private ImageButton backButton;
 
     /**
      * The Rescue Mission Screen constructor sets up the camera and stage which are used to render textures. It also
@@ -42,6 +52,18 @@ public class RescueMissionScreen extends AbstractScreen {
         cam.update();
 
         mapRenderer = new OrthogonalTiledMapRenderer(map);
+
+        table = new Table();
+        table.center().padBottom(120);
+        table.setFillParent(true);
+
+        Texture textureUp = new Texture("buttons" + File.separator + "NewGameButton.png");
+        TextureRegion textureRegionUp = new TextureRegion(textureUp);
+        newGameButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+
+        textureUp = new Texture("buttons" + File.separator + "BackButton.png");
+        textureRegionUp = new TextureRegion(textureUp);
+        backButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
     }
 
     public Stage getStage(){ return this.stage; }
@@ -59,6 +81,13 @@ public class RescueMissionScreen extends AbstractScreen {
     @Override
     public String getButtonPressed(){
         String temp = "none";
+
+        if(newGameButton.isPressed()){
+            temp = "newGame";
+        }
+        else if(backButton.isPressed()){
+            temp = "back";
+        }
 
         return temp;
     }

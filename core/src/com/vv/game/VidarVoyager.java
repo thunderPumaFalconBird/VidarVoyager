@@ -61,9 +61,20 @@ public class VidarVoyager implements ApplicationListener {
 		rescueMission.update();
 		screenController.update(rescueMission.getPlayerPosition());
 
-		//CHECK FOR WINS
+		//CHECK FOR PUZZLES
 		checkForActivePuzzles();
-		//TODO check for level win
+
+		//CHECK FOR WIN
+		if(rescueMission.checkForWin()){
+			System.out.println("You won the game");
+			//TODO create kill screen
+		}
+
+		//CHECK FOR DEATH
+		if(rescueMission.checkForDeath()){
+			System.out.println("You are Dead");
+			//TODO CREATE GAME OVER IMAGE
+		}
 
 	}
 
@@ -98,9 +109,8 @@ public class VidarVoyager implements ApplicationListener {
 	 * paused before it is destroyed. */
 	@Override
 	public void pause() {
-		System.out.println("Pause was called");
 		screenController.getCurrentScreen().pause();
-		}
+	}
 
 	/** Called when the application is resumed from a paused state, usually when it regains focus. */
 	@Override
