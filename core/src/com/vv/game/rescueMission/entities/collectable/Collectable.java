@@ -74,14 +74,4 @@ public abstract class Collectable extends Actor {
     public boolean isCollected() { return collected; }
 
     public TextureRegion getTextureRegion(){ return textureRegion; }
-
-    /**
-     * This method is used to keep track of when the item was picked up.
-     * @param vec2
-     * @param index
-     */
-    public void setInventoryPosition(Vector2 vec2, int index){
-        inventoryPosition = vec2;
-        indexOffset = index*inventoryOffsetX;
-    }
 }

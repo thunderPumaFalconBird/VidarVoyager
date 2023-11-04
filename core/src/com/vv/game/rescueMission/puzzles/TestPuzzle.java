@@ -3,7 +3,7 @@ package com.vv.game.rescueMission.puzzles;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import static com.vv.game.VidarVoyager.debugging;
+import static com.vv.game.VidarVoyager.DEBUGGING;
 
 /**
  * The is a test puzzle class. It is only used for test purposes to ensure the puzzle logic is implemented properly.
@@ -58,7 +58,7 @@ public class TestPuzzle extends Puzzle {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //solved = true;
-        if(debugging) {
+        if(DEBUGGING) {
             System.out.println("solved");
         }
         System.out.println("x: " + screenX + "  y:" + screenY);

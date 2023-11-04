@@ -26,7 +26,6 @@ public class ScreenController  {
         MAIN_MENU,
         RESCUE_MISSION_SCREEN,
         PUZZLE_SCREEN,
-        MAD_PLANETS_SCREEN,
         GAME_OVER,
         GAME_WON,
         NEW_GAME
@@ -100,7 +99,9 @@ public class ScreenController  {
         //if buttons pressed change screen.
         switch (screens.get(currentScreen).getButtonPressed()){
             case "start":
-                setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+                if(currentScreen == SCREEN_STATE.MAIN_MENU) {
+                    setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+                }
                 break;
             case "back":
                 if(currentScreen == SCREEN_STATE.PUZZLE_SCREEN) {

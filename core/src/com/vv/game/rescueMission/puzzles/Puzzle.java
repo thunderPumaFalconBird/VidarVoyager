@@ -17,11 +17,11 @@ import java.io.File;
  * @version 1.0
  */
 public abstract class Puzzle extends Actor implements InputProcessor {
-    private Texture background = new Texture("screens" + File.separator + "PuzzleBackground.png");
+    private Texture background;
     protected boolean solved = false;
 
     public Puzzle(){
-
+        background = new Texture("screens" + File.separator + "PuzzleBackground.png");
     }
 
     public abstract void update();

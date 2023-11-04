@@ -128,7 +128,7 @@ public class RescueMissionScreen extends AbstractScreen {
 
         stage.draw();
 
-        if(VidarVoyager.debugging){
+        if(VidarVoyager.DEBUGGING){
             b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
         }
 

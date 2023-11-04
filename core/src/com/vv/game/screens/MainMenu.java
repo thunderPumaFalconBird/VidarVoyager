@@ -69,9 +69,9 @@ public class MainMenu extends AbstractScreen {
 
         //CHECK DATABASE FOR CONNECTION AND ADD BUTTONS
         if (DatabaseInterface.getInstance().isConnected()) {
-        table.add(logInButton);
-        table.add(signUpButton);
-        table.add(guestButton);
+            table.add(logInButton);
+            table.add(signUpButton);
+            table.add(guestButton);
         }
         else{
             table.add(startButton);
