@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.vv.game.rescueMission.entities.immovable.Cannon;
 import com.vv.game.rescueMission.puzzles.Puzzle;
 import com.vv.game.utils.DatabaseInterface;
 import com.vv.game.utils.User;
@@ -227,17 +228,14 @@ public class MineSweeper extends Puzzle {
         boolean unflaggedMine = false;
         boolean unrevealedSquare = false;
         //Check if all non mine squares are revealed
-        for(int i = 0; i < ROWS; i++){
-            for(int j = 0; j < COLUMNS; j++){
-                int x = BOARD_OFFSET + j * SQUARE_WIDTH;
-                int y = BOARD_OFFSET + i * SQUARE_WIDTH;
-                if(!squares.get(new Vector2(x,y)).isMine() && !squares.get(new Vector2(x,y)).isRevealed()){
-                    unrevealedSquare = true;
-                }
-                if(squares.get(new Vector2(x,y)).isMine() && !squares.get(new Vector2(x,y)).isFlagged()){
-                    unflaggedMine = true;
-                }
+        for(Square square : squares.values()){
+            if(!square.isMine() && !square.isRevealed()){
+                unrevealedSquare = true;
             }
+            if(square.isMine() && !square.isFlagged()){
+                unflaggedMine = true;
+            }
+
         }
 
         solved = !unflaggedMine || !unrevealedSquare;
@@ -309,11 +307,11 @@ public class MineSweeper extends Puzzle {
     @Override
     public void draw(Batch batch, float parentAlpha){
         batch.draw(background, 0, 0);
-        for(int i = 0; i < ROWS; i++){
-            for(int j = 0; j < COLUMNS; j++){
-                squares.get(new Vector2(BOARD_OFFSET + j * SQUARE_WIDTH, BOARD_OFFSET + i * SQUARE_WIDTH)).draw(batch);
-            }
+
+        for(Square square : squares.values()){
+            square.draw(batch);
         }
+
         if(explosionX != -1){
             //TODO draw explosion animation
         }
@@ -407,4 +405,12 @@ public class MineSweeper extends Puzzle {
 
     @Override
     public boolean scrolled(float amountX, float amountY) { return false; }
+
+    @Override
+    public void dispose() {
+        background.dispose();
+        for(Square square : squares.values()){
+            square.dispose();
+        }
+    }
 }

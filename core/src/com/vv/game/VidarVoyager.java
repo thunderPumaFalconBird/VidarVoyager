@@ -37,7 +37,7 @@ public class VidarVoyager implements ApplicationListener {
 	public void create () {
 		rescueMission = new RescueMission();
 		multiplexer = new InputMultiplexer();
-		screenController = new ScreenController(rescueMission.getWorld(), rescueMission.getMap());
+		screenController = new ScreenController(rescueMission.getWorld(), rescueMission.getMap(), rescueMission.getInstructions());
 
 		//Add actors to stage.
 		Stage stage = screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN);
@@ -64,16 +64,19 @@ public class VidarVoyager implements ApplicationListener {
 		//CHECK FOR PUZZLES
 		checkForActivePuzzles();
 
-		//CHECK FOR WIN
-		if(rescueMission.checkForWin()){
-			System.out.println("You won the game");
-			//TODO create kill screen
-		}
 
-		//CHECK FOR DEATH
-		if(rescueMission.checkForDeath()){
-			System.out.println("You are Dead");
-			//TODO CREATE GAME OVER IMAGE
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
+			//CHECK FOR WIN
+			if (rescueMission.checkForWin()) {
+				System.out.println("You won the game");
+				//screenController.setScreen(SCREEN_STATE.GAME_WON);
+				//TODO create kill screen
+			}
+
+			//CHECK FOR DEATH
+			if (rescueMission.checkForDeath()) {
+				screenController.setScreen(SCREEN_STATE.GAME_OVER);
+			}
 		}
 
 	}

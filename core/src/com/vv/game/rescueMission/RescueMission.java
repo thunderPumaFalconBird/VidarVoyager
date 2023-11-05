@@ -1,6 +1,7 @@
 package com.vv.game.rescueMission;
 
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -48,6 +49,9 @@ public class RescueMission {
     public TiledMap getMap(){ return levels.get(currentLevelIndex).getMap(); }
 
     public World getWorld(){ return levels.get(currentLevelIndex).getWorld(); }
+
+    public Array<TextureRegion> getInstructions() { return levels.get(currentLevelIndex).getInstructions(); }
+
 
     public Vector2 getPlayerPosition(){ return player.getBody().getPosition(); }
 
@@ -114,5 +118,6 @@ public class RescueMission {
         for(int i = 0; i < levels.size; i++){
             levels.get(i).dispose();
         }
+        player.dispose();
     }
 }

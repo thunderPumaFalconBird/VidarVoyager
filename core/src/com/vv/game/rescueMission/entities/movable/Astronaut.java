@@ -379,6 +379,8 @@ public class Astronaut  extends Movable implements InputProcessor {
 
     public void dispose(){
         //TODO add gamestate
+        oxygenBar.dispose();
+        inventory.dispose();
     }
 
 }

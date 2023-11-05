@@ -1,5 +1,6 @@
 package com.vv.game.rescueMission.levels;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -35,6 +36,8 @@ public class Level1 implements Level {
     private Array<Collectable> collectables;
     private HashMap<Vector2, Cannon> cannons;
     private Array<Door> doors;
+
+    private Array<TextureRegion> instructions;
 
     /**
      * The constructor initializes the level based on the levelNumber.
@@ -75,6 +78,9 @@ public class Level1 implements Level {
                     break;
             }
         }
+
+        initInstructions();
+
         world.setContactListener(new CollisionHandler());
     }
 
@@ -94,6 +100,9 @@ public class Level1 implements Level {
 
     @Override
     public World getWorld() { return world; }
+
+    @Override
+    public Array<TextureRegion> getInstructions() { return instructions; }
 
     @Override
     public Vector2 getPlayerStartPosition() { return playerStartPosition; }
@@ -124,6 +133,7 @@ public class Level1 implements Level {
         for(int i = 0; i < collectables.size; i++){
             stage.addActor(collectables.get(i));
         }
+        //The cannons have a draw method for the laser
         for (Cannon cannon : cannons.values()) {
             stage.addActor(cannon);
         }
@@ -293,13 +303,18 @@ public class Level1 implements Level {
         }
     }
 
+    public void initInstructions(){
+        instructions = new Array<>();
+
+    }
+
     /**
      * this method is called when the game is destroyed.
      */
     public void dispose(){
         world.dispose();
         map.dispose();
-        for(int i = 0; i < doors.size; i++){
+        for(int i = 0; i < doors.size; i++) {
             doors.get(i).dispose();
         }
     }

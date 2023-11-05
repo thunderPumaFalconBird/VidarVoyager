@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.vv.game.VidarVoyager;
 
@@ -27,22 +28,22 @@ import java.io.File;
 public class RescueMissionScreen extends AbstractScreen {
     private final Stage stage;
     private final OrthographicCamera cam;
-    private final OrthogonalTiledMapRenderer mapRenderer;
     private final Table table;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private Array<TextureRegion> instructions;
+    private Texture gameOverImage;
     private ImageButton newGameButton;
     private ImageButton backButton;
+    private ImageButton nextButton;
 
     /**
      * The Rescue Mission Screen constructor sets up the camera and stage which are used to render textures. It also
      * sets up the map render so that the map will be rendered.
      *
-     * @param map
-     * @param world
      */
-    public RescueMissionScreen(TiledMap map, World world){
+    public RescueMissionScreen(){
         super();
 
-        this.world = world;
         cam = new OrthographicCamera(VidarVoyager.APP_WIDTH, VidarVoyager.APP_HEIGHT);
         stage = new Stage(new FitViewport((float) VidarVoyager.APP_WIDTH,
                 (float)VidarVoyager.APP_HEIGHT,
@@ -51,11 +52,12 @@ public class RescueMissionScreen extends AbstractScreen {
         stage.getViewport().apply();
         cam.update();
 
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
-
         table = new Table();
-        table.center().padBottom(120);
         table.setFillParent(true);
+
+        stage.addActor(table);
+
+        gameOverImage = new Texture("screens" + File.separator + "GameOver.png");
 
         Texture textureUp = new Texture("buttons" + File.separator + "NewGameButton.png");
         TextureRegion textureRegionUp = new TextureRegion(textureUp);
@@ -64,18 +66,40 @@ public class RescueMissionScreen extends AbstractScreen {
         textureUp = new Texture("buttons" + File.separator + "BackButton.png");
         textureRegionUp = new TextureRegion(textureUp);
         backButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+
+        textureUp = new Texture("buttons" + File.separator + "BackButton.png");
+        textureRegionUp = new TextureRegion(textureUp);
+        nextButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
     }
 
     public Stage getStage(){ return this.stage; }
 
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+        table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
+                cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2) - gameOverImage.getHeight());
+        table.add(backButton);
+        table.add(newGameButton);
+    }
+
+    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
+
     @Override
     public void initMultiplexer(InputMultiplexer multiplexer){
-
+        multiplexer.addProcessor(this);
+        multiplexer.addProcessor(stage);
     }
 
     @Override
     public void removeMultiplexer(InputMultiplexer multiplexer){
+        multiplexer.removeProcessor(this);
+        multiplexer.removeProcessor(stage);
+    }
 
+    public void loadLevel(World world, TiledMap map, Array<TextureRegion> instructions){
+        this.world = world;
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        this.instructions = instructions;
     }
 
     @Override
@@ -87,6 +111,9 @@ public class RescueMissionScreen extends AbstractScreen {
         }
         else if(backButton.isPressed()){
             temp = "back";
+        }
+        else if(nextButton.isPressed()){
+
         }
 
         return temp;
@@ -128,6 +155,11 @@ public class RescueMissionScreen extends AbstractScreen {
 
         stage.draw();
 
+        if(gameOver){
+            batch.draw(gameOverImage, cam.position.x - ((float) gameOverImage.getWidth() / 2),
+                    cam.position.y - ((float) gameOverImage.getHeight() / 2));
+        }
+
         if(VidarVoyager.DEBUGGING){
             b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
         }
@@ -143,6 +175,7 @@ public class RescueMissionScreen extends AbstractScreen {
         super.dispose();
         stage.dispose();
         mapRenderer.dispose();
+        gameOverImage.dispose();
     }
 
     /**

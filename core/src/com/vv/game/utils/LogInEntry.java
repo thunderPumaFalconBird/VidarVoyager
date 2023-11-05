@@ -102,4 +102,8 @@ public class LogInEntry {
         password.setColor(Color.RED);
     }
 
+    public void dispose(){
+        background.dispose();
+    }
+
 }

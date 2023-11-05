@@ -310,13 +310,18 @@ public class MainMenu extends AbstractScreen {
         window2.dispose();
         window3.dispose();
         window4.dispose();
+        logInEntry.dispose();
+        signUpEntry.dispose();
     }
 
     /**
      * Called when this screen becomes the current screen for the Game.
      */
 
-    public void show() { batch.setProjectionMatrix(cam.combined); }
+    public void show() {
+        batch.setProjectionMatrix(cam.combined);
+        timer.start();
+    }
 
     /**
      * This method is called when the screen is paused.

@@ -57,6 +57,7 @@ public class Inventory {
     }
 
     public void dispose(){
+        inventoryOxygenBar.dispose();
         highlight.dispose();
     }
 

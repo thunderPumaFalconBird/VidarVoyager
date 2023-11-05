@@ -27,4 +27,8 @@ public class OxygenBar {
     public void updateOxygenLevel(float oxygenLevel){
         oxygenBarsNumber = ((int) oxygenLevel / 10) + 1;
     }
+
+    public void dispose(){
+        oxygenBarTexture.dispose();
+    }
 }

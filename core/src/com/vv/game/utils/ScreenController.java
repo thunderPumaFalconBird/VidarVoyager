@@ -1,10 +1,12 @@
 package com.vv.game.utils;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.vv.game.screens.AbstractScreen;
 import com.vv.game.screens.MainMenu;
 import com.vv.game.screens.PuzzleScreen;
@@ -38,11 +40,12 @@ public class ScreenController  {
      * The ScreenController constructor creates the enumMap of the screens. The screens are added to the enumMap using
      * init methods below. This constructor is private because screenController is a singleton.
      */
-    public ScreenController(World world, TiledMap map) {
+    public ScreenController(World world, TiledMap map, Array<TextureRegion> instructions) {
         this.screens = new EnumMap<>(SCREEN_STATE.class);
         this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu());
         this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen());
-        this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen(map, world));
+        this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen());
+        loadLevel(world, map, instructions);
     }
 
     public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
@@ -50,6 +53,11 @@ public class ScreenController  {
     public Stage getScreenStage(SCREEN_STATE screen){ return screens.get(screen).getStage(); }
 
     public SCREEN_STATE getCurrentScreenState(){ return currentScreen; }
+
+    public void loadLevel(World world, TiledMap map, Array<TextureRegion> instructions){
+        RescueMissionScreen rescueMissionScreen = (RescueMissionScreen) screens.get(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+        rescueMissionScreen.loadLevel(world, map, instructions);
+    }
 
 
     /**
@@ -70,9 +78,11 @@ public class ScreenController  {
     public void setScreen(SCREEN_STATE screen){
         if(screen != currentScreen) {
             if (screen == SCREEN_STATE.GAME_OVER) {
-                screens.get(currentScreen).setGameOver(true);
+                RescueMissionScreen RMS = (RescueMissionScreen) screens.get(currentScreen);
+                RMS.setGameOver(true);
             } else if (screen == SCREEN_STATE.GAME_WON) {
-                screens.get(currentScreen).setGameWon(true);
+                RescueMissionScreen RMS = (RescueMissionScreen) screens.get(currentScreen);
+                RMS.setGameWon(true);
             }
             else {
                 screens.get(currentScreen).removeMultiplexer(multiplexer);

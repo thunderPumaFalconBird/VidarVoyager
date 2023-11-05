@@ -125,4 +125,8 @@ public class Square {
                 break;
         }
     }
+
+    public void dispose(){
+        textureAtlas.dispose();
+    }
 }

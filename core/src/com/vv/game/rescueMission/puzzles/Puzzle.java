@@ -44,4 +44,8 @@ public abstract class Puzzle extends Actor implements InputProcessor {
     public void draw(Batch batch, float parentAlpha){
         batch.draw(background, 0,0);
     }
+
+    public void dispose(){
+        background.dispose();
+    }
 }

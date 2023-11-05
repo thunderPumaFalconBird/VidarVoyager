@@ -177,4 +177,8 @@ public class SignUpEntry {
         password.setColor(Color.RED);
         passwordVerified.setColor(Color.RED);
     }
+
+    public void dispose(){
+        background.dispose();
+    }
 }

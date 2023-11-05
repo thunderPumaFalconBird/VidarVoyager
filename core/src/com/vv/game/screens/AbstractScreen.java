@@ -67,10 +67,6 @@ public abstract class AbstractScreen implements InputProcessor {
      */
     public abstract void hide ();
 
-    public void setGameOver(boolean gameOver) { this.gameOver = gameOver; }
-
-    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
-
     /**
      * This method is called when the user resizes the app screen size.
      * @param width
