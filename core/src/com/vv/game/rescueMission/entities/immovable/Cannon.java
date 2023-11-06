@@ -40,7 +40,6 @@ public class Cannon extends Immovable {
      * This method is called when a playable character collides the cannon range.
      */
     public void fireCannon(){
-        //TODO create lasers
         active = true;
     }
 

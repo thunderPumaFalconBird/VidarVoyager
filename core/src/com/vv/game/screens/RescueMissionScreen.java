@@ -84,10 +84,6 @@ public class RescueMissionScreen extends AbstractScreen {
 
     public void setGameWon(boolean gameWon) {
         this.gameWon = gameWon;
-        table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
-                cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2));
-        table.add(exitButton);
-        table.add(newGameButton);
     }
 
     @Override
@@ -301,4 +297,3 @@ public class RescueMissionScreen extends AbstractScreen {
         return false;
     }
 }
-

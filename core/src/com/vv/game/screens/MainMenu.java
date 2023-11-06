@@ -288,9 +288,7 @@ public class MainMenu extends AbstractScreen {
         }
 
         batch.end();
-
         stage.draw();
-
     }
 
     /**

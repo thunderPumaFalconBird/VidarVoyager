@@ -7,10 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.vv.game.screens.AbstractScreen;
-import com.vv.game.screens.MainMenu;
-import com.vv.game.screens.PuzzleScreen;
-import com.vv.game.screens.RescueMissionScreen;
+import com.vv.game.screens.*;
 
 import java.util.EnumMap;
 
@@ -46,6 +43,7 @@ public class ScreenController  {
         this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu());
         this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen());
         this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen());
+        this.screens.put(SCREEN_STATE.GAME_WON, new KillScreen());
         loadLevel(world, map, instructions);
     }
 
@@ -81,9 +79,6 @@ public class ScreenController  {
             if (screen == SCREEN_STATE.GAME_OVER) {
                 RescueMissionScreen RMS = (RescueMissionScreen) screens.get(currentScreen);
                 RMS.setGameOver(true);
-            } else if (screen == SCREEN_STATE.GAME_WON) {
-                RescueMissionScreen RMS = (RescueMissionScreen) screens.get(currentScreen);
-                RMS.setGameWon(true);
             } else if (screen == SCREEN_STATE.EXIT || screen == SCREEN_STATE.NEW_GAME){
                 screens.get(currentScreen).removeMultiplexer(multiplexer);
                 currentScreen = screen;
