@@ -37,7 +37,9 @@ public class VidarVoyager implements ApplicationListener {
 	public void create () {
 		rescueMission = new RescueMission();
 		multiplexer = new InputMultiplexer();
-		screenController = new ScreenController(rescueMission.getWorld(), rescueMission.getMap(), rescueMission.getInstructions());
+		screenController = new ScreenController(rescueMission.getWorld(),
+				rescueMission.getMap(),
+				rescueMission.getInstructions());
 
 		//Add actors to stage.
 		Stage stage = screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN);
@@ -113,7 +115,9 @@ public class VidarVoyager implements ApplicationListener {
 		multiplexer.clear();
 
 		rescueMission = new RescueMission();
-		screenController = new ScreenController(rescueMission.getWorld(), rescueMission.getMap(), rescueMission.getInstructions());
+		screenController = new ScreenController(rescueMission.getWorld(),
+				rescueMission.getMap(),
+				rescueMission.getInstructions());
 
 		//Add actors to stage.
 		Stage stage = screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN);

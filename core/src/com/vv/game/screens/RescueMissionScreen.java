@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -35,6 +36,7 @@ public class RescueMissionScreen extends AbstractScreen {
     private ImageButton newGameButton;
     private ImageButton exitButton;
     private ImageButton nextButton;
+    private float gameOverX, gameOverY;
 
     /**
      * The Rescue Mission Screen constructor sets up the camera and stage which are used to render textures. It also
@@ -75,11 +77,17 @@ public class RescueMissionScreen extends AbstractScreen {
     public Stage getStage(){ return this.stage; }
 
     public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-        table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
-                cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2) - gameOverImage.getHeight());
-        table.add(exitButton);
-        table.add(newGameButton);
+        if(this.gameOver != gameOver) {
+            this.gameOver = gameOver;
+
+            table.add(new Image(gameOverImage)).colspan(2);
+            table.row();
+
+            table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
+                    cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2) - gameOverImage.getHeight());
+            table.add(exitButton).padLeft((float)gameOverImage.getWidth() / 2);
+            table.add(newGameButton).padRight((float)gameOverImage.getWidth() / 2);
+        }
     }
 
     public void setGameWon(boolean gameWon) {
@@ -156,11 +164,6 @@ public class RescueMissionScreen extends AbstractScreen {
         mapRenderer.render();
 
         stage.draw();
-
-        if(gameOver){
-            batch.draw(gameOverImage, cam.position.x - ((float) gameOverImage.getWidth() / 2),
-                    cam.position.y - ((float) gameOverImage.getHeight() / 2));
-        }
 
         if(VidarVoyager.DEBUGGING){
             b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
