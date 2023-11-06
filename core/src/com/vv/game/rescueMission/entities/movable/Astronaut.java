@@ -16,9 +16,12 @@ import com.vv.game.VidarVoyager;
 import com.vv.game.rescueMission.Inventory;
 import com.vv.game.rescueMission.OxygenBar;
 import com.vv.game.rescueMission.entities.collectable.Collectable;
+import com.vv.game.rescueMission.entities.collectable.TeddyBear;
 
 import java.util.EnumMap;
 import java.io.File;
+
+import static com.vv.game.VidarVoyager.DEBUGGING;
 
 /**
  * This is the Astronaut Class. It extends the actor class so that it can be added to a stage. The stage will then

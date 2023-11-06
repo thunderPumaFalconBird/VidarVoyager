@@ -33,7 +33,7 @@ public class RescueMissionScreen extends AbstractScreen {
     private Array<TextureRegion> instructions;
     private Texture gameOverImage;
     private ImageButton newGameButton;
-    private ImageButton backButton;
+    private ImageButton exitButton;
     private ImageButton nextButton;
 
     /**
@@ -63,9 +63,9 @@ public class RescueMissionScreen extends AbstractScreen {
         TextureRegion textureRegionUp = new TextureRegion(textureUp);
         newGameButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
 
-        textureUp = new Texture("buttons" + File.separator + "BackButton.png");
+        textureUp = new Texture("buttons" + File.separator + "ExitButton.png");
         textureRegionUp = new TextureRegion(textureUp);
-        backButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
+        exitButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
 
         textureUp = new Texture("buttons" + File.separator + "BackButton.png");
         textureRegionUp = new TextureRegion(textureUp);
@@ -78,11 +78,17 @@ public class RescueMissionScreen extends AbstractScreen {
         this.gameOver = gameOver;
         table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
                 cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2) - gameOverImage.getHeight());
-        table.add(backButton);
+        table.add(exitButton);
         table.add(newGameButton);
     }
 
-    public void setGameWon(boolean gameWon) { this.gameWon = gameWon; }
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
+        table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
+                cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2));
+        table.add(exitButton);
+        table.add(newGameButton);
+    }
 
     @Override
     public void initMultiplexer(InputMultiplexer multiplexer){
@@ -109,8 +115,8 @@ public class RescueMissionScreen extends AbstractScreen {
         if(newGameButton.isPressed()){
             temp = "newGame";
         }
-        else if(backButton.isPressed()){
-            temp = "back";
+        else if(exitButton.isPressed()){
+            temp = "exit";
         }
         else if(nextButton.isPressed()){
 

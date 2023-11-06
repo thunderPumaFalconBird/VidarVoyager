@@ -30,7 +30,8 @@ public class ScreenController  {
         PUZZLE_SCREEN,
         GAME_OVER,
         GAME_WON,
-        NEW_GAME
+        NEW_GAME,
+        EXIT
     }
     private InputMultiplexer multiplexer;
     private SCREEN_STATE currentScreen = SCREEN_STATE.MAIN_MENU;
@@ -83,6 +84,9 @@ public class ScreenController  {
             } else if (screen == SCREEN_STATE.GAME_WON) {
                 RescueMissionScreen RMS = (RescueMissionScreen) screens.get(currentScreen);
                 RMS.setGameWon(true);
+            } else if (screen == SCREEN_STATE.EXIT || screen == SCREEN_STATE.NEW_GAME){
+                screens.get(currentScreen).removeMultiplexer(multiplexer);
+                currentScreen = screen;
             }
             else {
                 screens.get(currentScreen).removeMultiplexer(multiplexer);
@@ -123,6 +127,9 @@ public class ScreenController  {
                 break;
             case "newGame":
                 setScreen(SCREEN_STATE.NEW_GAME);
+                break;
+            case "exit":
+                setScreen(SCREEN_STATE.EXIT);
                 break;
         }
     }

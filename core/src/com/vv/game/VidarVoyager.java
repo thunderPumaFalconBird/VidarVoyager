@@ -18,7 +18,7 @@ import com.vv.game.utils.ScreenController.SCREEN_STATE;
  */
 public class VidarVoyager implements ApplicationListener {
 	// set to false when not debugging. This will control the debug renderer
-	public static final boolean DEBUGGING = false;
+	public static final boolean DEBUGGING = true;
 	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 1000;
 	public static final float PPM = 100;
@@ -68,8 +68,7 @@ public class VidarVoyager implements ApplicationListener {
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
 			//CHECK FOR WIN
 			if (rescueMission.checkForWin()) {
-				System.out.println("You won the game");
-				//screenController.setScreen(SCREEN_STATE.GAME_WON);
+				screenController.setScreen(SCREEN_STATE.GAME_WON);
 				//TODO create kill screen
 			}
 
@@ -77,6 +76,16 @@ public class VidarVoyager implements ApplicationListener {
 			if (rescueMission.checkForDeath()) {
 				screenController.setScreen(SCREEN_STATE.GAME_OVER);
 			}
+		}
+
+		//CHECK FOR EXIT
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.EXIT) {
+			dispose();
+		}
+
+		//CHECK FOR NEW GAME
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.NEW_GAME) {
+			resetGame();
 		}
 
 	}
@@ -98,6 +107,24 @@ public class VidarVoyager implements ApplicationListener {
 			rescueMission.addAstroMultiplexer(multiplexer);
 			rescueMission.getPuzzle().setActive(false);
 		}
+	}
+
+	private void resetGame(){
+		multiplexer.clear();
+
+		rescueMission = new RescueMission();
+		screenController = new ScreenController(rescueMission.getWorld(), rescueMission.getMap(), rescueMission.getInstructions());
+
+		//Add actors to stage.
+		Stage stage = screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+		rescueMission.addLevelActors(stage);
+		rescueMission.initPlayer(stage);
+
+		//Initialize multiplexer
+		screenController.initMultiplexer(multiplexer);
+		rescueMission.addAstroMultiplexer(multiplexer);
+
+		screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 	}
 
 	/** Called when the application is resized. This can happen at any point during a non-paused state but will never
@@ -126,5 +153,6 @@ public class VidarVoyager implements ApplicationListener {
 	public void dispose () {
 		screenController.dispose();
 		rescueMission.dispose();
+		System.exit(0);
 	}
 }

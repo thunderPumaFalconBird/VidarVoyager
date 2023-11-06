@@ -41,6 +41,7 @@ public class MainMenu extends AbstractScreen {
     private ImageButton logInButton;
     private ImageButton signUpButton;
     private ImageButton guestButton;
+    private ImageButton exitButton;
     private SignUpEntry signUpEntry;
     private LogInEntry logInEntry;
     private final Table table;
@@ -74,6 +75,7 @@ public class MainMenu extends AbstractScreen {
             table.add(guestButton);
         }
         else{
+            table.add(exitButton);
             table.add(startButton);
         }
 
@@ -110,6 +112,10 @@ public class MainMenu extends AbstractScreen {
         textureDown = new Texture("buttons" + File.separator + "GuestButtonHighlighted.png");
         textureRegionDown = new TextureRegion(textureDown);
         guestButton = new ImageButton(new TextureRegionDrawable(textureRegionUp),new TextureRegionDrawable(textureRegionDown));
+
+        textureUp = new Texture("buttons" + File.separator + "ExitButton.png");
+        textureRegionUp = new TextureRegion(textureUp);
+        exitButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
     }
 
     /**
@@ -239,6 +245,9 @@ public class MainMenu extends AbstractScreen {
         if(startButton.isPressed()){
             temp = "start";
         }
+        if(exitButton.isPressed()){
+            temp = "exit";
+        }
         if(guestButton.isPressed()){
             table.removeActor(logInButton);
             table.removeActor(guestButton);
@@ -353,8 +362,9 @@ public class MainMenu extends AbstractScreen {
             if(logInEntry.isActive()){
                 if(handleLogIn()) {
                     logInEntry.setActive(false);
+                    table.add(exitButton);
                     table.add(startButton);
-                    //TODO add continue game option
+
                 }
                 else{
                     logInEntry.failedLogIn();
