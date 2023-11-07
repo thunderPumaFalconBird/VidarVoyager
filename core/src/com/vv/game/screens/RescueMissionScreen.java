@@ -1,5 +1,6 @@
 package com.vv.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,12 +32,13 @@ public class RescueMissionScreen extends AbstractScreen {
     private final OrthographicCamera cam;
     private final Table table;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private Array<TextureRegion> instructions;
+    private Array<Image> instructions;
     private Texture gameOverImage;
     private ImageButton newGameButton;
     private ImageButton exitButton;
     private ImageButton nextButton;
-    private float gameOverX, gameOverY;
+    private int instructionIndex = 0;
+    private float stateTime = 0, pressedTime = 0;
 
     /**
      * The Rescue Mission Screen constructor sets up the camera and stage which are used to render textures. It also
@@ -56,10 +58,14 @@ public class RescueMissionScreen extends AbstractScreen {
 
         table = new Table();
         table.setFillParent(true);
+        table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
+                cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2));
 
         stage.addActor(table);
 
         gameOverImage = new Texture("screens" + File.separator + "GameOver.png");
+
+        instructions = new Array<>();
 
         Texture textureUp = new Texture("buttons" + File.separator + "NewGameButton.png");
         TextureRegion textureRegionUp = new TextureRegion(textureUp);
@@ -69,7 +75,7 @@ public class RescueMissionScreen extends AbstractScreen {
         textureRegionUp = new TextureRegion(textureUp);
         exitButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
 
-        textureUp = new Texture("buttons" + File.separator + "BackButton.png");
+        textureUp = new Texture("buttons" + File.separator + "NextButton.png");
         textureRegionUp = new TextureRegion(textureUp);
         nextButton = new ImageButton(new TextureRegionDrawable(textureRegionUp));
     }
@@ -109,7 +115,12 @@ public class RescueMissionScreen extends AbstractScreen {
     public void loadLevel(World world, TiledMap map, Array<TextureRegion> instructions){
         this.world = world;
         mapRenderer = new OrthogonalTiledMapRenderer(map);
-        this.instructions = instructions;
+        for(int i = 0; i < instructions.size; i++){
+            this.instructions.add(new Image(instructions.get(i)));
+        }
+        table.add(this.instructions.get(instructionIndex));
+        table.row();
+        table.add(nextButton);
     }
 
     @Override
@@ -123,7 +134,19 @@ public class RescueMissionScreen extends AbstractScreen {
             temp = "exit";
         }
         else if(nextButton.isPressed()){
-
+            /*the isPressed method will be true for roughly one second and this method is called multiple times.
+              so I check the time between click events */
+            if(stateTime - pressedTime > 2){
+                pressedTime = stateTime;
+                System.out.println("next is pressed");
+                table.clear();
+                if(instructionIndex < instructions.size - 1) {
+                    instructionIndex++;
+                    table.add(instructions.get(instructionIndex));
+                    table.row();
+                    table.add(nextButton);
+                }
+            }
         }
 
         return temp;
@@ -146,9 +169,13 @@ public class RescueMissionScreen extends AbstractScreen {
      */
     @Override
     public void update(float deltaTime) {
+        stateTime += Gdx.graphics.getDeltaTime();
+
         cam.update();
         mapRenderer.setView(cam);
         stage.act(deltaTime);
+        table.setPosition(cam.position.x - (float) VidarVoyager.APP_WIDTH / 2,
+                cam.position.y - ((float) VidarVoyager.APP_WIDTH / 2));
     }
 
     /**
@@ -163,13 +190,12 @@ public class RescueMissionScreen extends AbstractScreen {
 
         mapRenderer.render();
 
-        stage.draw();
-
         if(VidarVoyager.DEBUGGING){
             b2dr.render(world, cam.combined.cpy().scl(VidarVoyager.PPM));
         }
 
         batch.end();
+        stage.draw();
     }
 
     /**
@@ -248,7 +274,6 @@ public class RescueMissionScreen extends AbstractScreen {
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         return false;
     }
 

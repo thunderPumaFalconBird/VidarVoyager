@@ -37,9 +37,7 @@ public class VidarVoyager implements ApplicationListener {
 	public void create () {
 		rescueMission = new RescueMission();
 		multiplexer = new InputMultiplexer();
-		screenController = new ScreenController(rescueMission.getWorld(),
-				rescueMission.getMap(),
-				rescueMission.getInstructions());
+		screenController = new ScreenController();
 
 		//Add actors to stage.
 		Stage stage = screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN);
@@ -49,6 +47,11 @@ public class VidarVoyager implements ApplicationListener {
 		//Initialize multiplexer
 		screenController.initMultiplexer(multiplexer);
 		rescueMission.addAstroMultiplexer(multiplexer);
+
+		//Load the first level
+		screenController.loadLevel(rescueMission.getWorld(),
+				rescueMission.getMap(),
+				rescueMission.getInstructions());
 
 		Gdx.input.setInputProcessor(multiplexer);
 	}
@@ -115,9 +118,7 @@ public class VidarVoyager implements ApplicationListener {
 		multiplexer.clear();
 
 		rescueMission = new RescueMission();
-		screenController = new ScreenController(rescueMission.getWorld(),
-				rescueMission.getMap(),
-				rescueMission.getInstructions());
+		screenController = new ScreenController();
 
 		//Add actors to stage.
 		Stage stage = screenController.getScreenStage(SCREEN_STATE.RESCUE_MISSION_SCREEN);
@@ -127,6 +128,10 @@ public class VidarVoyager implements ApplicationListener {
 		//Initialize multiplexer
 		screenController.initMultiplexer(multiplexer);
 		rescueMission.addAstroMultiplexer(multiplexer);
+
+		screenController.loadLevel(rescueMission.getWorld(),
+				rescueMission.getMap(),
+				rescueMission.getInstructions());
 
 		screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
 	}

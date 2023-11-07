@@ -1,5 +1,6 @@
 package com.vv.game.rescueMission.levels;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -306,6 +307,10 @@ public class Level1 implements Level {
     public void initInstructions(){
         instructions = new Array<>();
 
+        TextureAtlas textureAtlas = new TextureAtlas("instructions" + File.separator + "Level1Instructions.txt");
+        Array<TextureRegion> atlasTemp = new Array<TextureRegion>(textureAtlas.getRegions());
+
+        instructions.addAll(atlasTemp, 0, 2);
     }
 
     /**

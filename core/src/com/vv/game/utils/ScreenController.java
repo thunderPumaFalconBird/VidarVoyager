@@ -38,13 +38,12 @@ public class ScreenController  {
      * The ScreenController constructor creates the enumMap of the screens. The screens are added to the enumMap using
      * init methods below. This constructor is private because screenController is a singleton.
      */
-    public ScreenController(World world, TiledMap map, Array<TextureRegion> instructions) {
+    public ScreenController() {
         this.screens = new EnumMap<>(SCREEN_STATE.class);
         this.screens.put(SCREEN_STATE.MAIN_MENU, new MainMenu());
         this.screens.put(SCREEN_STATE.PUZZLE_SCREEN, new PuzzleScreen());
         this.screens.put(SCREEN_STATE.RESCUE_MISSION_SCREEN, new RescueMissionScreen());
         this.screens.put(SCREEN_STATE.GAME_WON, new KillScreen());
-        loadLevel(world, map, instructions);
     }
 
     public AbstractScreen getCurrentScreen() { return screens.get(currentScreen); }
