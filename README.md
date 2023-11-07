@@ -26,7 +26,8 @@ The build should look like this when you are done.
 # SQL Database
 There is also a basic SQL database that can be set up for this game. The initialization script is located in 
 the sql directory. There is a DatabaseInterface class in the core/src/com/vv/game/utils directory that allows 
-users to Sign Up and Log In. User's passwords are stored in hashed values that utilize salt. The database also keeps
+users to Sign Up and Log In. User's passwords are stored in hashed values that utilize salt. Prepared statements 
+are used to prevent SQL injections rather than checking user input for special characters. The database also keeps
 track of successful log in events and failed log in events.
 
 This database is not necessary for the game to function,
