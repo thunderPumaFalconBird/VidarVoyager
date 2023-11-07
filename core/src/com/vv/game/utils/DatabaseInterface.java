@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 
 /**
  * The Database class uses the singleton pattern. It is used by any class that needs to store or retrieve data.
+ * Prepared statements are used to protect against SQL injections.
  */
 public class DatabaseInterface {
     //TODO Change name,url,user,password
@@ -55,12 +56,26 @@ public class DatabaseInterface {
     public boolean checkUsernameTaken(User user){
         boolean usernameTaken = false;
 
-        Statement statement;
+        /*Statement statement;
         try {
             String query = "SELECT id FROM vidar_voyager2.users WHERE username = '" + user.getUsername() + "';";
 
             statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
+
+            if(result.next()){
+                usernameTaken = true;
+            }
+
+        } catch (Exception e) {*/
+        try {
+            String query = "SELECT id FROM vidar_voyager2.users WHERE username = ?;";
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1,user.getUsername());
+
+            ResultSet result = statement.executeQuery();
 
             if(result.next()){
                 usernameTaken = true;
@@ -78,7 +93,8 @@ public class DatabaseInterface {
      */
     public boolean insertUser(User user) {
         int rowsAffected = 0;
-        Statement statement;
+
+        /*Statement statement;
 
         String query = "INSERT INTO vidar_voyager.users"
                 + "(username, first_name, last_name, ";
@@ -123,7 +139,65 @@ public class DatabaseInterface {
             } catch (Exception e) {
                 System.out.println(e);
             }
+        }*/
+        String query = "INSERT INTO vidar_voyager.users"
+                + "(username, first_name, last_name, ";
+        if (!user.getMiddleInitial().isEmpty()) {
+            query += "middle_initial,";
         }
+        if (!user.getDateOfBirth().isEmpty()) {
+            query += "date_of_birth,";
+        }
+        query += "email, created_on, updated_on)"
+                + "VALUES (?,?,?,";
+        if (!user.getMiddleInitial().isEmpty()) {
+            query += "?,";
+        }
+        if (!user.getDateOfBirth().isEmpty()) {
+            query += "?,";
+        }
+        query += "?, current_timestamp, current_timestamp);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            if(!user.getMiddleInitial().isEmpty()){
+                statement.setString(4, user.getMiddleInitial());
+                if(!user.getDateOfBirth().isEmpty()){
+                    statement.setString(5, user.getDateOfBirth());
+                    statement.setString(6, user.getEmail());
+                }
+            }
+            if(user.getMiddleInitial().isEmpty() && !user.getDateOfBirth().isEmpty()){
+                statement.setString(4, user.getDateOfBirth());
+                statement.setString(5, user.getEmail());
+            }
+
+            rowsAffected = statement.executeUpdate();
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
+        String query2 = "INSERT INTO vidar_voyager.accounts (user_id, password) VALUES ("
+                + "(SELECT id FROM vidar_voyager.users WHERE username = ?),"
+                + "crypt(?, gen_salt('bf')));";
+
+        try{
+            PreparedStatement statement = connection.prepareStatement(query2);
+
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+
+            rowsAffected = statement.executeUpdate();
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
         return rowsAffected != 0;
     }
 
@@ -135,6 +209,7 @@ public class DatabaseInterface {
      */
     public boolean checkUserPassword(User user) throws SQLException {
         boolean returnValue = false;
+        /*
         Statement statement;
         try {
             String query = "SELECT username FROM vidar_voyager.users u "
@@ -154,7 +229,26 @@ public class DatabaseInterface {
 
         } catch (Exception e) {
             System.out.println(e);
+        }*/
+
+        String query = "SELECT username FROM vidar_voyager.users u "
+                + "RIGHT JOIN vidar_voyager.accounts a ON u.id = a.user_id WHERE "
+                + "u.username = ? AND a.password = crypt(?, a.password);";
+
+        PreparedStatement statement = connection.prepareStatement(query);
+
+        statement.setString(1, user.getUsername());
+        statement.setString(2, user.getPassword());
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if(resultSet.next()){
+            String username = resultSet.getString("username");
+            if(username.equals(user.getUsername())){
+                returnValue = true;
+            }
         }
+
         return returnValue;
     }
 
@@ -165,6 +259,8 @@ public class DatabaseInterface {
      */
     public boolean createLogInEvent(User user) {
         int returnValue = 0;
+
+        /*
         String query = "INSERT INTO vidar_voyager.login_events (user_id, ip_address, logged_in_on, logged_out_on) VALUES ("
                 + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
                 + "'" + user.getInet() + "',"
@@ -193,6 +289,35 @@ public class DatabaseInterface {
 
         } catch (Exception e) {
             System.out.println(e);
+        }*/
+
+        String query = "INSERT INTO vidar_voyager.login_events (user_id, ip_address, logged_in_on, logged_out_on) VALUES ("
+                + "(SELECT id FROM vidar_voyager.users WHERE username = ?), ?,current_timestamp, current_timestamp);";
+
+        String query2 = "SELECT id FROM vidar_voyager.login_events WHERE user_id = "
+                + "(SELECT id FROM vidar_voyager.users WHERE username = ?)"
+                + "ORDER BY logged_in_on DESC\n" +
+                "LIMIT 1;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getInet());
+
+            returnValue = statement.executeUpdate();
+            if(returnValue != 0){
+                PreparedStatement statement2 = connection.prepareStatement(query2);
+                statement2.setString(1, user.getUsername());
+
+                ResultSet resultSet = statement.executeQuery();
+                if(resultSet.next()){
+                    user.setLog_in_on_id(resultSet.getInt("id"));
+                }
+            }
+
+        } catch (Exception e){
+            System.out.println(e);
         }
 
         return returnValue != 0;
@@ -202,6 +327,7 @@ public class DatabaseInterface {
     public boolean createLogInAttempt(User user) {
         int returnValue = 0;
         boolean isActiveUser = checkUsernameTaken(user);
+        /*
         String query = "INSERT INTO vidar_voyager.login_attempt (";
         if (isActiveUser) {
             query += "user_id,";
@@ -218,6 +344,32 @@ public class DatabaseInterface {
             returnValue = statement.executeUpdate(query);
         } catch (Exception e) {
             System.out.println(e);
+        }*/
+        String query = "INSERT INTO vidar_voyager.login_attempt (";
+        if (isActiveUser) {
+            query += "user_id,";
+        }
+        query += "ip_address, login_attempt_on) VALUES (";
+        if(isActiveUser){
+            query +=  "(SELECT id FROM vidar_voyager.users WHERE username = ?),";
+        }
+        query += "?, current_timestamp);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            if (isActiveUser){
+                statement.setString(1, user.getUsername());
+                statement.setString(2, user.getInet());
+            }
+            else{
+                statement.setString(1, user.getInet());
+            }
+
+            returnValue = statement.executeUpdate();
+
+        } catch (Exception e){
+            System.out.println(e);
         }
 
         return returnValue != 0;
@@ -230,6 +382,8 @@ public class DatabaseInterface {
      */
     public boolean updateLogInEvent(User user) {
         int returnValue = 0;
+
+        /*
         String query = "UPDATE vidar_voyager.login_events SET logged_out_on = current_timestamp"
                 + " WHERE user_id = (SELECT id FROM vidar_voyager.users WHERE username = '"
                 + user.getUsername() + "') AND id = '"
@@ -239,6 +393,21 @@ public class DatabaseInterface {
         try {
             statement = connection.createStatement();
             returnValue = statement.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println(e);
+        }*/
+
+        String query = "UPDATE vidar_voyager.login_events SET logged_out_on = current_timestamp"
+                + " WHERE user_id = (SELECT id FROM vidar_voyager.users WHERE username = ?) AND id = ?;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, user.getLog_in_on_id());
+
+            returnValue = statement.executeUpdate();
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -253,6 +422,8 @@ public class DatabaseInterface {
      */
     public void addHighScoreMineSweeper(User user, int seconds){
         int returnValue = 0;
+
+        /*
         String query = "INSERT INTO vidar_voyager.high_scores_minesweeper (user_id, seconds, created_on) VALUES ("
                 + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
                 + "'" + seconds + "',"
@@ -263,6 +434,30 @@ public class DatabaseInterface {
             returnValue = statement.executeUpdate(query);
         } catch (Exception e) {
             System.out.println(e + " " + returnValue + " tables returned");
+        }*/
+        String query = "INSERT INTO vidar_voyager.high_scores_minesweeper (user_id, seconds, created_on) VALUES ("
+                + "(SELECT id FROM vidar_voyager.users WHERE username = ?),?,current_timestamp);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, user.getUsername());
+            statement.setInt(2, seconds);
+
+            returnValue = statement.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e + " " + returnValue + " tables returned");
+        }
+    }
+
+    public void dispose(){
+        try {
+            if(connection != null) {
+                connection.close();
+            }
+        } catch (Exception e){
+            System.out.println(e);
         }
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.vv.game.rescueMission.RescueMission;
+import com.vv.game.utils.DatabaseInterface;
 import com.vv.game.utils.ScreenController;
 import com.vv.game.utils.ScreenController.SCREEN_STATE;
 
@@ -162,6 +163,10 @@ public class VidarVoyager implements ApplicationListener {
 	public void dispose () {
 		screenController.dispose();
 		rescueMission.dispose();
+
+		DatabaseInterface DB = DatabaseInterface.getInstance();
+		DB.dispose();
+
 		System.exit(0);
 	}
 }

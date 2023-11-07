@@ -130,7 +130,7 @@ public class MainMenu extends AbstractScreen {
 
         DatabaseInterface db = DatabaseInterface.getInstance();
         try {
-            db.createLogInAttempt(user);
+            //db.createLogInAttempt(user);
             success = db.checkUserPassword(user);
         } catch (SQLException e) {
             throw new RuntimeException(e);
