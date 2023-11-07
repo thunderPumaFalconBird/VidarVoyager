@@ -18,7 +18,7 @@ Once you have downloaded android studios you will have to change the sdk to Andr
 Please follow the libgdx setup guide to import and edit the Desktop Launcher build and run configuration 
 https://libgdx.com/wiki/start/import-and-running
 
-The build should look like this when you are done
+The build should look like this when you are done.
 
 ![alt text](https://github.com/thunderPumaFalconBird/VidarVoyager/blob/master/BuildConfig.png?raw=true)
 
@@ -38,7 +38,9 @@ you set up.
 
 # How to Play
 If you do not want to build and run the program there is a jar file located in the out directory. 
-Simply download and double-click the file. 
+Simply download and double-click the file. If you do not have Java installed follow this installation guide
+https://docs.oracle.com/en/java/javase/21/install/overview-jdk-installation.html#GUID-8677A77F-231A-40F7-98B9-1FD0B48C346A
+
 
 The goal of the first level is to collect one of every color teddy bear and take them to the life support system. 
 Be sure to keep an eye on your oxygen level and refill your tank at an oxygen station when needed. The first level
