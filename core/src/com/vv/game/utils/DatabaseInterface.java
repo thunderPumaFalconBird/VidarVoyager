@@ -56,20 +56,8 @@ public class DatabaseInterface {
     public boolean checkUsernameTaken(User user){
         boolean usernameTaken = false;
 
-        /*Statement statement;
         try {
-            String query = "SELECT id FROM vidar_voyager2.users WHERE username = '" + user.getUsername() + "';";
-
-            statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(query);
-
-            if(result.next()){
-                usernameTaken = true;
-            }
-
-        } catch (Exception e) {*/
-        try {
-            String query = "SELECT id FROM vidar_voyager2.users WHERE username = ?;";
+            String query = "SELECT id FROM vidar_voyager.users WHERE username = ?;";
 
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -82,6 +70,7 @@ public class DatabaseInterface {
             }
 
         } catch (Exception e) {
+            System.out.println("checkUsernameTaken Failed");
             System.out.println(e);
         }
         return usernameTaken;
@@ -94,52 +83,6 @@ public class DatabaseInterface {
     public boolean insertUser(User user) {
         int rowsAffected = 0;
 
-        /*Statement statement;
-
-        String query = "INSERT INTO vidar_voyager.users"
-                + "(username, first_name, last_name, ";
-        if (!user.getMiddleInitial().isEmpty()) {
-            query += "middle_initial,";
-        }
-        if (!user.getDateOfBirth().isEmpty()) {
-            query += "date_of_birth,";
-        }
-        query += "email, created_on, updated_on)"
-                + "VALUES ("
-                + "'" + user.getUsername() + "',"
-                + "'" + user.getFirstName() + "',"
-                + "'" + user.getLastName() + "',";
-        if (!user.getMiddleInitial().isEmpty()) {
-            query += "'" + user.getMiddleInitial() + "',";
-        }
-        if (!user.getDateOfBirth().isEmpty()) {
-            query += "'" + user.getDateOfBirth() + "',";
-        }
-        query += "'" + user.getEmail() + "',"
-                + " current_timestamp,"
-                + " current_timestamp"
-                + ");"
-        ;
-
-        try {
-            statement = connection.createStatement();
-            rowsAffected = statement.executeUpdate(query);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        //ADD USER TO ACCOUNTS TABLE
-        if (rowsAffected != 0) {
-            String query2 = "INSERT INTO vidar_voyager.accounts (user_id, password) VALUES ("
-                    + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
-                    + "crypt('" + user.getPassword() + "', gen_salt('bf')));";
-            try {
-                statement = connection.createStatement();
-                rowsAffected = statement.executeUpdate(query2);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }*/
         String query = "INSERT INTO vidar_voyager.users"
                 + "(username, first_name, last_name, ";
         if (!user.getMiddleInitial().isEmpty()) {
@@ -167,13 +110,16 @@ public class DatabaseInterface {
             if(!user.getMiddleInitial().isEmpty()){
                 statement.setString(4, user.getMiddleInitial());
                 if(!user.getDateOfBirth().isEmpty()){
-                    statement.setString(5, user.getDateOfBirth());
+                    statement.setDate(5, Date.valueOf(user.getDateOfBirth()));
                     statement.setString(6, user.getEmail());
                 }
             }
-            if(user.getMiddleInitial().isEmpty() && !user.getDateOfBirth().isEmpty()){
-                statement.setString(4, user.getDateOfBirth());
+            else if(user.getMiddleInitial().isEmpty() && !user.getDateOfBirth().isEmpty()){
+                statement.setDate(4, Date.valueOf(user.getDateOfBirth()));
                 statement.setString(5, user.getEmail());
+            }
+            else {
+                statement.setString(4, user.getEmail());
             }
 
             rowsAffected = statement.executeUpdate();
@@ -187,14 +133,15 @@ public class DatabaseInterface {
                 + "crypt(?, gen_salt('bf')));";
 
         try{
-            PreparedStatement statement = connection.prepareStatement(query2);
+            PreparedStatement statement2 = connection.prepareStatement(query2);
 
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getPassword());
+            statement2.setString(1, user.getUsername());
+            statement2.setString(2, user.getPassword());
 
-            rowsAffected = statement.executeUpdate();
+            rowsAffected = statement2.executeUpdate();
 
         } catch (Exception e){
+            System.out.println("InsertUser Failed");
             System.out.println(e);
         }
 
@@ -209,27 +156,6 @@ public class DatabaseInterface {
      */
     public boolean checkUserPassword(User user) throws SQLException {
         boolean returnValue = false;
-        /*
-        Statement statement;
-        try {
-            String query = "SELECT username FROM vidar_voyager.users u "
-                    + "RIGHT JOIN vidar_voyager.accounts a ON u.id = a.user_id WHERE "
-                    + "u.username = '" + user.getUsername()
-                    + "' AND a.password = crypt('" + user.getPassword() + "', a.password);";
-
-            statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(query);
-
-            if(result.next()){
-                String username = result.getString("username");
-                if(username.equals(user.getUsername())){
-                    returnValue = true;
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }*/
 
         String query = "SELECT username FROM vidar_voyager.users u "
                 + "RIGHT JOIN vidar_voyager.accounts a ON u.id = a.user_id WHERE "
@@ -260,39 +186,8 @@ public class DatabaseInterface {
     public boolean createLogInEvent(User user) {
         int returnValue = 0;
 
-        /*
         String query = "INSERT INTO vidar_voyager.login_events (user_id, ip_address, logged_in_on, logged_out_on) VALUES ("
-                + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
-                + "'" + user.getInet() + "',"
-                + "current_timestamp, current_timestamp);";
-        Statement statement;
-        try {
-            statement = connection.createStatement();
-            returnValue = statement.executeUpdate(query);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        //store id of login event so that the logout time can be updated.
-        String query2 = "SELECT id FROM vidar_voyager.login_events WHERE user_id = "
-                + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "')"
-                + "ORDER BY logged_in_on DESC\n" +
-                "LIMIT 1;";
-        ResultSet result = null;
-        try {
-            statement = connection.createStatement();
-            result = statement.executeQuery(query2);
-
-            if(result.next()){
-                user.setLog_in_on_id(result.getInt("id"));
-            }
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }*/
-
-        String query = "INSERT INTO vidar_voyager.login_events (user_id, ip_address, logged_in_on, logged_out_on) VALUES ("
-                + "(SELECT id FROM vidar_voyager.users WHERE username = ?), ?,current_timestamp, current_timestamp);";
+                + "(SELECT id FROM vidar_voyager.users WHERE username = ?), CAST(? AS inet),current_timestamp, current_timestamp);";
 
         String query2 = "SELECT id FROM vidar_voyager.login_events WHERE user_id = "
                 + "(SELECT id FROM vidar_voyager.users WHERE username = ?)"
@@ -310,41 +205,24 @@ public class DatabaseInterface {
                 PreparedStatement statement2 = connection.prepareStatement(query2);
                 statement2.setString(1, user.getUsername());
 
-                ResultSet resultSet = statement.executeQuery();
+                ResultSet resultSet = statement2.executeQuery();
                 if(resultSet.next()){
                     user.setLog_in_on_id(resultSet.getInt("id"));
                 }
             }
 
         } catch (Exception e){
+            System.out.println("createLogInEvent Failed");
             System.out.println(e);
         }
 
         return returnValue != 0;
     }
 
-    //TODO finish this up and test it
     public boolean createLogInAttempt(User user) {
         int returnValue = 0;
         boolean isActiveUser = checkUsernameTaken(user);
-        /*
-        String query = "INSERT INTO vidar_voyager.login_attempt (";
-        if (isActiveUser) {
-            query += "user_id,";
-        }
-        query += "ip_address, login_attempt_on) VALUES (";
-        if(isActiveUser){
-            query +=  "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),";
-        }
-        query += "'" + user.getInet() + "',"
-                + "current_timestamp);";
-        Statement statement;
-        try {
-            statement = connection.createStatement();
-            returnValue = statement.executeUpdate(query);
-        } catch (Exception e) {
-            System.out.println(e);
-        }*/
+
         String query = "INSERT INTO vidar_voyager.login_attempt (";
         if (isActiveUser) {
             query += "user_id,";
@@ -353,7 +231,7 @@ public class DatabaseInterface {
         if(isActiveUser){
             query +=  "(SELECT id FROM vidar_voyager.users WHERE username = ?),";
         }
-        query += "?, current_timestamp);";
+        query += "CAST(? AS inet), current_timestamp);";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -383,20 +261,6 @@ public class DatabaseInterface {
     public boolean updateLogInEvent(User user) {
         int returnValue = 0;
 
-        /*
-        String query = "UPDATE vidar_voyager.login_events SET logged_out_on = current_timestamp"
-                + " WHERE user_id = (SELECT id FROM vidar_voyager.users WHERE username = '"
-                + user.getUsername() + "') AND id = '"
-                + user.getLog_in_on_id() + "';";
-
-        Statement statement;
-        try {
-            statement = connection.createStatement();
-            returnValue = statement.executeUpdate(query);
-        } catch (Exception e) {
-            System.out.println(e);
-        }*/
-
         String query = "UPDATE vidar_voyager.login_events SET logged_out_on = current_timestamp"
                 + " WHERE user_id = (SELECT id FROM vidar_voyager.users WHERE username = ?) AND id = ?;";
 
@@ -423,18 +287,6 @@ public class DatabaseInterface {
     public void addHighScoreMineSweeper(User user, int seconds){
         int returnValue = 0;
 
-        /*
-        String query = "INSERT INTO vidar_voyager.high_scores_minesweeper (user_id, seconds, created_on) VALUES ("
-                + "(SELECT id FROM vidar_voyager.users WHERE username = '" + user.getUsername() + "'),"
-                + "'" + seconds + "',"
-                + "current_timestamp);";
-        Statement statement;
-        try {
-            statement = connection.createStatement();
-            returnValue = statement.executeUpdate(query);
-        } catch (Exception e) {
-            System.out.println(e + " " + returnValue + " tables returned");
-        }*/
         String query = "INSERT INTO vidar_voyager.high_scores_minesweeper (user_id, seconds, created_on) VALUES ("
                 + "(SELECT id FROM vidar_voyager.users WHERE username = ?),?,current_timestamp);";
 
