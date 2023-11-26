@@ -138,7 +138,6 @@ public class RescueMissionScreen extends AbstractScreen {
               so I check the time between click events */
             if(stateTime - pressedTime > 2){
                 pressedTime = stateTime;
-                System.out.println("next is pressed");
                 table.clear();
                 if(instructionIndex < instructions.size - 1) {
                     instructionIndex++;

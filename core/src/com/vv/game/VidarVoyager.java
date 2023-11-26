@@ -67,15 +67,34 @@ public class VidarVoyager implements ApplicationListener {
 		rescueMission.update();
 		screenController.update(rescueMission.getPlayerPosition());
 
-		//CHECK FOR PUZZLES
-		checkForActivePuzzles();
+		//CHECK GAME STATUS
+		checkGameStatus();
+	}
 
+	/** The checkGameStatus method will check for active puzzles. If a puzzle is active it will change the view and
+	 * input to the current puzzle or check for a puzzle win. If no puzzle is active it will check rescueMission for
+	 * a win or death. It will also check for exit or new game conditions */
+	private void checkGameStatus(){
+		//CHANGE SCREEN IF A PUZZLE IS ACTIVE
+		if(rescueMission.getPuzzle() != null && screenController.getCurrentScreenState() != SCREEN_STATE.PUZZLE_SCREEN){
+			screenController.setScreen(SCREEN_STATE.PUZZLE_SCREEN);
+			rescueMission.removeAstroMultiplexer(multiplexer);
+			rescueMission.addPuzzleMultiplexer(multiplexer);
+			rescueMission.getPuzzle().setStage(screenController.getScreenStage(ScreenController.SCREEN_STATE.PUZZLE_SCREEN));
+		}
+
+		//CHECK PUZZLE FOR A WIN IF IT IS ACTIVE
+		if(screenController.getCurrentScreenState() == SCREEN_STATE.PUZZLE_SCREEN && rescueMission.getPuzzle().isSolved()){
+			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
+			rescueMission.removePuzzleMultiplexer(multiplexer);
+			rescueMission.addAstroMultiplexer(multiplexer);
+			rescueMission.getPuzzle().setActive(false);
+		}
 
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.RESCUE_MISSION_SCREEN) {
 			//CHECK FOR WIN
 			if (rescueMission.checkForWin()) {
 				screenController.setScreen(SCREEN_STATE.GAME_WON);
-				//TODO create kill screen
 			}
 
 			//CHECK FOR DEATH
@@ -92,26 +111,6 @@ public class VidarVoyager implements ApplicationListener {
 		//CHECK FOR NEW GAME
 		if(screenController.getCurrentScreenState() == SCREEN_STATE.NEW_GAME) {
 			resetGame();
-		}
-
-	}
-
-	/** The checkForActivePuzzles method will change the view and input to the current puzzle and check for a win. */
-	private void checkForActivePuzzles(){
-		//CHANGE SCREEN IF A PUZZLE IS ACTIVE
-		if(rescueMission.getPuzzle() != null && screenController.getCurrentScreenState() != SCREEN_STATE.PUZZLE_SCREEN){
-			screenController.setScreen(SCREEN_STATE.PUZZLE_SCREEN);
-			rescueMission.removeAstroMultiplexer(multiplexer);
-			rescueMission.addPuzzleMultiplexer(multiplexer);
-			rescueMission.getPuzzle().setStage(screenController.getScreenStage(ScreenController.SCREEN_STATE.PUZZLE_SCREEN));
-		}
-
-		//CHECK PUZZLE FOR A WIN IF IT IS ACTIVE
-		if(screenController.getCurrentScreenState() == SCREEN_STATE.PUZZLE_SCREEN && rescueMission.getPuzzle().isSolved()){
-			screenController.setScreen(SCREEN_STATE.RESCUE_MISSION_SCREEN);
-			rescueMission.removePuzzleMultiplexer(multiplexer);
-			rescueMission.addAstroMultiplexer(multiplexer);
-			rescueMission.getPuzzle().setActive(false);
 		}
 	}
 
